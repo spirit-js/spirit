@@ -195,15 +195,13 @@ const define = (name, list) => {
 }
 
 /**
- * Creates a node http server with leaf attached
- * If a port is provided it'll automatically start the server
+ * Creates a http handler
  *
  * @public
  * @param {List} middlewares - a list as returned by define()
- * @param {number} port - optional port
- * @return {http.Server}
+ * @return {function}
  */
-const server = (middlewares, port) => {
+const leaf = (middlewares) => {
   if (Array.isArray(middlewares)) {
     middlewares = { list: middlewares }
   }
@@ -216,18 +214,13 @@ const server = (middlewares, port) => {
     return adapter(middleware)
   })
 
-  const serv = http.createServer((req, res) => {
+  return (req, res) => {
     _handler(middlewares, req, res)
-  })
-
-  if (port) {
-    serv.listen(port)
   }
-  return serv
 }
 
 module.exports = {
-  server,
+  leaf,
   define,
   reducel,
   adapter,

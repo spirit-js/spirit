@@ -70,24 +70,13 @@ describe("core", () => {
     })
   })
 
-  describe("server", () => {
-    it("returns a http.Server and attaches core.handler", (done) => {
-      const http = require("http")
-      const s = core.server([() => {
-        // means our is attached
-        done()
-      }])
-      expect(s instanceof http.Server).toBe(true)
-      // run our handler that's attached
-      s._events.request()
-    })
-
+  describe("leaf", () => {
     it("throws if a List or an array is not passed in", () => {
       const inv = [()=>{}, "hi", 123, undefined, null, { list: 123 }, {}, { list: () => {} }]
 
       inv.forEach((arg) => {
         expect(() => {
-          core.server(arg)
+          core.leaf(arg)
         }).toThrow()
       })
     })
