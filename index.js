@@ -8,7 +8,7 @@ var routes = require("./lib/router/routes")
 var resources = require("./lib/router/resource")
 
 module.exports = {
-  server: core.server,
+  leaf: core.leaf,
   define: core.define,
 
   site_defaults: defaults,

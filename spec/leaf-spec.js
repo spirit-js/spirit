@@ -3,7 +3,8 @@
  */
 
 const request = require("superagent")
-const {server, define, routes} = require("../index")
+const {leaf, define, routes} = require("../index")
+const http = require("http")
 
 
 describe("leaf", () => {
@@ -15,9 +16,9 @@ describe("leaf", () => {
       })
     ])
 
-    const s = server(define([
+    const s = http.createServer(leaf(define([
       routes.route(app)
-    ]))
+    ])))
 
     s.listen(3001)
 

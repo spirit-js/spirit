@@ -1,6 +1,5 @@
-const leaf = require("../index")
-const define = leaf.define
-const routes = leaf.routes
+const {leaf, define, routes} = require("../index")
+const http = require("http")
 
 const index = () => {
   return "Hello World"
@@ -44,21 +43,5 @@ const site = define([
   // TODO define("/public", routes.resources("public"))
 ])
 
-const server = leaf.server(site, 3000)
-
-/*
-// no official auth pkg in mind, but it's basically a func
-// that returns a compat middleware
-// can wrap others etc to compose into a new middleware
-// example auth:
-function auth(middleware) { // middleware being absorbed, routes in this case
-
-  // return a new middleware, 
-  return function(req, res, next) {
-    // do auth stuff here
-
-    // then just continue as normal with the original
-    middleware(req, res, next)
-  }
-}
-*/
+const server = http.createServer(leaf(site))
+server.listen(3000)

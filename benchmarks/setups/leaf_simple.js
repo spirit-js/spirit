@@ -1,13 +1,12 @@
-const leaf = require("../../lib/core/core")
-const router = require("../../lib/router/router")
-const routes = require("../../lib/router/routes").verbs
+const {leaf, define, routes} = require("../../index")
+const http = require("http")
 
-const app = leaf.define([
+const app = define([
   routes.get("/", [], () => { return "Hello World" })
 ])
 
-const site = leaf.define([
-  router.route(app)
+const site = define([
+  routes.route(app)
 ])
 
-leaf.server(site, 3009)
+http.createServer(leaf(site)).listen(3009)
