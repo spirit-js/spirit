@@ -4,6 +4,8 @@ A _fast_ simple & modern web framework for node.js
 
 And... it is 99% compatible with Express middleware out of the box.
 
+It can be thought of as a mixture of Express and Compojure.
+
 #### why?
 
 1. Simple. 
