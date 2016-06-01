@@ -33,6 +33,8 @@ const hi = (str) => {
 
 // they can throw errors as normal
 const errhandling = () => {
+  // we can of course handle errors here, but we can also
+  // throw and make it bubble up
   throw "oops"
 }
 
