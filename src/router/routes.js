@@ -1,5 +1,5 @@
 /*
- * For HTTP method shortcuts and converting to a structure for router.lookup
+ * For Routes, HTTP method shortcuts and converting to a structure for router.lookup
  */
 
 const path_regexp = require("path-to-regexp")
