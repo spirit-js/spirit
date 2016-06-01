@@ -26,18 +26,23 @@ And... it is 99% compatible with Express middleware out of the box.
 const http = require("http")
 const {leaf, routes, define, site_defaults} = require("leaf")
 
-const hello = () => {
-  return "Hello World"
-}
-
-const param_example = (str) => {
+// routes are just normal functions
+const hi = (str) => {
   return "Hi, " + str
 }
 
+// they can throw errors as normal
+const errhandling = () => {
+  throw "oops"
+}
+
 const app = define([
-  routes.get("/", [], hello),
-  routes.get("/:param", ["param"], param_example)
-])
+  routes.get("/error", [], errhandling)
+  routes.get("/:param", ["param"], hi)
+]).catch((err) => {
+  // handle errors from the above routes here
+  return "recovered!"
+})
 
 const site = define([
   site_defaults(),
