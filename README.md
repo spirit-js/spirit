@@ -1,30 +1,30 @@
 # leaf
 
-a simple & modern web framework for node.js
+A _fast_ simple & modern web framework for node.js
 
-(it is compatible to Express and it's middlewares, but simplifies and modernizes the way you normally work in Express)
+And... it is 99% compatible with Express middleware out of the box.
 
 #### why?
 
-1. Less is more, in leaf there are no route specific middleware, only top-level.
-  - No more "proprietary" functions or tangled up in middleware after middleware. (You never needed it anyway)
+1. Simple. 
+   __Routes are just normal functions.__ 
+   No more proprietary (req, res, next) functions or generator functions that are hard to read, re-use and test.
 
-  - Separation of concerns makes it easier to reason about. Code dealing with http should be separate (at least on an abstract level).
+   This makes for a better clarity in the separation between your code and http related code. As opposed to everything just being a middleware.
+  
 
-     
-2. Which means routes are just normal functions that __return__ something!
-  - They can be re-used across projects and libraries as they are just normal functions.
+2. Modern. Promises and async/await is preferred and recommended over callbacks whenever possible.
 
-  - They can be re-used across different routes or composed like normal functions. 
+3. Compatible with Express's middlewares out of the box.
 
-3. Promises and async/await is preferred and recommended over callbacks whenever possible.
+4. Better error-handling, almost everything is then-able and catch-able.
 
-#### example, hello world in async
+5. It's fast.
+
+#### example
 
 ```js
-const leaf = require("leaf")
-const define = leaf.define
-const routes = leaf.routes
+const {routes, define, site_defaults} = require("leaf")
 
 const hello = () => {
   return "Hello World"
