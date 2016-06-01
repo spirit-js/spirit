@@ -1,0 +1,8 @@
+{
+  "ecmaVersion": 6,
+  "libs": [],
+  "plugins": {
+    "jasmine": {},
+    "node": {}
+  }
+}
