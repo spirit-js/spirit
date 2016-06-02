@@ -14,6 +14,11 @@ const respond = (res, output) => {
 
   // guard
   const typ_output = typeof output
+
+  if (typ_output === "undefined") {
+    throw "Invalid return from route function"
+  }
+
   if (typ_output === "object" && !Array.isArray(output)) {
     if (true) { // valid map
       r = Object.assign(r, output)
@@ -23,7 +28,7 @@ const respond = (res, output) => {
     }
   } else {
     // if not an object, coerce to string
-    if (output.toString && typ_output !== "function") {
+    if (output && output.toString && typ_output !== "function") {
       r.body = output.toString()
     } else {
       throw("Invalid return from route function")

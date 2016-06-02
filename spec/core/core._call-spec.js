@@ -2,6 +2,7 @@ const core = require("../../lib/core/core")
 const _call = core._call
 
 process.on('unhandledRejection', function(reason, p) {
+  console.log(p)
   throw("unhandled rejection for Promise: " + reason)
 });
 

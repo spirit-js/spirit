@@ -119,8 +119,4 @@ describe("router._route_handler", () => {
       done()
     })
   })
-
-  it("calls user's catch if there is an error")
-
-  it("calls user's then")
 })

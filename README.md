@@ -45,7 +45,7 @@ const app = define([
   return "recovered!"
 })
 
-const site = define([ site_defaults(), routes.route(app) ])
+const site = define([site_defaults(), routes.route(app)])
 
 http.createServer(leaf(site)).listen(3000)
 ```

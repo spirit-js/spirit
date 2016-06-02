@@ -52,6 +52,10 @@ describe("router.route (middleware)", () => {
     })
   })
 
+  /*
+   * it respects a List's name and never iterates if the name
+   * does not match
+   */
   it("exits early if url does not match list's name", (done) => {
     list.list = [
       (req, res, next) => {
@@ -96,5 +100,16 @@ describe("router.route (middleware)", () => {
     })
   })
 
+  // tests `_next` var
+  it("calls next() when no more routes or middlewares to try")
+
+  // tests `_next` var
+  it("calls next(err) only when there was a result but user's then 'ate' the result and returned back nothing")
+
+  it("calls user's then when there is a result")
+
+  it("calls user's catch when there is an error")
+
+  it("continues without error trying to find a matching route when initial match returns undefined")
 })
 

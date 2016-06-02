@@ -170,15 +170,30 @@ const route = (list) => {
     // get re-written / re-designed
     req._named_route = list.name
 
+    let _next = false
+
     core.reducel(list, [req, res], "router")
       .then((result) => {
         // unset var from earlier when done
         req._named_route = ""
         // if results is empty, no route handled it
         if (typeof result === "undefined") {
-          next()
-        } else {
+          _next = true
+          return result
+        }
+        if (!list._then) {
+          return result
+        }
+        return core._call(list._then, [result, req])
+      }).then((result) => {
+        if (typeof result !== "undefined") {
           response.respond(res, result)
+        } else {
+          if (_next) {
+            next()
+          } else {
+            next("Expected `then` to return a valid response")
+          }
         }
       }).catch((err) => {
         if (!list._catch) {
