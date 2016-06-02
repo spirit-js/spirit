@@ -135,8 +135,10 @@ const _handler = (list, req, res) => {
   return reducel(list, [req, res], "core")
     .then((err) => {
       // this is always an error
-      // middlewares completed, that means nothing handled the response
-      // if it returns something, its the result of next(err)
+      // there is no successful result a express middleware
+      // ever returns, except in the case of next(err)
+      // or...
+      // middlewares completed, that means nothing handled the response, err is undefined
       throw(err)
     }).catch((err) => {
       if (!list._catch) {

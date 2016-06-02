@@ -34,6 +34,7 @@ describe("control flow", () => {
     })
 
     const app = define([
+      routes.get("/", [], ()=>{ return "123" }), // doesn't get called
       generic_mw, // mw_count = 2
       routes.route(app2), // -> app2
       generic_mw, // doesn't get called
@@ -68,5 +69,86 @@ describe("control flow", () => {
     handler(mock_req, mock_response)
   })
 
-  it("then")
+  it("warns when running uncompiled Route for core._handler", () => {
+    pending()
+
+    // this should error TODO
+    const site = define([
+      routes.get("/", [], () => { return "not ok" })
+    ])
+    const handler = leaf(site)
+    handler({}, {})
+  })
+
+  it("route then does not propogate", (done) => {
+    const generic_mw = (req, res, next) => {
+      req.mw_count += 1
+      next()
+    }
+
+    const app2 = define([
+      generic_mw,
+      routes.get("/test", [], () => {
+        return "ok!"
+      }),
+      generic_mw
+    ]).then((result) => {
+      expect(result).toBe("ok!")
+      expect(mock_req.mw_count).toBe(3)
+    }).catch((err) => {
+      expect(err).toBe("Expected then to return a valid response")
+    })
+
+    const app = define([
+      generic_mw,
+      routes.route(app2)
+    ]).then((result) => {
+      throw "shouldn't get here"
+    }).catch((err) => {
+      done()
+    })
+
+    const site = define([
+      generic_mw,
+      routes.route(app),
+      generic_mw
+    ]).then((result) => {
+      throw "shouldn't get here"
+    })
+
+    const mock_req = {
+      method: "GET",
+      url: "/test",
+      mw_count: 0
+    }
+    const handler = leaf(site)
+    handler(mock_req, mock_response)
+  })
+
+  it("non-route List then never gets called", (done) => {
+    const generic_mw = (req, res, next) => {
+      req.mw_count += 1
+      next()
+      return "hi"
+    }
+
+    const site = define([
+      generic_mw,
+      generic_mw
+    ]).then((result) => {
+      throw "never gets called"
+    }).catch((err) => {
+      expect(err).toBe(undefined)
+      done()
+    })
+
+    const mock_req = {
+      method: "GET",
+      url: "/test",
+      mw_count: 0
+    }
+    const handler = leaf(site)
+    handler(mock_req, mock_response)
+  })
+
 })
