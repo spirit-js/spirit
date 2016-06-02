@@ -31,6 +31,21 @@ describe("router.route (middleware)", () => {
     })
   })
 
+  it("also accepts values instead of functions for routes", () => {
+    pending()
+    list.list = [
+      ["get", "/", [], "hello world"]
+    ]
+
+    const router_middleware = router.route(list)
+
+    // TODO mock the resposne to check the value
+    // actually, should just test this on the route_handler
+    router_middleware({ method: "GET", url: "/" }, {}, () => {
+
+    })
+  })
+
   it("it accepts compiled Routes and express middleware", (done) => {
     const route = (blah, stuff) => {
       expect(blah).toBe("abc")

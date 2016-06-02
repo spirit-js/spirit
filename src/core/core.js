@@ -69,16 +69,22 @@ const mapl = function(list, pred) {
 }
 
 /**
- * calls a user function with `args` (array of arguments)
- *
+ * calls a (user) function with `args` (array of arguments)
  * wraps the result of `fn` as a Promise
+ *
+ * if it's not a function, it returns the value wrapped
+ * as a Promise
  *
  * @param {function} fn - the function as defined by the user
  * @param {*[]} args - an array of arguments to `fn`
  * @return {Promise}
  */
 const _call = (fn, args) => {
-  return Promise.resolve(fn.apply(undefined, args))
+  if (typeof fn === "function") {
+    return Promise.resolve(fn.apply(undefined, args))
+  }
+
+  return Promise.resolve(fn)
 }
 
 /**
@@ -135,10 +141,11 @@ const _handler = (list, req, res) => {
   return reducel(list, [req, res], "core")
     .then((err) => {
       // this is always an error
-      // there is no successful result a express middleware
-      // ever returns, except in the case of next(err)
+      // there is no successful result for express middleware
+      // it never returns anything
+      // except in the case of next(err)
       // or...
-      // middlewares completed, that means nothing handled the response, err is undefined
+      // middlewares completed, that means nothing handled the response, err would be undefined
       throw(err)
     }).catch((err) => {
       if (!list._catch) {
