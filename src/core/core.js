@@ -1,4 +1,4 @@
-const http = require("http")
+const response = require("./response.js")
 const Promise = require("bluebird")
 Promise.onPossiblyUnhandledRejection(function(e, promise) {
   throw e;
@@ -75,7 +75,7 @@ const mapl = function(list, pred) {
  *
  * @param {function} fn - the function as defined by the user
  * @param {*[]} args - an array of arguments to `fn`
- * @return {Promsie}
+ * @return {Promise}
  */
 const _call = (fn, args) => {
   return Promise.resolve(fn.apply(undefined, args))
@@ -139,17 +139,23 @@ const _handler = (list, req, res) => {
       // if it returns something, its the result of next(err)
       throw(err)
     }).catch((err) => {
-      // if a middleware throws
-
-      if (list._catch) {
-        try {
-          list._catch(err, req, res)
-        } catch(e) { // would be a different error
-          _err_handler(e, res)
-        }
-      } else {
-        _err_handler(err, res)
+      if (!list._catch) {
+        return _err_handler(err, res)
       }
+
+      // call user's catch
+      const p = new Promise((resolve, reject) => {
+        resolve(_call(list._catch, [err, req]))
+      })
+              .then((result) => {
+                if (typeof result === "undefined") {
+                  return _err_handler(err, res)
+                }
+                response.respond(res, result)
+              })
+              .catch((new_err) => {
+                _err_handler(new_err, res)
+              })
     })
 }
 

@@ -181,7 +181,23 @@ const route = (list) => {
           response.respond(res, result)
         }
       }).catch((err) => {
-        console.log("router error -> ", err) // TODO
+        if (!list._catch) {
+          return next(err)
+        }
+
+        // call user's catch
+        const p = new Promise((resolve, reject) => {
+          resolve(core._call(list._catch, [err, req]))
+        })
+                .then((result) => {
+                  if (typeof result === "undefined") {
+                    return next(err)
+                  }
+                  response.respond(res, result)
+                })
+                .catch((new_err) => {
+                  next(new_err)
+                })
       })
   }
 }
