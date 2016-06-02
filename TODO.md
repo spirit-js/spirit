@@ -24,3 +24,5 @@
 - test passport
 
 - test gzip compression
+
+- fill out Express compatibility where possible, for instance res.redirect, res.sendFile, etc.
