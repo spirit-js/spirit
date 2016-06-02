@@ -40,6 +40,35 @@ describe("router.routes", () => {
       expect(Route.path.re instanceof RegExp).toBe(true)
     })
 
+    it("the body of a Route can be any value except...", () => {
+      // all primitive types are ok except null or undefined
+      // undefined is used to "pass" routes, but it makes no
+      // sense to pass underfined as a body as it'll always pass
+
+      // objects accepted by response are...
+      // array
+      // file object
+      // json
+      // promise
+
+      // for the sake of simplicity though, compile will accept
+      // just about anything and let response throw if there
+      // are type errors (mostly with objects)
+      // as it'll be hard to type check promise values anyway
+
+      // ok
+      routes.compile("get", "/", [], "ok")
+      routes.compile("get", "/", [], () => {})
+      routes.compile("get", "/", [], 0)
+      routes.compile("get", "/", [], [1, 2])
+      routes.compile("get", "/", [], {a: 1, b: 2})
+      // not ok
+      const invalid = ["", [], {}, null, undefined]
+      invalid.forEach((inv) => {
+        expect(routes.compile.bind(null, ["get", "/", [], inv])).toThrow()
+      })
+    })
+
     const call_test = (invalid) => {
       const valid = ["string", "string", ["array"], ()=>{}]
       invalid.forEach((inv, idx) => {
@@ -50,7 +79,8 @@ describe("router.routes", () => {
     }
 
     it("throws for invalid type arguments", () => {
-      call_test([123, 123, "a", {}])
+      // some invalid arguments to compile
+      call_test([123, 123, "a"])
     })
 
     it("throws for empty arguments", () => {

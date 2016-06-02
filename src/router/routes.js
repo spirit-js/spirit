@@ -10,6 +10,15 @@ const path_regexp = require("path-to-regexp")
  *
  * returns a Route, which is just a map
  *
+ * The `body` can be of any type or a function that returns
+ * just about any type as long as `core.response` knows
+ * how to render it
+ *
+ * It is simpler here to type check `body` for things that do
+ * not make sense at all. As a stringent type check is hard to do
+ * especially without running the function / function
+ * returns a promise
+ *
  * @param {string} method - http verb
  * @param {string} path - URL path of route
  * @param {string[]} args - arguments used to destructure the request, and to be passed into `body`
@@ -23,10 +32,15 @@ const compile = (method, path, args, body) => {
   // guard
   if (typeof method !== "string"
       || typeof path !== "string"
-      || !Array.isArray(args)
-      || typeof body !== "function") {
-    throw new TypeError("Cannot compile route, invalid argument type to compile: " + method + ", " + path + ", " + args + ", " + body + ", Expecting type: (string, string, array, function)")
+      || !Array.isArray(args)) {
+    throw new TypeError("Cannot compile route, invalid argument type to compile: " + method + ", " + path + ", " + args + ", " + body + ", Expecting type: (string, string, array, any)")
   }
+  if (body === null
+      || typeof body === "undefined"
+      || body === ""
+      || (typeof body === "object" && Object.keys(body).length === 0)) {
+        throw new TypeError("The body of a route cannot be an empty value")
+      }
   // guard
   if (!method || !path) {
     throw("Cannot compile route, empty string passed to compile (verb); Got: " + method + " " + path)

@@ -62,6 +62,18 @@ describe("router._route_handler", () => {
     })
   })
 
+  it("on matching route, returns Promise of value when Route body is not a function", (done) => {
+    const Route = compile("get", "/test", [], "hello world")
+    const handler = _route_handler(Route)
+    // req, res
+    const r = handler({ method: "GET", url: "/test" }, {})
+    // r is wrapped as a promise
+    r.then((result) => {
+      expect(result).toBe("hello world")
+      done()
+    })
+  })
+
   it("on matching route, handles reject Promise of Route function ok", (done) => {
     const Route = compile("get", "/", [], () => {
       return new Promise((resolve, reject) => {
