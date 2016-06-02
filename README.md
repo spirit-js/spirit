@@ -2,9 +2,9 @@
 
 A _fast_ simple & modern web framework for node.js
 
-And... it is 99% compatible with Express middleware out of the box.
+That emphasizes clear separation of code between HTTP and your own code. Routes are simple javascript functions.
 
-It can be thought of as a mixture of Express and Compojure.
+It is mostly compatible with Express middlewares. It can be thought of as a mixture of Express and Compojure.
 
 #### why?
 
@@ -16,7 +16,7 @@ It can be thought of as a mixture of Express and Compojure.
   
 2. Modern. Promises and async/await is preferred and recommended over callbacks whenever possible.
 
-3. Compatible with Express's middlewares out of the box.
+3. Compatible with Express's middleware signature (req, res, next) with mostly complete support for Express's specific helpers.
 
 4. Better error-handling, almost everything is then-able and catch-able.
 
