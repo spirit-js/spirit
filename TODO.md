@@ -25,4 +25,4 @@
 
 - test gzip compression
 
-- fill out Express compatibility where possible, for instance res.redirect, res.sendFile, etc.
+- fill out Express support (res.redirect, res.sendFile, etc)

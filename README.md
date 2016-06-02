@@ -2,7 +2,7 @@
 
 A _fast_ simple & modern web framework for node.js
 
-That emphasizes clear separation of code between HTTP and your own code. Routes are simple javascript functions.
+That emphasizes clear separation of code between HTTP and your own code. Routes are simply javascript functions.
 
 It is mostly compatible with Express middlewares. It can be thought of as a mixture of Express and Compojure.
 
@@ -20,45 +20,39 @@ It is mostly compatible with Express middlewares. It can be thought of as a mixt
 
 4. Better error-handling, almost everything is then-able and catch-able.
 
-5. It's fast. (Faster than other frameworks such as Express or Koa)
+5. It's fast. 
 
 #### example
 
 ```js
-const http = require("http")
 const {leaf, routes, define, site_defaults} = require("leaf")
 
-// routes are just normal functions
-const hi = (str) => {
+const hi = (str) => { // routes are just normal functions
   return "Hi, " + str
 }
 
-// they can throw errors as normal
-const errhandling = () => {
+const home = () => {  // routes can throw errors normally too
   // we can of course handle errors here, but we can also
   // throw and make it bubble up
   throw "oops"
 }
 
 const app = define([
-  routes.get("/error", [], errhandling)
+  routes.get("/home", [], home)
   routes.get("/:param", ["param"], hi)
 ]).catch((err) => {
-  // handle errors from the above routes here
+  // you can handle errors from the above routes here
   return "recovered!"
 })
 
-const site = define([
-  site_defaults(),
-  routes.route(app)
-])
+const site = define([ site_defaults(), routes.route(app) ])
 
 http.createServer(leaf(site)).listen(3000)
 ```
 
 #### Express compatiblity
 
-Out of the box most Express middleware is supported. The exceptions being:
+Out of the box most Express middleware is supported. Some exceptions being:
 
 - `req.originalUrl`
   This seems to be part of Express's router, and since leaf routes differently (and avoids mutating `req.url`), this is not built-in.
