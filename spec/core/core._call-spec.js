@@ -8,6 +8,32 @@ process.on('unhandledRejection', function(reason, p) {
 
 describe("_call", () => {
 
+  it("accepts string, array values ok", (done) => {
+    _call("hi", [1, 2]).then((result) => {
+      expect(result).toBe("hi")
+
+      _call([1, 2, "a"], []).then((result) => {
+        expect(result).toEqual([1, 2, "a"])
+        done()
+      })
+    })
+  })
+
+  // note: there's no copying, it holds refs
+  it("accepts objects ok", (done) => {
+    const obj = {
+      a: 1,
+      b: 2
+    }
+    _call(obj, []).then((result) => {
+      expect(result).toEqual({
+        a: 1,
+        b: 2
+      })
+      done()
+    })
+  })
+
   it("returns ok string", (done) => {
     const args = []
     const route = () => {
