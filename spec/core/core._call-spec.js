@@ -84,9 +84,7 @@ describe("_call", () => {
     const args = []
     const route = () => {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject({ status: 123, body: "hi" })
-        }, 1)
+        reject({ status: 123, body: "hi" })
       })
     }
 

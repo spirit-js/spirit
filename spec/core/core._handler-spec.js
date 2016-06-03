@@ -3,12 +3,12 @@
  */
 
 const core = require("../../lib/core/core")
+const mock_res = require("../support/mock-response")
 
 describe("_handler", () => {
-  const mock_res = require("../support/mock-response")
 
   beforeEach(() => {
-    mock_res._reset() // reset
+    mock_res._reset()
   })
 
   afterEach(() => {
@@ -90,6 +90,58 @@ describe("_handler", () => {
       })
   })
 
+  it("can recover from a user's catch", (done) => {
+    let list = [
+      (req, res, next) => {
+        next("error")
+      }
+    ]
+
+    list = { list: list }
+
+    list._catch = (err) => {
+      expect(err).toBe("error")
+      return "recover"
+    }
+
+    mock_res._done = () => {
+      expect(mock_res._map.status).toBe(200)
+      expect(mock_res._map.body).toBe("recover")
+      done()
+    }
+
+    list = core.mapl(list, core.adapter)
+    core._handler(list, {}, mock_res)
+  })
+
+  it("accepts a Promise from a user's catch", (done) => {
+    let list = [
+      (req, res, next) => {
+        next("error")
+      }
+    ]
+
+    list = { list: list }
+
+    list._catch = (err) => {
+      expect(err).toBe("error")
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject("oops")
+        }, 1)
+      })
+    }
+
+    mock_res._done = () => {
+      expect(mock_res._map.status).toBe(500)
+      expect(mock_res._map.body).toBe("oops")
+      done()
+    }
+
+    list = core.mapl(list, core.adapter)
+    core._handler(list, {}, mock_res)
+  })
+
   it("calls user's catch when an error occurs", (done) => {
     let list = [
       (req, res, next) => {
@@ -102,9 +154,7 @@ describe("_handler", () => {
       },
     ]
 
-    list = {
-      list: list
-    }
+    list = { list: list }
 
     list._catch = (err) => {
       expect(err).toBe("error")
