@@ -139,8 +139,4 @@ describe("router/resources", () => {
     })
   })
 
-  it("match is case sensitive")
-
-  it("normalizes leading and ending slash / for URL path")
-
 })

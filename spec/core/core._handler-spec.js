@@ -92,10 +92,10 @@ describe("_handler", () => {
 
   it("calls user's catch when an error occurs", (done) => {
     let list = [
-      (req, res, next) => { // basic example
+      (req, res, next) => {
         next()
       },
-      (req, res, next) => { // async
+      (req, res, next) => {
         setTimeout(() => {
           next("error")
         })
@@ -121,5 +121,32 @@ describe("_handler", () => {
     core._handler(list, {}, mock_res)
   })
 
-  it("ignores user's then")
+  it("ignores user's then", (done) => {
+    let list = [
+      (req, res, next) => {
+        next()
+      },
+      (req, res, next) => {
+        setTimeout(() => {
+          next()
+        })
+      },
+    ]
+
+    list = {
+      list: list
+    }
+
+    list._then = () => {
+      throw "should never be called"
+    }
+
+    mock_res._done = () => {
+      expect(mock_res._map.status).toBe(500)
+      done()
+    }
+
+    list = core.mapl(list, core.adapter)
+    core._handler(list, {}, mock_res)
+  })
 })

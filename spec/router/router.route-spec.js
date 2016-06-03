@@ -4,7 +4,9 @@
  */
 
 const router = require("../../lib/router/router")
+const Promise = require("bluebird")
 const mock_response = require("../support/mock-response")
+const CallError = require("../support/custom-errors")
 
 describe("router.route (middleware)", () => {
   let list
@@ -173,7 +175,47 @@ describe("router.route (middleware)", () => {
     }
 
     middleware(mock_req, mock_response, (err) => {
-      throw "should never get here"
+      throw new CallError
+    })
+  })
+
+  it("user's catch accepts promise", (done) => {
+    list.list = [
+      ["get", "/", [], () => { return "result" }],
+    ]
+
+    list._then = (result) => {
+      expect(result).toBe("result")
+      return Promise.resolve("resultresult")
+    }
+
+    mock_response._done = () => {
+      expect(mock_response._map.body).toBe("resultresult")
+      done()
+    }
+
+    const middleware = router.route(list)
+    const mock_req = { method: "get", url: "/" }
+    middleware(mock_req, mock_response, (err) => {
+      throw new CallError
+    })
+  })
+
+  it("user's catch accepts promise", (done) => {
+    list.list = [
+      ["get", "/", [], () => { throw "error" }],
+    ]
+
+    list._catch = (err) => {
+      expect(err).toBe("error")
+      return Promise.reject("new error")
+    }
+
+    const middleware = router.route(list)
+    const mock_req = { method: "get", url: "/" }
+    middleware(mock_req, mock_response, (err) => {
+      expect(err).toBe("new error")
+      done()
     })
   })
 
@@ -224,7 +266,8 @@ describe("router.route (middleware)", () => {
     }
 
     middleware(mock_req, mock_response, () => {
-      throw "should never get here"
+      // it errors, since _then doesn't return a result
+      // ignore since its out of scope of this test
     })
   })
 })

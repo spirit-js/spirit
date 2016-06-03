@@ -10,8 +10,6 @@ const mock_response = require("../support/mock-response")
 
 describe("control flow", () => {
 
-  it("promises in catch ok")
-
   // errors will bubble up if not handled by any of the catch's
   it("error propagation, errors bubble back up if unhandled", (done) => {
     const generic_mw = (req, res, next) => {
