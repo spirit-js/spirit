@@ -67,17 +67,6 @@ describe("control flow", () => {
     handler(mock_req, mock_response)
   })
 
-  it("warns when running uncompiled Route for core._handler", () => {
-    pending()
-
-    // this should error TODO
-    const site = define([
-      routes.get("/", [], () => { return "not ok" })
-    ])
-    const handler = leaf(site)
-    handler({}, {})
-  })
-
   it("route then does not propogate", (done) => {
     const generic_mw = (req, res, next) => {
       req.mw_count += 1
