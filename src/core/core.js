@@ -81,7 +81,10 @@ const mapl = function(list, pred) {
  */
 const _call = (fn, args) => {
   if (typeof fn === "function") {
-    return Promise.resolve(fn.apply(undefined, args))
+    return new Promise((resolve, reject) => {
+      resolve(fn.apply(undefined, args))
+    })
+    //return Promise.resolve(fn.apply(undefined, args))
   }
 
   return Promise.resolve(fn)
@@ -241,5 +244,6 @@ module.exports = {
   adapter,
   _call,
   mapl,
-  _handler
+  _handler,
+  _err_handler
 }
