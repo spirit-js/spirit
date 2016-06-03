@@ -201,9 +201,6 @@ const route = (list) => {
         }
 
         // call user's catch
-        // const p = new Promise((resolve, reject) => {
-        //   resolve(core._call(list._catch, [err, req]))
-        // })
         core._call(list._catch, [err, req])
           .then((result) => {
             if (typeof result === "undefined") {

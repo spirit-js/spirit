@@ -243,6 +243,37 @@ describe("router.route (middleware)", () => {
     })
   })
 
+  it("can recover from a user's catch", (done) => {
+    list.list = [
+      ["get", "/", [], () => { throw 123 }],
+    ]
+
+    list._catch = (err) => {
+      expect(err).toBe(123)
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve("recover")
+        }, 1)
+      })
+    }
+
+    const middleware = router.route(list)
+
+    mock_response._done = () => {
+      expect(mock_response._map.status).toBe(200)
+      expect(mock_response._map.body).toBe("recover")
+      done()
+    }
+
+    const mock_req = {
+      method: "get", url: "/"
+    }
+
+    middleware(mock_req, mock_response, () => {
+      throw new CallError
+    })
+  })
+
   // a route handler can return undefined to pass on the current route
   // similar to Express's next()
   it("continues without error trying to find a matching route when initial match returns undefined", (done) => {

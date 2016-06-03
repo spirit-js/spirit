@@ -156,18 +156,16 @@ const _handler = (list, req, res) => {
       }
 
       // call user's catch
-      const p = new Promise((resolve, reject) => {
-        resolve(_call(list._catch, [err, req]))
-      })
-              .then((result) => {
-                if (typeof result === "undefined") {
-                  return _err_handler(err, res)
-                }
-                response.respond(res, result)
-              })
-              .catch((new_err) => {
-                _err_handler(new_err, res)
-              })
+      _call(list._catch, [err, req])
+        .then((result) => {
+          if (typeof result === "undefined") {
+            return _err_handler(err, res)
+          }
+          response.respond(res, result)
+        })
+        .catch((new_err) => {
+          _err_handler(new_err, res)
+        })
     })
 }
 
