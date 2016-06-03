@@ -8,7 +8,11 @@ describe("_handler", () => {
   const mock_res = require("../support/mock-response")
 
   beforeEach(() => {
-    mock_res._map = {} // reset
+    mock_res._reset() // reset
+  })
+
+  afterEach(() => {
+    mock_res._reset()
   })
 
   it("sequentially calls each middleware", (done) => {
@@ -86,7 +90,36 @@ describe("_handler", () => {
       })
   })
 
-  it("handler calls user's catch when an error occurs")
+  it("calls user's catch when an error occurs", (done) => {
+    let list = [
+      (req, res, next) => { // basic example
+        next()
+      },
+      (req, res, next) => { // async
+        setTimeout(() => {
+          next("error")
+        })
+      },
+    ]
 
-  it("handler ignores user's then")
+    list = {
+      list: list
+    }
+
+    list._catch = (err) => {
+      expect(err).toBe("error")
+      throw "new error"
+    }
+
+    mock_res._done = () => {
+      expect(mock_res._map.status).toBe(500)
+      expect(mock_res._map.body).toBe("new error")
+      done()
+    }
+
+    list = core.mapl(list, core.adapter)
+    core._handler(list, {}, mock_res)
+  })
+
+  it("ignores user's then")
 })

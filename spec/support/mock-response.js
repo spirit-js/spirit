@@ -16,7 +16,15 @@ module.exports = {
     this._map.headers = h
   },
   write(n) {
-    this._map.body = n
+    if (typeof n === "undefined") {
+      return
+    }
+    
+    if (!this._map.body) {
+      this._map.body = ""
+    }
+
+    this._map.body = this._map.body + n
   },
   end() {
     this._done()
