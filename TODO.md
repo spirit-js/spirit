@@ -3,10 +3,6 @@
   * response.repond should understand short hands like: { status: 200, type: "json" }
   * extensible in a middleware like way of handling different responses
 
-
-- normalize List names so "test" is "/test" or "/test/"
-   * need normalization for resources()
-
 - even better performance (tracer)
   - can speed up literal string paths and skip regexp on them
     (does path-to-regexp) already do this?
