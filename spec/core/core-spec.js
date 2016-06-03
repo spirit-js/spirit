@@ -82,6 +82,16 @@ describe("core", () => {
     })
   })
 
+  it("throws when passing uncompiled Route for core._handler", () => {
+    const site = core.define([
+      ["/", [], () => { return "not ok" }]
+    ])
+    expect(() => {
+      core.leaf(site)
+    }).toThrowError(/core.adapter/)
+  })
+
+
   it("adapter, wraps express middleware as Promise", (done) => {
     const express_mw = (req, res, next) => {
       req.a = 123
@@ -143,5 +153,6 @@ describe("core", () => {
     expect(r._catch).toBe(undefined)
     expect(r._then).toBe(undefined)
     expect(r.name).toBe(undefined)
-})
+  })
+
 })

@@ -119,6 +119,10 @@ const _err_handler = (err, res) => {
  * @return {function}
  */
 const adapter = (fn) => {
+  if (typeof fn !== "function") {
+    throw new TypeError("core.adapter was called on a non-function; most likely you are trying to load a route without calling routes.route()")
+  }
+
   return function(req, res) {
     return new Promise((resolve, reject) => {
       function next(err) {
