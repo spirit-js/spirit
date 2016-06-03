@@ -2,9 +2,9 @@
 
 A _fast_ simple & modern web framework for node.js
 
-It emphasizes clear separation of code between HTTP and your own code. Routes are normal javascript functions. That means a route can be as simple as this:
+It emphasizes clear separation of code between HTTP and your own code. Routes are normal javascript functions. That means a route can be as simple as:
 ```js
-() => { return "Hello World" }
+function() { return "Hello World"} // or () => { return "Hello World" }
 ```
 
 It is mostly compatible with Express middlewares. It can be thought of as a mixture of Express and Compojure.
@@ -25,7 +25,7 @@ It is mostly compatible with Express middlewares. It can be thought of as a mixt
 
 5. It's fast. 
 
-#### example
+#### example in es6
 
 ```js
 const {leaf, routes, define, site_defaults} = require("leaf")
@@ -35,17 +35,14 @@ const hi = (str) => { // routes are just normal functions
 }
 
 const home = () => {  // routes can throw errors normally too
-  // we can of course handle errors here, but we can also
-  // throw and make it bubble up
-  throw "oops"
+  throw "oops"        // if the error can't be handled here, it's ok to throw
 }
 
 const app = define([
   routes.get("/home", [], home)
   routes.get("/:param", ["param"], hi)
 ]).catch((err) => {
-  // you can handle errors from the above routes here
-  return "recovered!"
+  return "recovered!" // can recover from route errors here
 })
 
 const site = define([site_defaults(), routes.route(app)])
