@@ -15,17 +15,19 @@ module.exports = {
     this._map.status = n
     this._map.headers = h
   },
+
   write(n) {
     if (typeof n === "undefined") {
       return
     }
-    
+
     if (!this._map.body) {
       this._map.body = ""
     }
 
     this._map.body = this._map.body + n
   },
+  
   end() {
     this._done()
   }
