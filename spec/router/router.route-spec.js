@@ -4,6 +4,7 @@
  */
 
 const router = require("../../lib/router/router")
+const mock_response = require("../support/mock-response")
 
 describe("router.route (middleware)", () => {
   let list
@@ -13,6 +14,8 @@ describe("router.route (middleware)", () => {
       name: "",
       list: []
     }
+
+    mock_response._reset()
   })
 
   it("calls a route's function when matched", (done) => {
@@ -101,15 +104,128 @@ describe("router.route (middleware)", () => {
   })
 
   // tests `_next` var
-  it("calls next() when no more routes or middlewares to try")
+  it("calls next() when no more routes or middlewares to try", (done) => {
+    // none of these handle the current request
+    list.list = [
+      (req, res, next) => { req.called += 1; next()},
+      (req, res, next) => { req.called += 1; next()},
+      ["get", "/", [], () => { return undefined }],
+      (req, res, next) => { req.called += 1; next()}
+    ]
+    const middleware = router.route(list)
+
+    const mock_req = {
+      method: "get", url: "/", called: 0
+    }
+
+    middleware(mock_req, {}, () => {
+      expect(mock_req.called).toBe(3)
+      done()
+    })
+  })
 
   // tests `_next` var
-  it("calls next(err) only when there was a result but user's then 'ate' the result and returned back nothing")
+  it("calls next(err) only when there was a result but user's then 'ate' the result and returned back nothing", (done) => {
+    list.list = [
+      (req, res, next) => { req.called += 1; next()},
+      (req, res, next) => { req.called += 1; next()},
+      ["get", "/", [], () => { return "hi" }],
+      (req, res, next) => { req.called += 1; next()}
+    ]
+    list._then = (result) => {
+      expect(result).toBe("hi")
+      // not returning anything is an error here
+      // since a route successfully returned something
+      // but this `then` doesn't return anything
+    }
+    const middleware = router.route(list)
+    const mock_req = {
+      method: "get", url: "/", called: 0
+    }
+    middleware(mock_req, {}, (err) => {
+      expect(err).toBe("Expected `then` to return a valid response")
+      done()
+    })
+  })
 
-  it("calls user's then when there is a result")
+  it("calls user's then when there is a result", (done) => {
+    list.list = [
+      (req, res, next) => { req.called += 1; next()},
+      ["get", "/123", [], () => { return "result123" }],
+      ["get", "/", [], () => { return "result" }],
+    ]
 
-  it("calls user's catch when there is an error")
+    list._then = (result) => {
+      expect(result).toBe("result")
+      return "resultresult"
+    }
 
-  it("continues without error trying to find a matching route when initial match returns undefined")
+    mock_response._done = () => {
+      expect(mock_req.called).toBe(1)
+      expect(mock_response._map.body).toBe("resultresult")
+      done()
+    }
+
+    const middleware = router.route(list)
+
+    const mock_req = {
+      method: "get", url: "/", called: 0
+    }
+
+    middleware(mock_req, mock_response, (err) => {
+      throw "should never get here"
+    })
+  })
+
+  it("calls user's catch when there is an error", (done) => {
+    list.list = [
+      (req, res, next) => { req.called += 1; next()},
+      ["get", "/", [], () => { throw 123 }],
+    ]
+
+    list._catch = (err) => {
+      expect(mock_req.called).toBe(1)
+      expect(err).toBe(123)
+      throw "new err"
+    }
+
+    const middleware = router.route(list)
+
+    const mock_req = {
+      method: "get", url: "/", called: 0
+    }
+
+    middleware(mock_req, mock_response, (err) => {
+      expect(err).toBe("new err")
+      done()
+    })
+  })
+
+  // a route handler can return undefined to pass on the current route
+  // similar to Express's next()
+  it("continues without error trying to find a matching route when initial match returns undefined", (done) => {
+    list.list = [
+      (req, res, next) => { req.called += 1; next()},
+      ["get", "/", [], () => { return undefined }],
+      ["get", "/", [], () => { return undefined }],
+      ["get", "/", [], () => { return 123 }],
+      ["get", "/", [], () => { return undefined }],
+    ]
+
+    list._then = (result) => {
+      expect(result).toBe(123)
+      done()
+    }
+
+    const middleware = router.route(list)
+
+    const mock_req = {
+      method: "get", url: "/", called: 0
+    }
+
+    middleware(mock_req, mock_response, () => {
+      throw "should never get here"
+    })
+  })
 })
 
