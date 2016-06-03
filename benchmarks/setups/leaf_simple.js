@@ -1,4 +1,7 @@
-const {leaf, define, routes} = require("../../index")
+const leaf = require("../../index")
+const define = leaf.define
+const routes = leaf.routes
+
 const http = require("http")
 
 const app = define([
@@ -9,4 +12,4 @@ const site = define([
   routes.route(app)
 ])
 
-http.createServer(leaf(site)).listen(3009)
+http.createServer(leaf.leaf(site)).listen(3009)
