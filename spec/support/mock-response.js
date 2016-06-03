@@ -27,7 +27,7 @@ module.exports = {
 
     this._map.body = this._map.body + n
   },
-  
+
   end() {
     this._done()
   }

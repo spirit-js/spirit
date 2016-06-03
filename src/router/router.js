@@ -1,5 +1,5 @@
 const routes = require("./routes")
-const response = require("./response")
+const response = require("../core/response")
 const core = require("../core/core")
 
 /**

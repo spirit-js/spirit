@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hnry/leaf.svg?branch=master)](https://travis-ci.org/hnry/leaf)
+
 # leaf
 
 A _fast_ simple & modern web framework for node.js
