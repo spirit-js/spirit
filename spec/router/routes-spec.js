@@ -57,11 +57,10 @@ describe("router.routes", () => {
       // as it'll be hard to type check promise values anyway
 
       // ok
-      routes.compile("get", "/", [], "ok")
-      routes.compile("get", "/", [], () => {})
-      routes.compile("get", "/", [], 0)
-      routes.compile("get", "/", [], [1, 2])
-      routes.compile("get", "/", [], {a: 1, b: 2})
+      const ok = ["ok", () => {}, 0, [1,2], {a: 1, b: 2}]
+      ok.forEach((v) => {
+        routes.compile.bind(null, ["get", "/", [], v])
+      })
       // not ok
       const invalid = ["", [], {}, null, undefined]
       invalid.forEach((inv) => {
