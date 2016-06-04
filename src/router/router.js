@@ -112,10 +112,12 @@ const list_to_routes = (list) => {
  */
 const not_found = (body) => {
   return (req, res, next) => {
-    return {
-      status: 404,
-      body: core._call(body)
-    }
+    core._call(body, [req]).then((r) => {
+      response.respond(res, {
+        status: 404,
+        body: r
+      })
+    })
   }
 }
 
@@ -220,5 +222,6 @@ module.exports = {
   _route_handler,
   list_to_routes,
   _destructure,
-  _lookup
+  _lookup,
+  not_found
 }
