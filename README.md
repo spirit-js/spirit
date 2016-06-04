@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/hnry/leaf.svg?branch=master)](https://travis-ci.org/hnry/leaf)
+[![Coverage Status](https://coveralls.io/repos/github/hnry/leaf/badge.svg?branch=master)](https://coveralls.io/github/hnry/leaf?branch=master)
 
 # leaf
 

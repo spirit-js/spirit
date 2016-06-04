@@ -19,4 +19,7 @@ test: build
 	@node_modules/.bin/jasmine ${file}
 	@echo "\n"
 
-.PHONY: default build test watch bench
+test-ci: build
+	@node_modules/.bin/istanbul cover -x "**/spec/**" node_modules/jasmine/bin/jasmine.js
+
+.PHONY: default build test watch bench test-cover
