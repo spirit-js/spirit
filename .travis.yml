@@ -4,3 +4,5 @@ node_js:
   - "6"
   - "5"
   - "4.4"
+script: "make test-ci"
+after_script: "npm install coveralls@2.11.9 && cat ./coverage/lcov.info | coveralls"
