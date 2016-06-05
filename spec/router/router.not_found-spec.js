@@ -22,7 +22,7 @@ describe("not_found", () => {
     })
   })
 
-  it("returns 404 with Promise resolved", (done) => {
+  it("returns 404 with Promise", (done) => {
     const nf = router.not_found(new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(123)

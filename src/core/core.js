@@ -91,20 +91,15 @@ const _call = (fn, args) => {
 }
 
 /**
- * an error handler for _handler
+ * writes a http response map to a node HTTP response object
  *
- * @param {*} err - a error as passed by a middleware
- * @param {http.Response} res - node http Response object
+ * @param {http.Response} res - node http response object
+ * @param {response-map} resp - a leaf response map
  */
-const _err_handler = (err, res) => {
-  res.writeHead(500)
-
-  if (err) {
-    // TODO
-    res.write(err.toString())
-    res.write(err.stack)
-  }
-
+const send = (res, resp) => {
+  // TODO handle http2 & stream (piping)
+  res.writeHead(resp.status, resp.headers)
+  res.write(resp.body)
   res.end()
 }
 
