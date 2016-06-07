@@ -7,7 +7,8 @@
 const is_response = (resp) => {
   if (typeof resp === "object"
       && typeof resp.status === "number"
-      && typeof resp.headers === "object") {
+      && typeof resp.headers === "object"
+      && !Array.isArray(resp.headers)) {
     return true
   }
   return false
@@ -27,7 +28,12 @@ const is_response = (resp) => {
  * @param {string} url - url to redirect to
  * @return {response-map}
  */
-const redirect = (status=302, url) => {
+const redirect = (status, url) => {
+  if (!url) {
+    url = status
+    status = 302
+  }
+
   if (typeof status !== "number" || typeof url !== "string") {
     throw TypeError("invalid arguments to `redirect`, need (number, string) or (string). number is a optional argument for a valid redirect status code, string is required for the URL to redirect")
   }
