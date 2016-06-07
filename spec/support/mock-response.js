@@ -1,35 +1,35 @@
 /*
- * Helper for setting up a mock response object
+ * Helper for setting up a mock http Response object
  */
 
-module.exports = {
-  _map: {}, // this gets populated when response is written
-  _done: () => {}, // this is called whenever _map is populated
+const stream = require("stream")
 
-  _reset() { // resets the above
-    this._map = {}
-    this._done = () => {}
-  },
-
-  writeHead(n, h) {
-    this._map.status = n
-    this._map.headers = h
-  },
-
-  write(n) {
-    if (typeof n === "undefined") {
-      return
-    }
-
-    if (!this._map.body) {
-      this._map.body = ""
-    }
-
-    this._map.body = this._map.body + n
-  },
-
-  end() {
-    this._done()
+module.exports = (done) => {
+  const result = {
+    status: undefined, headers: undefined, body: undefined
   }
+
+  const ws = new stream.Writable({
+    write(chunk, encoding, next) {
+      const c = chunk.toString()
+      if (typeof result.body === "undefined") {
+        result.body = ""
+      }
+      result.body = result.body + c
+      next()
+    }
+  })
+
+  ws.writeHead = (status, headers) => {
+    result.status = status
+    result.headers = headers
+  }
+
+  ws.on("finish", () => {
+    ws._result = result
+    if (done) done(result)
+  })
+
+  return ws
 }
 

@@ -31,8 +31,8 @@ const register = (mw) => {
 const render = (resp) => {
   let result
   response_middlewares.some((fn) => {
-    if (fn(resp)) {
-      result = resp
+    result = fn(resp)
+    if (typeof result !== "undefined") {
       return true
     }
   })
@@ -76,7 +76,8 @@ const render_string = (resp) => {
 const render_number = (resp) => {
   const {status, headers, body} = resp
   if (typeof body === "number") {
-    return render_string(status, headers, body.toString())
+    resp.body = resp.body.toString()
+    return render_string(resp)
   }
 }
 

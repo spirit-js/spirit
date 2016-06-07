@@ -16,8 +16,6 @@ describe("router.route (middleware)", () => {
       name: "",
       list: []
     }
-
-    mock_response._reset()
   })
 
   it("calls a route's function when matched", (done) => {
@@ -162,11 +160,11 @@ describe("router.route (middleware)", () => {
       return "resultresult"
     }
 
-    mock_response._done = () => {
+    const res = mock_response((result) => {
       expect(mock_req.called).toBe(1)
-      expect(mock_response._map.body).toBe("resultresult")
+      expect(result.body).toBe("resultresult")
       done()
-    }
+    })
 
     const middleware = router.route(list)
 
@@ -174,7 +172,7 @@ describe("router.route (middleware)", () => {
       method: "get", url: "/", called: 0
     }
 
-    middleware(mock_req, mock_response, (err) => {
+    middleware(mock_req, res, (err) => {
       throw new CallError
     })
   })
@@ -189,14 +187,14 @@ describe("router.route (middleware)", () => {
       return Promise.resolve("resultresult")
     }
 
-    mock_response._done = () => {
-      expect(mock_response._map.body).toBe("resultresult")
+    const res = mock_response((result) => {
+      expect(result.body).toBe("resultresult")
       done()
-    }
+    })
 
     const middleware = router.route(list)
     const mock_req = { method: "get", url: "/" }
-    middleware(mock_req, mock_response, (err) => {
+    middleware(mock_req, res, (err) => {
       throw new CallError
     })
   })
@@ -213,7 +211,7 @@ describe("router.route (middleware)", () => {
 
     const middleware = router.route(list)
     const mock_req = { method: "get", url: "/" }
-    middleware(mock_req, mock_response, (err) => {
+    middleware(mock_req, mock_response(), (err) => {
       expect(err).toBe("new error")
       done()
     })
@@ -237,7 +235,7 @@ describe("router.route (middleware)", () => {
       method: "get", url: "/", called: 0
     }
 
-    middleware(mock_req, mock_response, (err) => {
+    middleware(mock_req, mock_response(), (err) => {
       expect(err).toBe("new err")
       done()
     })
@@ -259,17 +257,17 @@ describe("router.route (middleware)", () => {
 
     const middleware = router.route(list)
 
-    mock_response._done = () => {
-      expect(mock_response._map.status).toBe(200)
-      expect(mock_response._map.body).toBe("recover")
+    const res = mock_response((result) => {
+      expect(result.status).toBe(200)
+      expect(result.body).toBe("recover")
       done()
-    }
+    })
 
     const mock_req = {
       method: "get", url: "/"
     }
 
-    middleware(mock_req, mock_response, () => {
+    middleware(mock_req, res, () => {
       throw new CallError
     })
   })
@@ -296,7 +294,7 @@ describe("router.route (middleware)", () => {
       method: "get", url: "/", called: 0
     }
 
-    middleware(mock_req, mock_response, () => {
+    middleware(mock_req, mock_response(), () => {
       // it errors, since _then doesn't return a result
       // ignore since its out of scope of this test
     })

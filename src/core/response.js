@@ -58,6 +58,9 @@ const json = (resp) => {
  * @return {response-map}
  */
 const content_type = (resp, type) => {
+  if (typeof type !== "string") {
+    throw new TypeError("content type must be a string")
+  }
   resp.headers["Content-Type"] = type
   return resp
 }
