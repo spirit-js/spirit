@@ -76,13 +76,14 @@ const render_string = (resp) => {
 const render_number = (resp) => {
   const {status, headers, body} = resp
   if (typeof body === "number") {
-    return type_string(status, headers, body.toString())
+    return render_string(status, headers, body.toString())
   }
 }
 
 const render_file = (resp) => {
   
 }
+
 // init, register default response middleware
 register(render_string)
 register(render_number)

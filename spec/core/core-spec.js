@@ -155,4 +155,11 @@ describe("core", () => {
     expect(r.name).toBe(undefined)
   })
 
+  describe("_err_handler", () => {
+    it("")
+  })
+
+  describe("send", () => {
+    it("")
+  })
 })
