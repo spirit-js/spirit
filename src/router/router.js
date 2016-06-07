@@ -1,6 +1,7 @@
 const routes = require("./routes")
-const response = require("../core/response")
+const response = require("./response")
 const core = require("../core/core")
+core.response = require("../core/response")
 
 /**
  * sees if there's a match with route `compiled_route` based on
@@ -113,10 +114,7 @@ const list_to_routes = (list) => {
 const not_found = (body) => {
   return (req, res, next) => {
     core._call(body, [req]).then((r) => {
-      response.respond(res, {
-        status: 404,
-        body: r
-      })
+      core.send(res, core.response.not_found(r))
     })
   }
 }
@@ -189,7 +187,7 @@ const route = (list) => {
         return core._call(list._then, [result, req])
       }).then((result) => {
         if (typeof result !== "undefined") {
-          response.respond(res, result)
+          response.response(res, result)
         } else {
           if (_next) {
             next()
@@ -208,7 +206,7 @@ const route = (list) => {
             if (typeof result === "undefined") {
               return next(err)
             }
-            response.respond(res, result)
+            response.response(res, result)
           })
           .catch((new_err) => {
             next(new_err)

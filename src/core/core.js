@@ -97,9 +97,15 @@ const _call = (fn, args) => {
  * @param {response-map} resp - a leaf response map
  */
 const send = (res, resp) => {
-  // TODO handle http2 & stream (piping)
+  // TODO handle http2
   res.writeHead(resp.status, resp.headers)
-  res.write(resp.body)
+  if (typeof resp.body !== "undefined") {
+    if (resp.body && resp.body.pipe) {
+      resp.body.pipe(res)
+    } else {
+      res.write(resp.body)
+    }
+  }
   res.end()
 }
 
@@ -133,6 +139,23 @@ const adapter = (fn) => {
 }
 
 /**
+ * returns a nice error message
+ *
+ * @param {*} err - an error
+ * @return {string}
+ */
+const _err_handler = (err) => {
+  // TODO
+  let msg
+  if (err && err.toString) {
+    msg = err.toString()
+  } else {
+    msg = err
+  }
+  return response.internal_err(msg)
+}
+
+/**
  * http incoming request handler
  *
  * @param {List} list - a result of calling define()
@@ -151,19 +174,22 @@ const _handler = (list, req, res) => {
       throw(err)
     }).catch((err) => {
       if (!list._catch) {
-        return _err_handler(err, res)
+        return send(res, _err_handler(err))
       }
 
       // call user's catch
       _call(list._catch, [err, req])
         .then((result) => {
           if (typeof result === "undefined") {
-            return _err_handler(err, res)
+            return send(res, _err_handler(err))
           }
-          response.respond(res, result)
+
+          // TODO, this needs a guard against router responses
+          // or just call the router's response
+          send(res, response.response(result))
         })
         .catch((new_err) => {
-          _err_handler(new_err, res)
+          send(res, _err_handler(new_err))
         })
     })
 }
@@ -242,5 +268,6 @@ module.exports = {
   _call,
   mapl,
   _handler,
-  _err_handler
+  _err_handler,
+  send
 }

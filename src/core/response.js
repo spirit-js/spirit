@@ -90,4 +90,12 @@ const response = (body) => {
   }
 }
 
-
+module.exports = {
+  response,
+  internal_err,
+  not_found,
+  content_type,
+  json,
+  redirect,
+  is_response
+}

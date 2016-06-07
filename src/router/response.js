@@ -1,3 +1,7 @@
+const core = require("../core/core")
+core.response = require("../core/response")
+
+
 const response_middlewares = []
 
 /**
@@ -19,64 +23,77 @@ const register = (mw) => {
 }
 
 /**
- * detects type of a unknown value against all possibles `types`
- * returns a string representing the type that matches
+ * runs `resp` through response middlewares
  *
- * or undefined if no known match
- *
- * @param {object} types - types to check against
- * @param {number|undefined} status - a http status code
- * @param {object} headers - http headers
- * @param {*} body - a value of unknown type to be checked
-* @return {string|undefined}
+ * @param {response-map} resp - a leaf response map
+ * @return {response-map}
  */
-const __type__ = (types, status, headers, body) => {
-  let r
-  Object.keys(types).some((typ) => {
-    if (types[typ].check(status, headers, body)) {
-      r = typ
+const render = (resp) => {
+  let result
+  response_middlewares.some((fn) => {
+    if (fn(resp)) {
+      result = resp
       return true
     }
   })
-  return r
-}
 
-/**
- * Takes a value of a route's body function
- * and returns a full http response map
- *
- * @param {*} body - a http response map or a value as passed in by a middleware or route function
- * @return {http-response-map}
- */
-const render = (body) => {
-  
+  if (!core.response.is_response(result)) {
+    throw new Error("unable to render a response (no response middleware knew how to handle it): " + resp)
+  }
+
+  return result
 }
 
 /**
  * a intermediate function that tries to convert `body` into
- * a http response map first before calling `send()`
+ * a appropriate response map first before calling `send()`
  *
  * @param {http.Response} res - node http Response object
  * @param {*} body - the result of a route's body function or from a middleware
  */
 const response = (res, body) => {
-  if (typeof body === "undefined" || body === null) {
-    throw new TypeError("called response with a undefined or null value")
+  let resp = body
+  if (!core.response.is_response(body)) {
+    resp = core.response.response(body)
   }
 
-  send(res, render(body))
+  core.send(res, render(resp))
 }
 
+const render_string = (resp) => {
+  const {status, headers, body} = resp
+  if (typeof body === "string") {
+    return {
+      status,
+      headers: {
+        "Content-Type": "text/html; charset=utf-8"
+      },
+      body
+    }
+  }
+}
+
+const render_number = (resp) => {
+  const {status, headers, body} = resp
+  if (typeof body === "number") {
+    return type_string(status, headers, body.toString())
+  }
+}
+
+const render_file = (resp) => {
+  
+}
 // init, register default response middleware
-const response_types = require("./response_types")
-register(response_types.type_string)
-register(response_types.type_number)
-register(response_types.type_file)
+register(render_string)
+register(render_number)
+register(render_file)
 
 module.exports = {
   response,
   render,
+  middlewares: {
+    render_file, render_string, render_number
+  },
   register,
-  response_middlewares,
-  __type__
+  response_middlewares
 }
