@@ -64,7 +64,7 @@ describe("control flow", () => {
       catch_count: 0
     }
 
-    handler(mock_req, mock_response)
+    handler(mock_req, mock_response())
   })
 
   it("route then does not propogate", (done) => {
@@ -109,7 +109,7 @@ describe("control flow", () => {
       mw_count: 0
     }
     const handler = leaf(site)
-    handler(mock_req, mock_response)
+    handler(mock_req, mock_response())
   })
 
   it("non-route List then never gets called", (done) => {
@@ -135,7 +135,7 @@ describe("control flow", () => {
       mw_count: 0
     }
     const handler = leaf(site)
-    handler(mock_req, mock_response)
+    handler(mock_req, mock_response())
   })
 
 })

@@ -114,7 +114,7 @@ const list_to_routes = (list) => {
 const not_found = (body) => {
   return (req, res, next) => {
     core._call(body, [req]).then((r) => {
-      core.send(res, core.response.not_found(r))
+      response.response(res, core.response.not_found(r))
     })
   }
 }

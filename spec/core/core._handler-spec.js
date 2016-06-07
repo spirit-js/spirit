@@ -3,17 +3,9 @@
  */
 
 const core = require("../../lib/core/core")
-const mock_res = require("../support/mock-response")
+const mock_response = require("../support/mock-response")
 
 describe("_handler", () => {
-
-  beforeEach(() => {
-    mock_res._reset()
-  })
-
-  afterEach(() => {
-    mock_res._reset()
-  })
 
   it("sequentially calls each middleware", (done) => {
     const middlewares = [
@@ -42,15 +34,18 @@ describe("_handler", () => {
     ]
 
     const list = core.mapl({list: middlewares}, core.adapter)
-    core._handler(list, [], mock_res)
+    core._handler(list, [], mock_response())
   })
 
 
   it("errors when nothing left to handle request", (done) => {
-    const middlewares = [ core.adapter((req, res, next) => { next() }) ]
-    core._handler({ list: middlewares }, undefined, mock_res)
+    const middlewares = [
+      core.adapter((req, res, next) => { next() })
+    ]
+    const res = mock_response()
+    core._handler({ list: middlewares }, undefined, res)
       .then(() => {
-        expect(mock_res._map.status).toBe(500)
+        expect(res._result.status).toBe(500)
         done()
       })
   })
@@ -64,7 +59,7 @@ describe("_handler", () => {
         throw("should not run")
       })
     ]
-    core._handler({ list: middlewares }, undefined, mock_res)
+    core._handler({ list: middlewares }, undefined, mock_response())
   })
 
   it("handles middleware errors", (done) => {
@@ -80,13 +75,18 @@ describe("_handler", () => {
       })
     ]
 
-    core._handler({ list: middlewares }, undefined, mock_res)
+    let called = false
+
+    const res = mock_response((result) => {
+      expect(res._result.status).toBe(500)
+      expect(called).toBe(true)
+      done()
+    })
+
+    core._handler({ list: middlewares }, undefined, res)
       .then((v) => {
         expect(v).toBe(undefined)
-        // core._handler already catches the error and calls
-        // _err_handler on response object
-        expect(mock_res._map.status).toBe(500)
-        done()
+        called = true
       })
   })
 
@@ -104,14 +104,14 @@ describe("_handler", () => {
       return "recover"
     }
 
-    mock_res._done = () => {
-      expect(mock_res._map.status).toBe(200)
-      expect(mock_res._map.body).toBe("recover")
+    const res = mock_response((result) => {
+      expect(result.status).toBe(200)
+      expect(result.body).toBe("recover")
       done()
-    }
+    })
 
     list = core.mapl(list, core.adapter)
-    core._handler(list, {}, mock_res)
+    core._handler(list, {}, res)
   })
 
   it("accepts a Promise from a user's catch", (done) => {
@@ -132,14 +132,14 @@ describe("_handler", () => {
       })
     }
 
-    mock_res._done = () => {
-      expect(mock_res._map.status).toBe(500)
-      expect(mock_res._map.body).toBe("oops")
+    const res = mock_response((result) => {
+      expect(result.status).toBe(500)
+      expect(result.body).toBe("oops")
       done()
-    }
+    })
 
     list = core.mapl(list, core.adapter)
-    core._handler(list, {}, mock_res)
+    core._handler(list, {}, res)
   })
 
   it("calls user's catch when an error occurs", (done) => {
@@ -161,14 +161,14 @@ describe("_handler", () => {
       throw "new error"
     }
 
-    mock_res._done = () => {
-      expect(mock_res._map.status).toBe(500)
-      expect(mock_res._map.body).toBe("new error")
+    const res = mock_response((result) => {
+      expect(result.status).toBe(500)
+      expect(result.body).toBe("new error")
       done()
-    }
+    })
 
     list = core.mapl(list, core.adapter)
-    core._handler(list, {}, mock_res)
+    core._handler(list, {}, res)
   })
 
   it("ignores user's then", (done) => {
@@ -191,12 +191,12 @@ describe("_handler", () => {
       throw "should never be called"
     }
 
-    mock_res._done = () => {
-      expect(mock_res._map.status).toBe(500)
+    const res = mock_response((result) => {
+      expect(result.status).toBe(500)
       done()
-    }
+    })
 
     list = core.mapl(list, core.adapter)
-    core._handler(list, {}, mock_res)
+    core._handler(list, {}, res)
   })
 })

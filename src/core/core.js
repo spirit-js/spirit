@@ -93,6 +93,10 @@ const _call = (fn, args) => {
 /**
  * writes a http response map to a node HTTP response object
  *
+ * It only knows how to write string/buffer and of course stream
+ *
+ * NOTE: There is no guards or type checking
+ *
  * @param {http.Response} res - node http response object
  * @param {response-map} resp - a leaf response map
  */
@@ -104,9 +108,11 @@ const send = (res, resp) => {
       resp.body.pipe(res)
     } else {
       res.write(resp.body)
+      res.end()
     }
+  } else {
+    res.end()
   }
-  res.end()
 }
 
 /**

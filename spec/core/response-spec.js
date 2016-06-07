@@ -62,22 +62,74 @@ describe("core.response", () => {
   })
 
   describe("json", () => {
-    it("")
+    it("sets a response map to json content type", () => {
+      // doesn't check if valid response map
+      const t = { headers: {} }
+      let result = response.json(t)
+      expect(result).toEqual({ headers: {
+        "Content-Type": "application/json"
+      }})
+
+      result.headers["Content-Type"] = "123"
+      // overrides
+      result = response.json(t)
+      expect(result).toEqual({ headers: {
+        "Content-Type": "application/json"
+      }})
+    })
   })
 
   describe("content_type", () => {
-    it("")
+    it("sets a response map to content type", () => {
+      // doesn't check if valid response map
+      const t = { headers: {} }
+      let result = response.content_type(t, "123")
+      expect(result).toEqual({ headers: {
+        "Content-Type": "123"
+      }})
+
+      // overrides
+      result = response.content_type(result, "abc")
+      expect(result).toEqual({ headers: {
+        "Content-Type": "abc"
+      }})
+    })
+
+    it("throws if `type` argument is not a string", () => {
+      const t = { headers: {} }
+      expect(() => {
+        response.content_type(t, 123)
+      }).toThrowError(/must be a string/)
+    })
   })
 
   describe("not_found", () => {
-    it("")
+    it("returns a response map with 404 status", () => {
+      expect(response.not_found("hi")).toEqual({
+        status: 404,
+        headers: {},
+        body: "hi"
+      })
+    })
   })
 
   describe("internal_err", () => {
-    it("")
+    it("returns a response map with status 500", () => {
+      expect(response.internal_err("test 123")).toEqual({
+        status: 500,
+        headers: {},
+        body: "test 123"
+      })
+    })
   })
 
   describe("response", () => {
-    it("")
+    it("returns a response map with status 200", () => {
+      expect(response.response("123 abc")).toEqual({
+        status: 200,
+        headers: {},
+        body: "123 abc"
+      })
+    })
   })
 })
