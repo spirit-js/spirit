@@ -114,7 +114,7 @@ const list_to_routes = (list) => {
 const not_found = (body) => {
   return (req, res, next) => {
     core._call(body, [req]).then((r) => {
-      response.response(res, core.response.not_found(r))
+      response.response(req, res, core.response.not_found(r))
     })
   }
 }
@@ -187,7 +187,7 @@ const route = (list) => {
         return core._call(list._then, [result, req])
       }).then((result) => {
         if (typeof result !== "undefined") {
-          response.response(res, result)
+          response.response(req, res, result)
         } else {
           if (_next) {
             next()
@@ -206,7 +206,7 @@ const route = (list) => {
             if (typeof result === "undefined") {
               return next(err)
             }
-            response.response(res, result)
+            response.response(req, res, result)
           })
           .catch((new_err) => {
             next(new_err)

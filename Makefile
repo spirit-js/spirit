@@ -6,6 +6,9 @@ default: build
 bench: build
 	@go run benchmarks/runner.go
 
+clean:
+	@rm -r lib/
+
 build:
 	@echo "Building src..."
 	@node_modules/.bin/babel src -d lib
@@ -22,4 +25,4 @@ test: build
 test-ci: build
 	@node_modules/.bin/istanbul cover -x "**/spec/**" node_modules/jasmine/bin/jasmine.js
 
-.PHONY: default build test watch bench test-cover
+.PHONY: default build test watch bench test-ci clean
