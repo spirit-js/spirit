@@ -61,24 +61,6 @@ describe("core.response", () => {
     })
   })
 
-  describe("json", () => {
-    it("sets a response map to json content type", () => {
-      // doesn't check if valid response map
-      const t = { headers: {} }
-      let result = response.json(t)
-      expect(result).toEqual({ headers: {
-        "Content-Type": "application/json"
-      }})
-
-      result.headers["Content-Type"] = "123"
-      // overrides
-      result = response.json(t)
-      expect(result).toEqual({ headers: {
-        "Content-Type": "application/json"
-      }})
-    })
-  })
-
   describe("content_type", () => {
     it("sets a response map to content type", () => {
       // doesn't check if valid response map

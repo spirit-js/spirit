@@ -12,7 +12,7 @@
  */
 
 const core = require("../core/core")
-core.response = require("../core/response")
+const response_map = require("./response-map")
 
 // response middlewares
 const middlewares = {
@@ -91,28 +91,22 @@ const render = (req, resp, middlewares) => {
  */
 const response = (req, res, body) => {
   let rmap = body
-  if (!core.response.is_response(body)) {
-    rmap = core.response.response(body)
+  if (!response_map.is_response_map(body)) {
+    rmap = response_map.create(body)
   }
 
   core.send(res, render(req, rmap, middlewares.list()))
 }
 
 const render_string = (req, resp) => {
-  const {status, headers, body} = resp
+  const {body} = resp
   if (typeof body === "string") {
-    return {
-      status,
-      headers: {
-        "Content-Type": "text/html; charset=utf-8"
-      },
-      body
-    }
+    return resp.safeType("html")
   }
 }
 
 const render_number = (req, resp) => {
-  const {status, headers, body} = resp
+  const {body} = resp
   if (typeof body === "number") {
     resp.body = resp.body.toString()
     return render_string(req, resp)
@@ -120,7 +114,7 @@ const render_number = (req, resp) => {
 }
 
 const render_buffer = (req, resp) => {
-  const {status, headers, body} = resp
+  const {body} = resp
   if (Buffer.isBuffer(body)) {
     return resp
   }
