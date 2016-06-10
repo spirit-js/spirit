@@ -1,4 +1,5 @@
-const response = require("../../lib/router/response")
+const rewire = require("rewire")
+const response = rewire("../../lib/router/response")
 
 describe("router.response", () => {
 
@@ -87,7 +88,30 @@ describe("router.response", () => {
   })
 
   describe("response", () => {
-    it("")
+    const render = response.__get__("render")
+    const mock_core = require("../../lib/core/core")
+    response.__set__("core", mock_core)
+
+    afterEach(() => {
+      response.__set__("render", render)
+    })
+
+    it("calls render then core.send", () => {
+      let called = ""
+      response.__set__("render", (req, rmap, middlewares) => {
+        expect(req).toBe("req")
+        expect(rmap).toEqual({ status: 200, headers: {}, body: "body" })
+        expect(Array.isArray(middlewares)).toBe(true)
+        called = called + "a"
+      })
+
+      mock_core.send = () => {
+        called = called + "b"
+      }
+
+      response.response("req", "res", "body")
+      expect(called).toBe("ab")
+    })
   })
 
   describe("render_string", () => {

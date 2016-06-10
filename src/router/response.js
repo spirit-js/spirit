@@ -119,20 +119,23 @@ const render_number = (req, resp) => {
   }
 }
 
-const render_file = (resp) => {
-  
+const render_buffer = (req, resp) => {
+  const {status, headers, body} = resp
+  if (Buffer.isBuffer(body)) {
+    return resp
+  }
 }
 
 // init, register default response middleware
 middlewares.register(render_string)
 middlewares.register(render_number)
-middlewares.register(render_file)
+middlewares.register(render_buffer)
 
 module.exports = {
   response,
   render,
   renderables: {
-    file: render_file,
+    buffer: render_buffer,
     string: render_string,
     number: render_number
   },
