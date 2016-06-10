@@ -75,7 +75,7 @@ const render = (req, resp, middlewares) => {
     }
   })
 
-  if (!core.response.is_response(result)) {
+  if (!response_map.is_response_map(result)) {
     throw new Error("unable to render a response (no response middleware knew how to handle it): " + resp)
   }
 
