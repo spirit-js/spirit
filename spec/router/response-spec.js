@@ -91,17 +91,17 @@ describe("router.response", () => {
 
   describe("response", () => {
     const render = response.__get__("render")
-    const core = require("../../lib/core/core")
-    const core_send = core.send
-    response.__set__("core", core)
+    const core_response = require("../../lib/core/response")
+    const _send = core_response.send
+    response.__set__("core_response", core_response)
 
     beforeEach(() => {
-      core.send = () => {}
+      core_response.send = () => {}
     })
 
     afterEach(() => {
       response.__set__("render", render)
-      core.send = core_send
+      core_response.send = _send
     })
 
     it("calls render then core.send", () => {
@@ -112,7 +112,7 @@ describe("router.response", () => {
         called = called + "a"
       })
 
-      core.send = () => {
+      core_response.send = () => {
         called = called + "b"
       }
 
