@@ -1,5 +1,5 @@
 /**
- * checks if `resp` is a valid leaf response map
+ * checks if `resp` is a valid response map
  *
  * @param {*} resp - object to check
  * @return {boolean}
@@ -38,16 +38,6 @@ const redirect = (status, url) => {
     throw TypeError("invalid arguments to `redirect`, need (number, string) or (string). number is a optional argument for a valid redirect status code, string is required for the URL to redirect")
   }
   return { status, headers: { "Location": url }, body: "" }
-}
-
-/**
- * Sets the content type of a response map to json
- *
- * @param {response-map} resp - leaf response map
- * @return {response-map}
- */
-const json = (resp) => {
-  return content_type(resp, "application/json")
 }
 
 /**
@@ -104,7 +94,6 @@ module.exports = {
   internal_err,
   not_found,
   content_type,
-  json,
   redirect,
   is_response
 }

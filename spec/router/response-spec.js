@@ -89,28 +89,59 @@ describe("router.response", () => {
 
   describe("response", () => {
     const render = response.__get__("render")
-    const mock_core = require("../../lib/core/core")
-    response.__set__("core", mock_core)
+    const core = require("../../lib/core/core")
+    const core_send = core.send
+    response.__set__("core", core)
+
+    beforeEach(() => {
+      core.send = () => {}
+    })
 
     afterEach(() => {
       response.__set__("render", render)
+      core.send = core_send
     })
 
     it("calls render then core.send", () => {
       let called = ""
       response.__set__("render", (req, rmap, middlewares) => {
         expect(req).toBe("req")
-        expect(rmap).toEqual({ status: 200, headers: {}, body: "body" })
         expect(Array.isArray(middlewares)).toBe(true)
         called = called + "a"
       })
 
-      mock_core.send = () => {
+      core.send = () => {
         called = called + "b"
       }
 
       response.response("req", "res", "body")
       expect(called).toBe("ab")
+    })
+
+    it("if value, converts to response maps", () => {
+      response.__set__("render", (req, rmap, middlewares) => {
+        expect(rmap.status).toBe(200)
+        expect(rmap.body).toBe(123)
+      })
+      response.response("req", "res", 123)
+    })
+
+    it("if response map already, just passes it to render", () => {
+      response.__set__("render", (req, rmap, middlewares) => {
+        expect(rmap).toEqual({
+          status: 123,
+          headers: {
+            a: 1
+          },
+          body: undefined
+        })
+      })
+      response.response("req", "res", {
+        status: 123,
+        headers: {
+          "a": 1
+        }
+      })
     })
   })
 
