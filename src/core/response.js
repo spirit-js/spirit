@@ -1,5 +1,5 @@
 /**
- * checks if `resp` is a valid response map
+ * checks if `resp` is a valid response
  *
  * @param {*} resp - object to check
  * @return {boolean}
@@ -90,7 +90,6 @@ const response = (body) => {
 }
 
 module.exports = {
-  response,
   internal_err,
   not_found,
   content_type,

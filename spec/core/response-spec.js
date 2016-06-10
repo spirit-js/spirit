@@ -105,13 +105,4 @@ describe("core.response", () => {
     })
   })
 
-  describe("response", () => {
-    it("returns a response map with status 200", () => {
-      expect(response.response("123 abc")).toEqual({
-        status: 200,
-        headers: {},
-        body: "123 abc"
-      })
-    })
-  })
 })

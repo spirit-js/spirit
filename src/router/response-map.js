@@ -6,25 +6,26 @@ const core_response = require("../core/response")
 
 const ContentTypes = {
   "json": "application/json",
-  "html": "text/html; charset=utf-8",
-  "text": "text/plain"
+  "html": "text/html; charset=utf-8"
 }
 
-const ResponseMap = {
-  status: 200,
-  headers: {},
-  body: "",
+class ResponseMap {
+  constructor(body) {
+    this.status = 200
+    this.headers = {}
+    this.body = body || ""
+  }
 
   statusCode(n) {
     this.status = parseInt(n)
     return this
-  },
+  }
 
   type(content_type) {
     const t = ContentTypes[content_type]
     this.headers["Content-Type"] = t
     return this
-  },
+  }
 
   safeType(content_type) {
     if (!this.headers[content_type]) {
@@ -35,11 +36,14 @@ const ResponseMap = {
 }
 
 const is_response_map = (obj) => {
-  return obj.isPrototypeOf(ResponseMap)
+  if (typeof obj === "object") {
+    return obj instanceof ResponseMap
+  }
+  return false
 }
 
 const create = (body) => {
-  const rmap = Object.create(ResponseMap)
+  const rmap = new ResponseMap(body)
   if (core_response.is_response(body)) {
     rmap.status = body.status
     rmap.headers = body.headers

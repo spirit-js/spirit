@@ -1,4 +1,5 @@
 const response = require("./response.js")
+const router_response = require("../router/response")
 const Promise = require("bluebird")
 Promise.onPossiblyUnhandledRejection(function(e, promise) {
   throw e;
@@ -190,9 +191,11 @@ const _handler = (list, req, res) => {
             return send(res, _err_handler(err))
           }
 
-          // TODO, this needs a guard against router responses
-          // or just call the router's response
-          send(res, response.response(result))
+          // FIXME
+          // ideally shouldn't use router code in core
+          // need clearer separation
+          // (define may need to be reworked)
+          router_response.response(req, res, result)
         })
         .catch((new_err) => {
           send(res, _err_handler(new_err))

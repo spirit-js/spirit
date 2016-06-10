@@ -1,6 +1,8 @@
 const rewire = require("rewire")
 const response = rewire("../../lib/router/response")
 
+const response_map = require("../../lib/router/response-map")
+
 describe("router.response", () => {
 
   describe("register", () => {
@@ -58,16 +60,16 @@ describe("router.response", () => {
         (req, res) => {
           expect(res).toEqual({ blah: 1, called: 1})
           // have to render a valid response map
-          return { status: 200, headers: {}, body: "hi!" }
+          return response_map.create("hi!")
         }
       ]
 
       const result = response.render({}, rmap, middlewares)
-      expect(result).toEqual({
+      expect(result).toEqual(jasmine.objectContaining({
         status: 200,
         headers: {},
         body: "hi!"
-      })
+      }))
     })
 
     it("throws if invalid response from response middlewares or no middleware can handle the `resp`", () => {
@@ -128,13 +130,13 @@ describe("router.response", () => {
 
     it("if response map already, just passes it to render", () => {
       response.__set__("render", (req, rmap, middlewares) => {
-        expect(rmap).toEqual({
+        expect(rmap).toEqual(jasmine.objectContaining({
           status: 123,
           headers: {
             a: 1
           },
           body: undefined
-        })
+        }))
       })
       response.response("req", "res", {
         status: 123,

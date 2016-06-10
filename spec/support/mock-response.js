@@ -5,9 +5,7 @@
 const stream = require("stream")
 
 module.exports = (done) => {
-  const result = {
-    status: undefined, headers: undefined, body: undefined
-  }
+  const result = {}
 
   const ws = new stream.Writable({
     write(chunk, encoding, next) {
