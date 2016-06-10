@@ -92,31 +92,6 @@ const _call = (fn, args) => {
 }
 
 /**
- * writes a http response map to a node HTTP response object
- *
- * It only knows how to write string/buffer and of course stream
- *
- * NOTE: There is no guards or type checking
- *
- * @param {http.Response} res - node http response object
- * @param {response-map} resp - a leaf response map
- */
-const send = (res, resp) => {
-  // TODO handle http2
-  res.writeHead(resp.status, resp.headers)
-  if (typeof resp.body !== "undefined") {
-    if (resp.body && resp.body.pipe) {
-      resp.body.pipe(res)
-    } else {
-      res.write(resp.body)
-      res.end()
-    }
-  } else {
-    res.end()
-  }
-}
-
-/**
  * an express adapter that takes a express middleware as `fn`
  * and an array of arguments [req, res]
  *
@@ -181,14 +156,14 @@ const _handler = (list, req, res) => {
       throw(err)
     }).catch((err) => {
       if (!list._catch) {
-        return send(res, _err_handler(err))
+        return response.send(res, _err_handler(err))
       }
 
       // call user's catch
       _call(list._catch, [err, req])
         .then((result) => {
           if (typeof result === "undefined") {
-            return send(res, _err_handler(err))
+            return response.send(res, _err_handler(err))
           }
 
           // FIXME
@@ -198,7 +173,7 @@ const _handler = (list, req, res) => {
           router_response.response(req, res, result)
         })
         .catch((new_err) => {
-          send(res, _err_handler(new_err))
+          response.send(res, _err_handler(new_err))
         })
     })
 }
@@ -277,6 +252,5 @@ module.exports = {
   _call,
   mapl,
   _handler,
-  _err_handler,
-  send
+  _err_handler
 }

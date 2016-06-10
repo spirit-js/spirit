@@ -11,7 +11,7 @@
  *
  */
 
-const core = require("../core/core")
+const core_response = require("../core/response")
 const response_map = require("./response-map")
 
 // response middlewares
@@ -95,7 +95,7 @@ const response = (req, res, body) => {
     rmap = response_map.create(body)
   }
 
-  core.send(res, render(req, rmap, middlewares.list()))
+  core_response.send(res, render(req, rmap, middlewares.list()))
 }
 
 const render_string = (req, resp) => {
