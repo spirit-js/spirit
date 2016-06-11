@@ -32,7 +32,7 @@ class ResponseMap {
     return this
   }
 
-  safeType(content_type) {
+  _type(content_type) {
     if (!this.headers["Content-Type"]) {
       return this.type(content_type)
     }
