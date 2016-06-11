@@ -1,5 +1,7 @@
 /*
- * an chainable helper for making response maps
+ * ResponseMap & related functions
+ * ResponseMap is for making response maps
+ * with chainable helper functions
  */
 
 const core_response = require("../core/response")
@@ -36,6 +38,11 @@ class ResponseMap {
     }
     return this
   }
+
+  location(url) {
+    this.headers["Location"] = url
+    return this
+  }
 }
 
 const is_response_map = (obj) => {
@@ -56,9 +63,39 @@ const create = (body) => {
   return rmap
 }
 
+/**
+ * returns a ResponseMap for a http redirect based
+ * on status code and url, default status code is 302
+ *
+ * moved-permanently 301
+ * found 302
+ * see-other 303
+ * temporary-redirect 307
+ * permanent-redirect 308
+ *
+ * @param {number} status - http status code
+ * @param {string} url - url to redirect to
+ * @return {ResponseMap}
+ */
+const redirect = (status, url) => {
+  if (!url) {
+    url = status
+    status = 302
+  }
+
+  if (typeof status !== "number" || typeof url !== "string") {
+    throw TypeError("invalid arguments to `redirect`, need (number, string) or (string). number is a optional argument for a valid redirect status code, string is required for the URL to redirect")
+  }
+
+  return new ResponseMap()
+    .statusCode(status)
+    .location(url)
+}
+
 module.exports = {
   ContentTypes,
   ResponseMap,
   create,
-  is_response_map
+  is_response_map,
+  redirect
 }

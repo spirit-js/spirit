@@ -90,37 +90,6 @@ describe("core.response", () => {
     })
   })
 
-  describe("redirect", () => {
-    it("generates a response map for redirecting", () => {
-      let rmap = response.redirect(123, "google")
-      expect(rmap).toEqual({
-        status: 123,
-        body: "",
-        headers: { "Location": "google" }
-      })
-
-      // defaults status to 302
-      rmap = response.redirect("blah")
-      expect(rmap).toEqual({
-        status: 302,
-        body: "",
-        headers: { "Location": "blah" }
-      })
-    })
-
-    it("throws an error for invalid arguments", () => {
-      const test = (status, url) => {
-        expect(() => {
-          response.redirect(status, url)
-        }).toThrowError(/invalid arguments/)
-      }
-
-       test(123)
-       test("blah", 123)
-       test("hi", "blah")
-    })
-  })
-
   describe("not_found", () => {
     it("returns a response map with 404 status", () => {
       expect(response.not_found("hi")).toEqual({

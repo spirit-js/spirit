@@ -56,6 +56,39 @@ describe("response map", () => {
     })
   })
 
+  describe("redirect", () => {
+    it("generates a response map for redirecting", () => {
+      let rmap = response_map.redirect(123, "google")
+      expect(rmap).toEqual(jasmine.objectContaining({
+        status: 123,
+        body: "",
+        headers: { "Location": "google" }
+      }))
+      expect(rmap instanceof response_map.ResponseMap).toBe(true)
+
+      // defaults status to 302
+      rmap = response_map.redirect("blah")
+      expect(rmap).toEqual(jasmine.objectContaining({
+        status: 302,
+        body: "",
+        headers: { "Location": "blah" }
+      }))
+      expect(rmap instanceof response_map.ResponseMap).toBe(true)
+    })
+
+    it("throws an error for invalid arguments", () => {
+      const test = (status, url) => {
+        expect(() => {
+          response_map.redirect(status, url)
+        }).toThrowError(/invalid arguments/)
+      }
+
+      test(123)
+      test("blah", 123)
+      test("hi", "blah")
+    })
+  })
+
   describe("ResponseMap", () => {
     const ResponseMap = response_map.ResponseMap
 
@@ -109,6 +142,10 @@ describe("response map", () => {
         r.safeType("what")
         expect(r.headers["Content-Type"]).toBe("abc123")
       })
+    })
+
+    describe("location", () => {
+      it("")
     })
 
   })
