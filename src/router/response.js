@@ -101,7 +101,7 @@ const response = (req, res, body) => {
 const render_string = (req, resp) => {
   const {body} = resp
   if (typeof body === "string") {
-    return resp.safeType("html")
+    return resp._type("html")
   }
 }
 

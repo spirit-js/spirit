@@ -125,21 +125,21 @@ describe("response map", () => {
       })
     })
 
-    describe("safeType", () => {
+    describe("_type", () => {
       it("sets the content type from known types", () => {
-        const r = new ResponseMap().safeType("json")
+        const r = new ResponseMap()._type("json")
         expect(r.headers["Content-Type"]).toBe("application/json")
       })
 
       it("sets the content type to be argument if not known type", () => {
-        const r = new ResponseMap().safeType("json123")
+        const r = new ResponseMap()._type("json123")
         expect(r.headers["Content-Type"]).toBe("json123")
       })
 
       it("will do nothing if content type already exists", () => {
         const r = new ResponseMap().type("abc123")
         expect(r.headers["Content-Type"]).toBe("abc123")
-        r.safeType("what")
+        r._type("what")
         expect(r.headers["Content-Type"]).toBe("abc123")
       })
     })
