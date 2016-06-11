@@ -22,13 +22,16 @@ class ResponseMap {
   }
 
   type(content_type) {
-    const t = ContentTypes[content_type]
+    let t = ContentTypes[content_type]
+    if (!t) {
+      t = content_type
+    }
     this.headers["Content-Type"] = t
     return this
   }
 
   safeType(content_type) {
-    if (!this.headers[content_type]) {
+    if (!this.headers["Content-Type"]) {
       return this.type(content_type)
     }
     return this
@@ -43,13 +46,12 @@ const is_response_map = (obj) => {
 }
 
 const create = (body) => {
-  const rmap = new ResponseMap(body)
+  let rmap
   if (core_response.is_response(body)) {
-    rmap.status = body.status
+    rmap = new ResponseMap(body.body).statusCode(body.status)
     rmap.headers = body.headers
-    rmap.body = body.body
   } else {
-    rmap.body = body
+    rmap = new ResponseMap(body)
   }
   return rmap
 }

@@ -1,7 +1,3 @@
-- even better performance (tracer)
-  - can speed up literal string paths and skip regexp on them
-    (does path-to-regexp) already do this?
-
 - handling request "freshness" Not Modified
 
 - log output middleware / should be tied into tracer

@@ -121,30 +121,6 @@ describe("core.response", () => {
     })
   })
 
-  describe("content_type", () => {
-    it("sets a response map to content type", () => {
-      // doesn't check if valid response map
-      const t = { headers: {} }
-      let result = response.content_type(t, "123")
-      expect(result).toEqual({ headers: {
-        "Content-Type": "123"
-      }})
-
-      // overrides
-      result = response.content_type(result, "abc")
-      expect(result).toEqual({ headers: {
-        "Content-Type": "abc"
-      }})
-    })
-
-    it("throws if `type` argument is not a string", () => {
-      const t = { headers: {} }
-      expect(() => {
-        response.content_type(t, 123)
-      }).toThrowError(/must be a string/)
-    })
-  })
-
   describe("not_found", () => {
     it("returns a response map with 404 status", () => {
       expect(response.not_found("hi")).toEqual({

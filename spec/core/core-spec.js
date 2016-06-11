@@ -1,7 +1,5 @@
 const core = require("../../lib/core/core")
 const mock_response = require("../support/mock-response")
-// used by send()
-const stream = require("stream")
 
 describe("core", () => {
 
