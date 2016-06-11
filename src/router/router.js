@@ -104,9 +104,11 @@ const list_to_routes = (list) => {
  *
  * The express middleware is unimportant, it's wrapped as one
  * since the router only understands express middleware or Routes
- *
  * The main handler only understands express middleware
  * So this makes it compatible for use for all cases
+ *
+ * NOTE: this is mostly done for express compat
+ * (ideally this should be a route)
  *
  * @param {*} body - anything that response knows how to render
  * @return {function} Express middleware
@@ -114,7 +116,13 @@ const list_to_routes = (list) => {
 const not_found = (body) => {
   return (req, res, next) => {
     core._call(body, [req]).then((r) => {
-      response.response(req, res, core.response.not_found(r))
+      let rmap = r
+      if (core.response.is_response(r)) {
+        rmap.status = 404
+      } else {
+        rmap = core.response.not_found(r)
+      }
+      response.response(req, res, rmap)
     })
   }
 }

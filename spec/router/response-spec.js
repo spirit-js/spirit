@@ -1,6 +1,5 @@
 const rewire = require("rewire")
 const response = rewire("../../lib/router/response")
-
 const response_map = require("../../lib/router/response-map")
 
 describe("router.response", () => {
@@ -135,15 +134,13 @@ describe("router.response", () => {
           headers: {
             a: 1
           },
-          body: undefined
+          body: ""
         }))
       })
-      response.response("req", "res", {
-        status: 123,
-        headers: {
-          "a": 1
-        }
-      })
+
+      const rmap = new response_map.ResponseMap().statusCode(123)
+      rmap.headers.a = 1
+      response.response("req", "res", rmap)
     })
   })
 
