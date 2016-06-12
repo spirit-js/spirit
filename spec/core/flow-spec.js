@@ -1,4 +1,4 @@
-const {leaf, define, routes} = require("../../index")
+const {spirit, define, routes} = require("../../index")
 const mock_response = require("../support/mock-response")
 /*
  integration tests for control flow and propagation
@@ -54,7 +54,7 @@ describe("control flow", () => {
       done()
     })
 
-    const handler = leaf(site)
+    const handler = spirit(site)
 
     // req, res
     const mock_req = {
@@ -108,7 +108,7 @@ describe("control flow", () => {
       url: "/test",
       mw_count: 0
     }
-    const handler = leaf(site)
+    const handler = spirit(site)
     handler(mock_req, mock_response())
   })
 
@@ -134,7 +134,7 @@ describe("control flow", () => {
       url: "/test",
       mw_count: 0
     }
-    const handler = leaf(site)
+    const handler = spirit(site)
     handler(mock_req, mock_response())
   })
 

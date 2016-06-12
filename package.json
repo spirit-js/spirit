@@ -1,14 +1,14 @@
 {
-  "name": "leaf-web",
+  "name": "spirit",
   "version": "0.0.1",
-  "description": "a fast modern web framework that is compatible to express middleware",
+  "description": "fast modern web framework that is compatible to express middleware",
   "main": "index.js",
   "scripts": {
     "test": "make test"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hnry/leaf.git"
+    "url": "git@github.com:hnry/spirit.git"
   },
   "keywords": [
     "leaf",
@@ -18,7 +18,7 @@
   ],
   "author": "hnry",
   "license": "ISC",
-  "homepage": "https://github.com/hnry/leaf",
+  "homepage": "https://github.com/hnry/spirit",
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-preset-es2015": "^6.6.0",

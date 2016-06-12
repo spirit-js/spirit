@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/hnry/leaf.svg?branch=master)](https://travis-ci.org/hnry/leaf)
-[![Coverage Status](https://coveralls.io/repos/github/hnry/leaf/badge.svg?branch=master)](https://coveralls.io/github/hnry/leaf?branch=master)
+[![Build Status](https://travis-ci.org/hnry/spirit.svg?branch=master)](https://travis-ci.org/hnry/spirit)
+[![Coverage Status](https://coveralls.io/repos/github/hnry/spirit/badge.svg?branch=master)](https://coveralls.io/github/hnry/spirit?branch=master)
 
-# leaf
+## spirit
 
 A _fast_ simple & modern web framework for node.js
 
@@ -31,7 +31,7 @@ It is mostly compatible with Express middlewares. It can be thought of as a mixt
 #### example in es6
 
 ```js
-const {leaf, routes, define, site_defaults} = require("leaf")
+const {spirit, routes, define, site_defaults} = require("./index")
 
 const hi = (str) => { // routes are just normal functions
   return "Hi, " + str
@@ -49,24 +49,17 @@ const app = define([
 })
 
 const site = define([site_defaults(), routes.route(app)])
-
-http.createServer(leaf(site)).listen(3000)
+http.createServer(spirit(site)).listen(3000)
 ```
 
-#### Express compatiblity
+#### Status
 
-Out of the box most Express middleware is supported. Some exceptions being:
+I'm actively working on this, it is considered working but "alpha". I try to keep master in a working state, but I also pull in new changes regularly so it might sometimes break (bug).
 
-- `req.originalUrl`
-  This seems to be part of Express's router, and since leaf routes differently (and avoids mutating `req.url`), this is not built-in.
-  If your middleware requires this, you would need to wrap the middleware to add this. See routes.resources for an example.
-  
-- Middleware that needs a router
+The remaining work:
 
-  Similar to the previous exception. If your middleware needs a router (matching a url) then it isn't actually a middleware.
-  It is recommended to instead convert it into a route handler. If that is not possible, see routes.resorces for an example of how to work around this.
-  
-- Express error handling middleware (err, req, res, next)
+1. Docs, docs, docs, oh my gerd there are no docs!
+2. Just overall use and testing to try out every possible edge case.
+3. Filling out remaining Express compatibility.
 
-  There is no support for this middleware signature. leaf handles errors differently (and in my opinion better). There is no workaround and it is recommended to use leaf's error handling of catching errors.
-
+__I need your help!__ If the project interests you, I would love for someone to write docs or just as simple as using it, writing web apps with it, etc.

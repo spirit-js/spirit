@@ -268,7 +268,7 @@ const define = (name, list) => {
  * @param {List} middlewares - a list as returned by define()
  * @return {function}
  */
-const leaf = (middlewares) => {
+const handler = (middlewares) => {
   if (Array.isArray(middlewares)) {
     middlewares = { list: middlewares }
   }
@@ -287,7 +287,7 @@ const leaf = (middlewares) => {
 }
 
 module.exports = {
-  leaf,
+  handler,
   define,
   reducel,
   adapter,

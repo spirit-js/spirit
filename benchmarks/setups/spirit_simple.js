@@ -1,6 +1,6 @@
-const leaf = require("../../index")
-const define = leaf.define
-const routes = leaf.routes
+const spirit = require("../../index")
+const define = spirit.define
+const routes = spirit.routes
 
 const http = require("http")
 
@@ -12,4 +12,4 @@ const site = define([
   routes.route(app)
 ])
 
-http.createServer(leaf.leaf(site)).listen(3009)
+http.createServer(spirit.spirit(site)).listen(3009)

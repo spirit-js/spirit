@@ -71,7 +71,7 @@ describe("core", () => {
     })
   })
 
-  describe("leaf", () => {
+  describe("spirit", () => {
     it("throws if a List or an array is not passed in", () => {
       const inv = [()=>{}, "hi", 123, undefined, null, { list: 123 }, {}, { list: () => {} }]
 
@@ -88,7 +88,7 @@ describe("core", () => {
       ["/", [], () => { return "not ok" }]
     ])
     expect(() => {
-      core.leaf(site)
+      core.handler(site)
     }).toThrowError(/core.adapter/)
   })
 
