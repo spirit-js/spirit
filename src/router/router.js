@@ -115,15 +115,15 @@ const list_to_routes = (list) => {
  */
 const not_found = (body) => {
   return (req, res, next) => {
-    core._call(body, [req]).then((r) => {
-      let rmap = r
-      if (core.response.is_response(r)) {
-        rmap.status = 404
-      } else {
-        rmap = core.response.not_found(r)
-      }
-      response.response(req, res, rmap)
-    })
+    core._resolvep_rmap(core._call(body, [req]))
+      .then((r) => {
+        if (core.response.is_response(r)) {
+          r.status = 404
+        } else {
+          r = core.response.not_found(r)
+        }
+        response.response(req, res, r)
+      })
   }
 }
 
@@ -152,7 +152,7 @@ const _route_handler = (compiled_route) => {
     }
 
     req.params = routes.decompile(compiled_route, params)
-    return core._call(compiled_route.body, _destructure(compiled_route.args, req))
+    return core._resolvep_rmap(core._call(compiled_route.body, _destructure(compiled_route.args, req)))
   }
 }
 
@@ -192,7 +192,7 @@ const route = (list) => {
         if (!list._then) {
           return result
         }
-        return core._call(list._then, [result, req])
+        return core._resolvep_rmap(core._call(list._then, [result, req]))
       }).then((result) => {
         if (typeof result !== "undefined") {
           response.response(req, res, result)
@@ -209,7 +209,7 @@ const route = (list) => {
         }
 
         // call user's catch
-        core._call(list._catch, [err, req])
+        core._resolvep_rmap(core._call(list._catch, [err, req]))
           .then((result) => {
             if (typeof result === "undefined") {
               return next(err)

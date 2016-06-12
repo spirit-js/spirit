@@ -160,4 +160,7 @@ describe("core", () => {
     it("")
   })
 
+  describe("is_promise", () => {
+    it("")
+  })
 })
