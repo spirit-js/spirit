@@ -48,6 +48,19 @@ const reducel = (list, args, id, start_idx) => {
 }
 
 /**
+ * checks if `p` is a promise, returning true or false
+ *
+ * @param {*} p - argument to check if promise
+ * @return {Boolean}
+ */
+const is_promise = (p) => {
+  if (p && p.then && typeof p.then === "function") {
+    return true
+  }
+  return false
+}
+
+/**
  * map over List
  *
  * basically map's over a List.list with `pred`
@@ -60,7 +73,7 @@ const reducel = (list, args, id, start_idx) => {
  * @param {function} pred - predicate function for map
  * @return {List}
  */
-const mapl = function(list, pred) {
+const mapl = (list, pred) => {
   return {
     _catch: list._catch,
     _then: list._then,
@@ -85,10 +98,39 @@ const _call = (fn, args) => {
     return new Promise((resolve, reject) => {
       resolve(fn.apply(undefined, args))
     })
-    //return Promise.resolve(fn.apply(undefined, args))
   }
 
   return Promise.resolve(fn)
+}
+
+/**
+ * Resolve a Promise of a Promise (as it pertains to a response
+ * map)
+ *
+ * For adding an extra step to resolve Promises that are
+ * a response map, where the body itself is a promise
+ *
+ * This avoids the promise of a promise issue when dealing
+ * with response maps
+ *
+ * @param {Promise} p - a promise
+ * @return {Promise}
+ */
+const _resolvep_rmap = (p) => {
+  return p.then((result) => {
+    // if it is a response map, resolve the body
+    if (response.is_response(result)
+        && is_promise(result.body)) {
+      return new Promise((resolve, reject) => {
+        result.body.then((body) => {
+          result.body = body
+          resolve(result)
+        })
+      })
+    }
+    // otherwise just return
+    return result
+  })
 }
 
 /**
@@ -252,5 +294,7 @@ module.exports = {
   _call,
   mapl,
   _handler,
-  _err_handler
+  _err_handler,
+  _resolvep_rmap,
+  is_promise
 }

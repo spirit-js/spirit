@@ -11,6 +11,7 @@
  *
  */
 
+const core = require("../core/core")
 const core_response = require("../core/response")
 const response_map = require("./response-map")
 
