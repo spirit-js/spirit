@@ -35,7 +35,7 @@ const as_response = () => {
 
 const app = define([
   routes.get("/", [], file),
-  routes.get("/bluebird", [], promised_file)
+  routes.get("/bluebird", [], promised_file),
   routes.get("/response", [], as_response)
 ])
 

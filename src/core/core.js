@@ -202,7 +202,7 @@ const _handler = (list, req, res) => {
       }
 
       // call user's catch
-      _call(list._catch, [err, req])
+      _resolvep_rmap(_call(list._catch, [err, req]))
         .then((result) => {
           if (typeof result === "undefined") {
             return response.send(res, _err_handler(err))
