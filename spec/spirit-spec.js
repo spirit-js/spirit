@@ -1,13 +1,13 @@
 /**
- * integration test for leaf as visible to a user's perspective
+ * integration test for spirit as visible to a user's perspective
  */
 
 const request = require("superagent")
-const {leaf, define, routes} = require("../index")
+const {spirit, define, routes} = require("../index")
 const http = require("http")
 
 
-describe("leaf", () => {
+describe("spirit", () => {
 
   it("simple example", (done) => {
     const app = define([
@@ -16,7 +16,7 @@ describe("leaf", () => {
       })
     ])
 
-    const s = http.createServer(leaf(define([
+    const s = http.createServer(spirit(define([
       routes.route(app)
     ])))
 

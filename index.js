@@ -9,7 +9,7 @@ var response_map = require("./lib/router/response-map")
 
 module.exports = {
   // core
-  leaf: core.leaf,
+  spirit: core.handler,
   define: core.define,
   site_defaults: defaults,
 
