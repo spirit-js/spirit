@@ -1,7 +1,6 @@
 /**
  * integration test for spirit as visible to a user's perspective
  */
-
 const request = require("superagent")
 const {spirit, define, routes} = require("../index")
 const http = require("http")
