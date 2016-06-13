@@ -1,35 +1,28 @@
+# spirit
+A _fast_ simple & modern web framework for node.js, built from the ground up. 
+
+It is a _low level_ framework (it is _not_ a full stack framework or a boilerplate or web platform). It is meant as an alternative to Express, Koa, Hapi, etc.
+
 [![Build Status](https://travis-ci.org/hnry/spirit.svg?branch=master)](https://travis-ci.org/hnry/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/hnry/spirit/badge.svg?branch=master)](https://coveralls.io/github/hnry/spirit?branch=master)
 
-## spirit
-
-A _fast_ simple & modern web framework for node.js
-
-It emphasizes clear separation of code between HTTP and your own code. Routes are normal javascript functions. That means a route can be as simple as:
+It __emphasizes clear separation of code between HTTP and your own code__. Routes are normal javascript functions. That means a route can be as simple as:
 ```js
-function() { return "Hello World"} // or () => { return "Hello World" }
+function() { return "Hello World" }
 ```
 
-It is mostly compatible with Express middlewares. It can be thought of as a mixture of Express and Compojure.
+This makes testing, re-using, and reading your code much easier, as _"it's just javascript"_.
 
-#### why?
+## Features
+* __Routes are just normal functions that return something__. No more proprietary (req, res, next) functions. This makes it easier to test, re-use, read your routes.
 
-1. Simple. 
-   __Routes are just normal functions that return something.__ 
-   No more proprietary (req, res, next) functions that are hard to read, re-use and test.
+* __Compatible with Express middleware__. Re-using existing code is important.
 
-   This makes for a clarity in the separation between your code and http related code. As opposed to everything just being a http middleware.
-  
-2. Modern. Promises and async/await is preferred and recommended over callbacks whenever possible.
+* Error handling with then & catch. __Promises are "first class"__.
 
-3. Compatible with Express's middleware signature (req, res, next) with mostly complete support for Express's specific helpers.
+* __Fast, very fast__. It outperforms other web frameworks (Express, Koa).
 
-4. Better error-handling, almost everything is then-able and catch-able.
-
-5. It's fast. 
-
-#### example in es6
-
+## Example (in ES6)
 ```js
 const {spirit, routes, define, site_defaults} = require("./index")
 
@@ -48,18 +41,30 @@ const app = define([
   return "recovered!" // can recover from route errors here
 })
 
-const site = define([site_defaults(), routes.route(app)])
-http.createServer(spirit(site)).listen(3000)
+const site = spirit([site_defaults(), routes.route(app)])
+http.createServer(site).listen(3000)
 ```
+More examples can be found in the [example dir](https://github.com/hnry/spirit/tree/master/examples).
 
-#### Status
+## Getting Started
+Coming soon...
 
-I'm actively working on this, it is considered working but "alpha". I try to keep master in a working state, but I also pull in new changes regularly so it might sometimes break (bug).
+The docs are located in the [docs dir](https://github.com/hnry/spirit/tree/master/docs).
+
+## Development Status
+I'm actively working on this, it is considered working but should be considered beta. I try to keep master in a working state, but I also pull in new changes regularly so it might sometimes break.
+
+When spirit v0.1.0 is released, the existing API will be frozen until the first major release (1.0.0).
 
 The remaining work:
 
-1. Docs, docs, docs, oh my gerd there are no docs!
-2. Just overall use and testing to try out every possible edge case.
+1. Docs, docs, docs, oh my gerd there are no docs, we need docs!
+2. Just overall use.
 3. Filling out remaining Express compatibility.
 
-__I need your help!__ If the project interests you, I would love for someone to write docs or just as simple as using it, writing web apps with it, etc.
+__I need your help!__ If the project interests you, I would love help. Especially for doc contributions or just as simple as using it, writing web apps with it, reporting feedback / bugs, etc.
+
+
+## FAQ
+#### How about isomorphic support?
+It supports it as far as how other similar projects like Express support it. That is, it provides you the tools and the means to get what you need done. But it is not meant to be a full, batteries included framework. You can however use spirit to build your own isomorphic framework, like other projects have done with Express, or it should be easy to port those projects to use spirit since spirit understands Express middleware.
