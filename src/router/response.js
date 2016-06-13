@@ -99,6 +99,9 @@ const response = (req, res, body) => {
   core_response.send(res, render(req, rmap, middlewares.list()))
 }
 
+// response middleware; sets a default html & utf-8 charset
+// when no content type headers are set for a response with
+// a string body
 const render_string = (req, resp) => {
   const {body} = resp
   if (typeof body === "string") {
@@ -106,6 +109,9 @@ const render_string = (req, resp) => {
   }
 }
 
+// response middleware; converts all numbers to be a string
+// then sets the content type to be html & utf-8 if there
+// is no content-type set
 const render_number = (req, resp) => {
   const {body} = resp
   if (typeof body === "number") {
@@ -114,6 +120,7 @@ const render_number = (req, resp) => {
   }
 }
 
+// TODO
 const render_buffer = (req, resp) => {
   const {body} = resp
   if (Buffer.isBuffer(body)) {

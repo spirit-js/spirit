@@ -5,11 +5,8 @@
  */
 
 const core_response = require("../core/response")
-
-const ContentTypes = {
-  "json": "application/json",
-  "html": "text/html; charset=utf-8"
-}
+const mime = require("send").mime
+mime.default_type = undefined
 
 class ResponseMap {
   constructor(body) {
@@ -24,11 +21,15 @@ class ResponseMap {
   }
 
   type(content_type) {
-    let t = ContentTypes[content_type]
+    let t = mime.lookup(content_type)
     if (!t) {
-      t = content_type
+      return this
     }
-    this.headers["Content-Type"] = t
+
+    let charset = ""
+    if (mime.charsets.lookup(t)) charset = "; charset=utf-8"
+
+    this.headers["Content-Type"] = t + charset
     return this
   }
 
@@ -93,7 +94,6 @@ const redirect = (status, url) => {
 }
 
 module.exports = {
-  ContentTypes,
   ResponseMap,
   create,
   is_response_map,

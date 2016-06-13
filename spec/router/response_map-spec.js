@@ -119,9 +119,14 @@ describe("response map", () => {
         expect(r.headers["Content-Type"]).toBe("application/json")
       })
 
-      it("sets the content type to be argument if not known type", () => {
+      it("nothing happens if content type is unknown", () => {
         const r = new ResponseMap().type("json123")
-        expect(r.headers["Content-Type"]).toBe("json123")
+        expect(r.headers["Content-Type"]).toBe(undefined)
+      })
+
+      it("sets utf-8 charset by default for text/* content types", () => {
+        const r = new ResponseMap().type("text")
+        expect(r.headers["Content-Type"]).toBe("text/plain; charset=utf-8")
       })
     })
 
@@ -131,16 +136,16 @@ describe("response map", () => {
         expect(r.headers["Content-Type"]).toBe("application/json")
       })
 
-      it("sets the content type to be argument if not known type", () => {
+      it("nothing happens if the type is unknown", () => {
         const r = new ResponseMap()._type("json123")
-        expect(r.headers["Content-Type"]).toBe("json123")
+        expect(r.headers["Content-Type"]).toBe(undefined)
       })
 
       it("will do nothing if content type already exists", () => {
-        const r = new ResponseMap().type("abc123")
-        expect(r.headers["Content-Type"]).toBe("abc123")
-        r._type("what")
-        expect(r.headers["Content-Type"]).toBe("abc123")
+        const r = new ResponseMap().type("html")
+        expect(r.headers["Content-Type"]).toBe("text/html; charset=utf-8")
+        r._type("json")
+        expect(r.headers["Content-Type"]).toBe("text/html; charset=utf-8")
       })
     })
 
