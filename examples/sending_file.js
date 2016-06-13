@@ -1,18 +1,20 @@
-const {define, leaf, routes, response} = require("../index")
+const {define, spirit, routes, response} = require("../index")
 const http = require("http")
 
 const Promise = require("bluebird")
 const fs = Promise.promisifyAll(require("fs"), { suffix: "Promise" });
+
+const working_path = __dirname + "/../"
 
 /*
  * Both are equivalent and show how it's possible
  * to return a file as a Promise
  */
 
-// normal way
+// regular Promise way
 const file = () => {
   return new Promise((resolve, reject) => {
-    fs.readFile("../index.js", (err, data) => {
+    fs.readFile(working_path + "index.js", (err, data) => {
       (err) ? reject(err) : resolve(data)
     })
   })
@@ -20,7 +22,7 @@ const file = () => {
 
 // with bluebird promisify 'readFilePromise' returns a Promise already
 const promised_file = () => {
-  return fs.readFilePromise("../index.js")
+  return fs.readFilePromise(working_path + "index.js")
 }
 
 // returning just the file may not always be desirable
@@ -29,7 +31,9 @@ const promised_file = () => {
 //
 // in which case, use the response helper
 const as_response = () => {
-  const file = fs.readFilePromise("../index.js")
+  // since all routes are just functions,
+  // we can re-use a existing route function to make a new route
+  const file = promised_file()
   return response(file).type("html")
 }
 
@@ -39,5 +43,5 @@ const app = define([
   routes.get("/response", [], as_response)
 ])
 
-const server = http.createServer(leaf([routes.route(app)]))
+const server = http.createServer(spirit([routes.route(app)]))
 server.listen(3000)
