@@ -4,7 +4,7 @@ COLOR_RESET = \033[0m
 default: build
 
 bench: build
-	@go run benchmarks/runner.go
+	@NODE_ENV=production go run benchmarks/runner.go
 
 clean:
 	@rm -r lib/
