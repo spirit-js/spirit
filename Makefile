@@ -13,6 +13,10 @@ build:
 	@echo "Building src..."
 	@node_modules/.bin/babel src -d lib
 
+release:
+	make clean
+	make test
+
 watch:
 	@echo "Auto building..."
 	node_modules/.bin/babel src -d lib
@@ -25,4 +29,4 @@ test: build
 test-ci: build
 	@node_modules/.bin/istanbul cover -x "**/spec/**" node_modules/jasmine/bin/jasmine.js
 
-.PHONY: default build test watch bench test-ci clean
+.PHONY: default build test watch bench test-ci clean release

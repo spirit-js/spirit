@@ -1,7 +1,7 @@
 {
   "name": "spirit",
   "version": "0.0.1",
-  "description": "fast modern web framework that is compatible to express middleware",
+  "description": "fast modern web framework that is compatible with express middleware",
   "main": "index.js",
   "scripts": {
     "test": "make test"
@@ -11,9 +11,9 @@
     "url": "git@github.com:hnry/spirit.git"
   },
   "keywords": [
-    "leaf",
     "express",
     "web",
+    "http",
     "framework"
   ],
   "author": "hnry",
