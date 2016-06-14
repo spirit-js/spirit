@@ -124,7 +124,7 @@ const render_number = (req, resp) => {
 const render_buffer = (req, resp) => {
   const {body} = resp
   if (Buffer.isBuffer(body)) {
-    return resp
+    return resp._type("html")
   }
 }
 

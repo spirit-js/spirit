@@ -12,19 +12,13 @@ describe("sending_file example", () => {
   })
 
   // all the tests have the same response body, so set it here
-  const expected_body = /\/\/ router & route/
+  const expected_body = /<h2>This is a test html/
 
   it("-> get /", (done) => {
     request.get(base_url).end((err, res) => {
       expect(res.status).toBe(200)
       expect(res.text).toMatch(expected_body)
-
-      // headers aren't too interesting, mainly that there
-      // is no content-type set
-      expect(Object.keys(res.headers)).toEqual([
-        "date", "connection", "transfer-encoding"
-      ])
-
+      expect(res.headers["content-type"]).toBe("text/html; charset=utf-8")
       done()
     })
   })
@@ -34,19 +28,6 @@ describe("sending_file example", () => {
     request.get(base_url + "/bluebird").end((err, res) => {
       expect(res.status).toBe(200)
       expect(res.text).toMatch(expected_body)
-      expect(Object.keys(res.headers)).toEqual([
-        "date", "connection", "transfer-encoding"
-      ])
-      done()
-    })
-  })
-
-  it("-> get /response", (done) => {
-    request.get(base_url + "/response").end((err, res) => {
-      expect(res.status).toBe(200)
-      expect(res.text).toMatch(expected_body)
-
-      // expect there to be a content-type header
       expect(res.headers["content-type"]).toBe("text/html; charset=utf-8")
       done()
     })
