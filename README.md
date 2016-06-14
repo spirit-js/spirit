@@ -47,9 +47,14 @@ http.createServer(site).listen(3000)
 More examples can be found in the [example dir](https://github.com/hnry/spirit/tree/master/examples).
 
 ## Getting Started
-Coming soon...
+To install:
+`npm install spirit`
 
-The docs are located in the [docs dir](https://github.com/hnry/spirit/tree/master/docs).
+Some resources for getting started: (Coming soon...)
+
+[Guide](https://github.com/hnry/spirit/tree/master/docs/guide)
+
+And [API Docs](https://github.com/hnry/spirit/tree/master/docs/api)
 
 ## Development Status
 I'm actively working on this, it is considered working but should be considered beta. I try to keep master in a working state, but I also pull in new changes regularly so it might sometimes break.
