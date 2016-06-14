@@ -1,4 +1,4 @@
-const {define, spirit, routes, response} = require("../../index")
+const {define, spirit, routes} = require("../../index")
 const http = require("http")
 
 // use bluebird to make node's fs module return a Promise
