@@ -11,5 +11,9 @@
   "devDependencies": {
     "express": "^4.13.4",
     "koa": "^2.0.0"
+  },
+  "dependencies": {
+    "benchmark": "^2.1.0",
+    "microtime": "^2.1.1"
   }
 }

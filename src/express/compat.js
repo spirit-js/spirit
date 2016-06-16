@@ -2,6 +2,10 @@
  * General Express compatibility functions
  *
  */
+const Promise = require("bluebird")
+Promise.onPossiblyUnhandledRejection(function(e, promise) {
+  throw e;
+});
 
 /**
  * an express adapter that takes a express middleware as `fn`
@@ -33,12 +37,14 @@ const adapter = (fn) => {
 }
 
 /**
- * for express response compatibility
+ * for express `res` api compatibility
  * attaches all exported functions from src/express/res.js
  * to node HTTP response object
  *
  * as well as attaching a ref to the node HTTP request object
  * on `res.req`
+ *
+ * NOTE: this function makes me sad :(
  *
  * @param {http.Request} req - node http Request object
  * @param {http.Response} res - node http Response object
@@ -46,9 +52,8 @@ const adapter = (fn) => {
 const express_res = require("./res")
 const res = (req, res) => {
   res.req = req
-  Object.keys(express_res).forEach((key) => {
-    res[key] = express_res[key]
-  })
+  res.redirect = express_res.redirect
+  res.sendFile = express_res.sendFile
 }
 
 module.exports = {

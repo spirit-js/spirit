@@ -55,7 +55,7 @@ describe("express compat", () => {
       compat.res({}, res)
       expect(typeof res.redirect).toBe("function")
       Object.keys(express_res).forEach((key) => {
-        expect(typeof express_res[key]).toBe("function")
+        expect(typeof res[key]).toBe("function")
       })
     })
   })
