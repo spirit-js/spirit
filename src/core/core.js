@@ -134,35 +134,6 @@ const _resolvep_rmap = (p) => {
 }
 
 /**
- * an express adapter that takes a express middleware as `fn`
- * and an array of arguments [req, res]
- *
- * it returns back a function that returns a Promise
- *
- * @param {function} fn - a express middleware
- * @param {array} args - arguments to `fn`, most likely [req, res]
- * @return {function}
- */
-const adapter = (fn) => {
-  if (typeof fn !== "function") {
-    throw new TypeError("core.adapter was called on a non-function; most likely you are trying to load a route without calling routes.route()")
-  }
-
-  return function(req, res) {
-    return new Promise((resolve, reject) => {
-      function next(err) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      }
-      fn.call(undefined, req, res, next)
-    })
-  }
-}
-
-/**
  * returns a nice error message
  *
  * @param {*} err - an error
@@ -268,6 +239,7 @@ const define = (name, list) => {
  * @param {List} middlewares - a list as returned by define()
  * @return {function}
  */
+const express_compat = require("../express/compat")
 const handler = (middlewares) => {
   if (Array.isArray(middlewares)) {
     middlewares = { list: middlewares }
@@ -278,10 +250,11 @@ const handler = (middlewares) => {
   }
 
   middlewares = mapl(middlewares, (middleware) => {
-    return adapter(middleware)
+    return express_compat.adapter(middleware)
   })
 
   return (req, res) => {
+    express_compat.res(req, res)
     _handler(middlewares, req, res)
   }
 }
@@ -290,7 +263,6 @@ module.exports = {
   handler,
   define,
   reducel,
-  adapter,
   _call,
   mapl,
   _handler,

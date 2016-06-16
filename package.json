@@ -14,7 +14,9 @@
     "express",
     "web",
     "http",
-    "framework"
+    "framework",
+    "api",
+    "rest"
   ],
   "author": "hnry",
   "license": "ISC",

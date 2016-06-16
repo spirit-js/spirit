@@ -25,7 +25,7 @@ const bluebird_example = () => {
 
 const app = define([
   routes.get("/", [], regular_example),
-  routes.get("/bluebird", [], bluebird_example),
+  routes.get("/bluebird", [], bluebird_example)
 ])
 
 const server = http.createServer(spirit([routes.route(app)]))
