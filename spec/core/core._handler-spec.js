@@ -3,6 +3,7 @@
  */
 
 const core = require("../../lib/core/core")
+const express = require("../../lib/express/compat")
 const mock_response = require("../support/mock-response")
 
 describe("_handler", () => {
@@ -33,14 +34,14 @@ describe("_handler", () => {
       }
     ]
 
-    const list = core.mapl({list: middlewares}, core.adapter)
+    const list = core.mapl({list: middlewares}, express.adapter)
     core._handler(list, [], mock_response())
   })
 
 
   it("errors when nothing left to handle request", (done) => {
     const middlewares = [
-      core.adapter((req, res, next) => { next() })
+      express.adapter((req, res, next) => { next() })
     ]
     const res = mock_response()
     core._handler({ list: middlewares }, undefined, res)
@@ -52,10 +53,10 @@ describe("_handler", () => {
 
   it("middleware errors halts handler", () => {
     const middlewares = [
-      core.adapter((req, res, next) => {
+      express.adapter((req, res, next) => {
         next("an error")
       }),
-      core.adapter(() => {
+      express.adapter(() => {
         throw("should not run")
       })
     ]
@@ -64,13 +65,13 @@ describe("_handler", () => {
 
   it("handles middleware errors", (done) => {
     const middlewares = [
-      core.adapter((req, res, next) => {
+      express.adapter((req, res, next) => {
         next()
       }),
-      core.adapter((req, res, next) => {
+      express.adapter((req, res, next) => {
         next("an error")
       }),
-      core.adapter((req, res, next) => {
+      express.adapter((req, res, next) => {
         throw "should not run"
       })
     ]
@@ -110,7 +111,7 @@ describe("_handler", () => {
       done()
     })
 
-    list = core.mapl(list, core.adapter)
+    list = core.mapl(list, express.adapter)
     core._handler(list, {}, res)
   })
 
@@ -138,7 +139,7 @@ describe("_handler", () => {
       done()
     })
 
-    list = core.mapl(list, core.adapter)
+    list = core.mapl(list, express.adapter)
     core._handler(list, {}, res)
   })
 
@@ -167,7 +168,7 @@ describe("_handler", () => {
       done()
     })
 
-    list = core.mapl(list, core.adapter)
+    list = core.mapl(list, express.adapter)
     core._handler(list, {}, res)
   })
 
@@ -196,7 +197,7 @@ describe("_handler", () => {
       done()
     })
 
-    list = core.mapl(list, core.adapter)
+    list = core.mapl(list, express.adapter)
     core._handler(list, {}, res)
   })
 })

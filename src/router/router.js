@@ -127,6 +127,7 @@ const not_found = (body) => {
   }
 }
 
+const express_compat = require("../express/compat")
 /**
  * a handler for each a route
  *
@@ -142,7 +143,7 @@ const _route_handler = (compiled_route) => {
   return function(req, res) {
     // this is probably a Express middleware
     if (typeof compiled_route === "function") {
-      return core.adapter(compiled_route)(req, res)
+      return express_compat.adapter(compiled_route)(req, res)
     }
 
     const params = _lookup(compiled_route, req.method, req.url)
