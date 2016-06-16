@@ -2,11 +2,11 @@ const serve_static = require("serve-static")
 
 /*
 
- `req._named_route` is set by the leaf router middleware specifically for _special_ circumstances where a Express middleware needs routing information.
+ `req._named_route` is set by the spirit router middleware specifically for _special_ circumstances where a Express middleware needs routing information.
 
- It's needed since routing in leaf is different than in Express (technically & conceptually).
+ It's needed since routing in spirit is different than in Express (technically & conceptually).
 
- Long story short, in leaf there should be a clear separation of middleware & handlers. In Express it's all grouped together. So this is a workaround to play nice with Express.
+ Long story short, in spirit there should be a clear separation of middleware & handlers. In Express it's all grouped together. So this is a workaround to play nice with Express.
 
  Also the modification of `req.url` and `req.originalUrl` is unique to the way Express does things. And it is here since serve-static expects req.url to be modified.
 

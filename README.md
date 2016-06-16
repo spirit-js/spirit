@@ -50,11 +50,11 @@ More examples can be found in the [example dir](https://github.com/hnry/spirit/t
 To install:
 `npm install spirit`
 
-Some resources for getting started: (Coming soon...)
+Some resources for getting started: (Not all written yet)
 
-[Guide](https://github.com/hnry/spirit/tree/master/docs/guide)
+[Guide](https://github.com/hnry/spirit/tree/master/docs/guide) and [API Docs](https://github.com/hnry/spirit/tree/master/docs/api)
 
-And [API Docs](https://github.com/hnry/spirit/tree/master/docs/api)
+For a long read about the different designs, check out [spirit's design philosophy compared to Express](https://github.com/hnry/spirit/wiki/spirit's-design-philosophy-compared-to-express).
 
 ## Development Status
 I'm actively working on this, it is considered working but should be considered beta. I try to keep master in a working state, but I also pull in new changes regularly so it might sometimes break.
@@ -63,9 +63,13 @@ When spirit v0.1.0 is released, the existing API will be frozen until the first 
 
 The remaining work:
 
-1. Docs, docs, docs, oh my gerd there are no docs, we need docs!
-2. Just overall use.
-3. Filling out remaining Express compatibility.
+1. Docs, docs, docs!
+2. Some proper response headers are still missing for certain sitatuions
+3. Filling out remaining Express compatibility (specifically Express's res api)
+4. http2 support
+5. A logging implementation
+6. Handling request headers for Not modified, if-not-modified
+7. prettier and informative 500 errors while developing (relies on 5. being done)
 
 __I need your help!__ If the project interests you, I would love help. Especially for doc contributions or just as simple as using it, writing web apps with it, reporting feedback / bugs, etc.
 
