@@ -245,13 +245,17 @@ const route_handler = (args, body) => {
   }
 }
 
+const reduce_r = () => {
+  
+}
+
 /**
  * "compiles" routes if it isn't already compiled
  * returning back a route handler function
  *
  * @param {string} named - optional prefix to match
  * @param {*} routes - a route, or array of routes or compiled route(s)
- * @return {function} route handler
+ * @return {function} wrapped_route_handler
  */
 const def = (named, routes) => {
   if (typeof named !== "string") {
@@ -262,18 +266,19 @@ const def = (named, routes) => {
     }
   }
 
-  if (Array.isArray(routes)) {
+  if (!Array.isArray(routes)) {
     routes = [routes]
   }
 
   const compiled_routes = routes.map((_route) => {
-    return compile(named, _route)
+    url = url + named
+    return wrap_route_handler(url, router_handler())
   })
 
   if (!named) {
     const url = true
   }
-  return wrap_route_handler(url, reducer)
+  return wrap_route_handler(url, reduce_route)
 }
 
 
@@ -290,20 +295,6 @@ const wrap = (route, middleware) => {
     return r
   }
 }
-
-const compile = (url_prefix, route) => {
-  if (typeof route === "function") {
-    // already compiled
-    return route
-  }
-
-  return (request) => {
-    // url match
-    return // route body
-  }
-}
-
-
 
 module.exports = {
   route,
