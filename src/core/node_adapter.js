@@ -3,6 +3,7 @@
  * for interfacing with spirit
  */
 
+const spirit = require("./core")
 
 const request = (request) => {
   return {}
@@ -16,7 +17,7 @@ const request = (request) => {
  * NOTE: There is no guards or type checking
  *
  * @param {http.Response} res - node http response object
- * @param {response-map} resp - a leaf response map
+ * @param {response-map} resp - response map
  */
 const send = (res, resp) => {
   // TODO handle http2
@@ -35,12 +36,11 @@ const send = (res, resp) => {
 
 const adapter = (handler, middleware) => {
   return (req, res) => {
-    const request = create_request(req)
-    const spirit = main(handler, middleware)
-    spirit(request)
+    const request = request(req)
+    const adp = spirit.main(handler, middleware)
+    adp(request)
       .then((resp) => {
-        res.writeHead()
-        res.end()
+        send(res, resp)
       })
       .catch((err) => {
         // error for http write

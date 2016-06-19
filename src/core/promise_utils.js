@@ -1,7 +1,7 @@
 /**
  * utility functions for working with Promises
  */
-
+const response = require("./response")
 const Promise = require("bluebird")
 Promise.onPossiblyUnhandledRejection(function(e, promise) {
   throw e;
