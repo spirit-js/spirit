@@ -23,21 +23,25 @@ const reducep = (arr, args, start_idx) => {
 /**
  *
  *
- * @param {array} middleware - an array of middleware functions
- * @param {request-map} request - request map
- * @return {promise} // ??
  */
-const middleware_run = (middleware, request) => {
-  const initial_handler = (request) => {}
+const middleware_run = (handler, middleware) => {
+  return middleware.reduce((wrapper, mw_fn) => {
+    const mw = mw_fn(wrapper)
 
-  return middleware.reduce((p, mw) => {
-    const r = mw(request, initial_handler)
-
-    if (is_promise(r)) {
-      return _resolvep_rmap(r)
+    if (typeof mw !== "function") {
+      throw new TypeError("Expected middleware to return a function that takes a request")
     }
-    return r
-  }, new Promise)
+
+    return (request) => {
+      return p_utils.callp(mw, [request]).then((v) => {
+        return v
+      })
+    }
+  }, (request) => {
+    return Promise.resolve(handler).then((v) => {
+      return v
+    })
+  })
 }
 
 /**
@@ -70,8 +74,8 @@ const handler_run = (handler, request, middleware) => {
  */
 const main = (handler, middleware) => {
   return (request) => {
-    const resp_mw = middleware_run(middleware, request)
-    const response = handler_run(handler, request, resp_mw)
+    const route = middleware_run(handler, middleware)
+    const response = route(request)
 
     response.then((result) => {
       // can do clean up here for the response
