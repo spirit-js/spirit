@@ -1,15 +1,10 @@
 const spirit = require("../../index")
-const define = spirit.define
-const routes = spirit.routes
+
+const handler = (request) => {
+  return { status: 200, headers: {}, body: "Hello World" }
+}
+
+const site = spirit.node(handler, [])
 
 const http = require("http")
-
-const app = define([
-  routes.get("/", [], () => { return "Hello World" })
-])
-
-const site = define([
-  routes.route(app)
-])
-
-http.createServer(spirit.spirit(site)).listen(3009)
+http.createServer(site).listen(3009)
