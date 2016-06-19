@@ -21,45 +21,21 @@ const reducep = (arr, args, start_idx) => {
 }
 
 /**
+ * reduces over `middleware` with `handler`, composing them
+ * together to return a single function that returns a Promise
  *
- *
+ * @param {function} handler - a handler function
+ * @param {array} middleware - array of spirit middleware
+ * @return {function} takes a 'request' and returns a Promise
  */
-const middleware_run = (handler, middleware) => {
-  return middleware.reduce((wrapper, mw_fn) => {
-    const mw = mw_fn(wrapper)
-
-    if (typeof mw !== "function") {
+const reduce_mw = (handler, middleware) => {
+  return middleware.reduce((prev, curr) => {
+    const r = curr(prev)
+    if (typeof r !== "function") {
       throw new TypeError("Expected middleware to return a function that takes a request")
     }
-
-    return (request) => {
-      return p_utils.callp(mw, [request]).then((v) => {
-        return v
-      })
-    }
-  }, (request) => {
-    return Promise.resolve(handler).then((v) => {
-      return v
-    })
-  })
-}
-
-/**
- * runs the `handler` with `request` and
- * pipes the output through the middleware response attachments
- * finally returning a Promise of the final response
- *
- * @param {function} handler - the handler, as passed in through `adapter`
- * @param {request-map} request - a request map
- * @param {promise} middleware - middleware returns composed together
- * @return {promise} final response
- */
-const handler_run = (handler, request, middleware) => {
-  const result = handler(request)
-  result.then((response) => {
-    return middleware.resolve(response)
-  })
-  return result
+    return r
+  }, handler)
 }
 
 /**
@@ -74,15 +50,13 @@ const handler_run = (handler, request, middleware) => {
  */
 const main = (handler, middleware) => {
   return (request) => {
-    const route = middleware_run(handler, middleware)
+    const route = reduce_mw(handler, middleware)
     const response = route(request)
-
-    response.then((result) => {
+    response.then((resp_map) => {
       // can do clean up here for the response
+      return resp_map
     }).catch((err) => {
-      // something went wrong in:
-      // handler
-      // middleware
+      // unhandled error in middleware or handler
     })
     return response
   }
@@ -91,7 +65,6 @@ const main = (handler, middleware) => {
 module.exports = {
   reducep,
   main,
-  middleware_run,
-  handler_run
+  reduce_mw
 }
 
