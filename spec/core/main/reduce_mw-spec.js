@@ -50,5 +50,38 @@ describe("reduce_mw", () => {
       done()
     })
   })
+
+  it("ok with no middleware, empty array []", (done) => {
+    const handler = (request) => {
+      return Promise.resolve("ok")
+    }
+    const route = reduce(handler, [])
+    route({}).then((resp) => {
+      expect(resp).toBe("ok")
+      done()
+    })
+  })
+
+  it("converts the result of handler to Promise if it isn't", (done) => {
+    const handler = (request) => {
+      return "ok"
+    }
+    const route = reduce(handler, [
+      (handler) => {
+        return (request) => {
+          return handler(request).then((resp) => {
+            resp += "ok"
+            return resp
+          })
+        }
+      }
+    ])
+    route({}).then((resp) => {
+      expect(resp).toBe("okok")
+      done()
+    })
+  })
+
+  it("converts the result of middleware to Promise if it isn't")
 })
 

@@ -1,5 +1,5 @@
 var core = require("./lib/core/core")
-var defaults = require("./lib/defaults/index")
+var node_adapter = require("./lib/core/node_adapter")
 
 var router = require("./lib/router/router")
 var routes = require("./lib/router/routes")
@@ -9,13 +9,12 @@ var response_map = require("./lib/router/response-map")
 
 module.exports = {
   // core
-  spirit: core.handler,
-  define: core.define,
-  site_defaults: defaults,
+  core: core.main,
+
+  node: node_adapter.adapter,
 
   // router & route
   routes: Object.assign({
-    define: router.define,
     route: router.route,
     not_found: router.not_found,
     resources: resources

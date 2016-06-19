@@ -1,6 +1,5 @@
 /**
- * node adapter
- * for interfacing with spirit
+ * node adapter for spirit
  */
 
 const spirit = require("./core")
@@ -34,16 +33,25 @@ const send = (res, resp) => {
   }
 }
 
+const response = require("./response")
 const adapter = (handler, middleware) => {
   return (req, res) => {
-    const request = request(req)
+    req = request(req)
     const adp = spirit.main(handler, middleware)
-    adp(request)
+
+    adp(req)
       .then((resp) => {
         send(res, resp)
       })
       .catch((err) => {
         // error for http write
+
+        // TODO warn via log
+
+        // TODO if production, don't bother sending a body
+
+        // instead of crashing, just send back a 500
+        send(res, response.internal_err(err))
       })
   }
 }

@@ -27,10 +27,20 @@ const not_found = (body) => {
 /**
  * returns a 500 response map with `body`
  *
- * @param {*} body - the body of a response-map
+ * @param {*} err - an Error or string
  * @return {response-map}
  */
-const internal_err = (body) => {
+const internal_err = (err) => {
+  let body = err.toString()
+
+  if (err instanceof Error) {
+    body += "\n\n" + err.stack
+  }
+
+  if (!body) {
+    body = "An error occured, but there was no error message given."
+  }
+
   return { status: 500, headers: {}, body }
 }
 
