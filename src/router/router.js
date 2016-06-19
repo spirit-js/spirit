@@ -224,6 +224,87 @@ const route = (list) => {
   }
 }
 
+/////////////////////////////////////////// re-work
+
+// function could be a a iterate over routes
+// or a route_handler
+const wrap_route_handler = (url, fn) => {
+  return (request) => {
+    if (url === true || lookup(url, request)) {
+      return fn
+    }
+    return undefined
+  }
+}
+
+const route_handler = (args, body) => {
+  return (request) => {
+    // destructure request
+    // call body with args
+    // return response (promise)
+  }
+}
+
+/**
+ * "compiles" routes if it isn't already compiled
+ * returning back a route handler function
+ *
+ * @param {string} named - optional prefix to match
+ * @param {*} routes - a route, or array of routes or compiled route(s)
+ * @return {function} route handler
+ */
+const def = (named, routes) => {
+  if (typeof named !== "string") {
+    if (!routes) {
+      routes = named
+    } else {
+      named = ""
+    }
+  }
+
+  if (Array.isArray(routes)) {
+    routes = [routes]
+  }
+
+  const compiled_routes = routes.map((_route) => {
+    return compile(named, _route)
+  })
+
+  if (!named) {
+    const url = true
+  }
+  return wrap_route_handler(url, reducer)
+}
+
+
+const wrap = (route, middleware) => {
+  // check if compiled already, if not compile
+
+  return (request) => {
+    const r = route(request)
+    if (r) {
+      // wrap r
+      // run middleware
+      // return promise
+    }
+    return r
+  }
+}
+
+const compile = (url_prefix, route) => {
+  if (typeof route === "function") {
+    // already compiled
+    return route
+  }
+
+  return (request) => {
+    // url match
+    return // route body
+  }
+}
+
+
+
 module.exports = {
   route,
   _route_handler,
