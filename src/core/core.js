@@ -4,22 +4,6 @@
 
 const p_utils = require("./promise_utils")
 
-const reducep = (arr, args, start_idx) => {
-  let promises = arr
-  if (start_idx) {
-    promises = arr.slice(start_idx)
-  }
-
-  return promises.reduce((p, fn, idx) => {
-    return p.then((v) => {
-      if (typeof v !== "undefined") {
-        return v // if there is a value, stop iterating
-      }
-      return fn.apply(undefined, args)
-    })
-  }, Promise.resolve())
-}
-
 /**
  * reduces over `middleware` with `handler`, composing them
  * together to return a single function that returns a Promise
