@@ -1,4 +1,4 @@
-const core = require("../../../lib/core/core")
+const core = require("../../lib/core/core")
 
 describe("reduce_mw", () => {
   const reduce = core.reduce_mw
@@ -84,4 +84,3 @@ describe("reduce_mw", () => {
 
   it("converts the result of middleware to Promise if it isn't")
 })
-

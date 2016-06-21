@@ -2,8 +2,8 @@
  * node adapter for spirit
  */
 
-const spirit = require("./core")
-spirit.response = require("./response")
+const core = require("../core/core")
+const response = require("./response")
 
 const request = (request) => {
   return {
@@ -40,11 +40,11 @@ const send = (res, resp) => {
 const adapter = (handler, middleware) => {
   return (req, res) => {
     req = request(req)
-    const adp = spirit.main(handler, middleware)
+    const adp = core.main(handler, middleware)
 
     adp(req)
       .then((resp) => {
-        if (!spirit.response.is_response(resp)) {
+        if (!response.is_response(resp)) {
           throw "Error: handler did not return a proper response map"
         }
         send(res, resp)
@@ -57,7 +57,7 @@ const adapter = (handler, middleware) => {
         // TODO if production, don't bother sending a body
 
         // instead of crashing, just send back a 500
-        send(res, spirit.response.internal_err(err))
+        send(res, response.internal_err(err))
       })
   }
 }

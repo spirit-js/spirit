@@ -1,7 +1,6 @@
 /**
  * utility functions for working with Promises
  */
-const response = require("./response")
 const Promise = require("bluebird")
 Promise.onPossiblyUnhandledRejection(function(e, promise) {
   throw e;
@@ -41,6 +40,7 @@ const callp = (fn, args) => {
   return Promise.resolve(fn)
 }
 
+const response = require("../http/response")
 /**
  * Resolve a Promise of a Promise (as it pertains to a response
  * map)
@@ -76,4 +76,3 @@ module.exports = {
   resolve_response,
   is_promise
 }
-

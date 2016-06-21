@@ -83,7 +83,7 @@ describe("promise utils", () => {
     const is_promise = p_utils.is_promise
 
     it("returns true for promise", () => {
-      const ok = [new Promise(()=>{}), Promise.resolve(), Promise.reject()]
+      const ok = [new Promise(()=>{}), Promise.resolve()]
       ok.forEach((p) => {
         expect(is_promise(p)).toBe(true)
       })
