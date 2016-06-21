@@ -43,7 +43,7 @@ const compile = (method, path, args, body) => {
       }
   // guard
   if (!method || !path) {
-    throw("Cannot compile route, empty string passed to compile (verb); Got: " + method + " " + path)
+    throw("Cannot compile route, empty string passed, got: " + method + "(method) " + path + " (path)")
   }
 
   return {

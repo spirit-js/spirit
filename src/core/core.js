@@ -53,7 +53,6 @@ const main = (handler, middleware) => {
 }
 
 module.exports = {
-  reducep,
   main,
   reduce_mw
 }

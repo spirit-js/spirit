@@ -1,7 +1,8 @@
 const routes = require("./routes")
 const response = require("./response")
-const core = require("../core/core")
-core.response = require("../core/response")
+const p_utils = require("../core/promise_utils")
+
+const Promise = require("bluebird")
 
 /**
  * sees if there's a match with route `compiled_route` based on
@@ -69,111 +70,52 @@ const _destructure = (args, obj) => {
   })
 }
 
-/**
- * returns a express middleware that always 404's with body
- *
- * The express middleware is unimportant, it's wrapped as one
- * since the router only understands express middleware or Routes
- * The main handler only understands express middleware
- * So this makes it compatible for use for all cases
- *
- * NOTE: this is mostly done for express compat
- * (ideally this should be a route)
- *
- * @param {*} body - anything that response knows how to render
- * @return {function} Express middleware
- */
-const not_found = (body) => {
-  return (req, res, next) => {
-    core._resolvep_rmap(core._call(body, [req]))
-      .then((r) => {
-        if (core.response.is_response(r)) {
-          r.status = 404
-        } else {
-          r = core.response.not_found(r)
-        }
-        response.response(req, res, r)
-      })
-  }
-}
-
-/**
- * a handler for each a route
- *
- * this function is a predicate fn to be passed to `core.mapl`
- *
- * which then basically maps over a List by wrapping each item
- * with this function
- *
- * @param {*} compiled_route - a Route or Express middleware
- * @return {function}
- */
-const _route_handler = (compiled_route) => {
-  return function(req, res) {
-    // this is probably a Express middleware
-    if (typeof compiled_route === "function") {
-      return express_compat.adapter(compiled_route)(req, res)
-    }
-
-    const params = _lookup(compiled_route, req.method, req.url)
-    // not a matching route, move on
-    if (!params) {
-      return undefined
-    }
-
-    req.params = routes.decompile(compiled_route, params)
-    return core._resolvep_rmap(core._call(compiled_route.body, _destructure(compiled_route.args, req)))
-  }
-}
-
 /////////////////////////////////////////// re-work
 
-// function could be a a iterate over routes
-// or a route_handler
-const wrap_route_handler = (url, fn) => {
+const wrap_router = (Route) => {
   return (request) => {
-    // matches def?
-    if (url === true) {
-      return fn()
-    }
-
-    // matches route?
-    const params = _lookup(url, request.method, request.url)
+    const params = _lookup(Route, request.method, request.url)
     if (params) {
-      request.params = routes.decompile(url, params)
-      return fn(args, body)
+      request.params = routes.decompile(Route, params)
+      return call_route(Route, request)
     }
-
     return undefined
   }
 }
 
-const call_route = (route) => {
-  return (request) => {
-    const de_args = _destructure(route.args, request)
-    const ret = core.utils.callp(route.body, de_args)
-    return core.utils.resolve_response(ret)
+const call_route = (Route, request) => {
+  let de_args = _destructure(Route.args, request)
+
+  // FIXME
+  if (Route.args[0] === "request" && typeof de_args[0] === "undefined") {
+    de_args = [request]
   }
+
+  const ret = p_utils.callp(Route.body, de_args)
+  return p_utils.resolve_response(ret)
 }
 
-const reduce_r = (arr, args, start_idx) => {
-  if (start_idx) {
-    arr = arr.slice(start_idx)
-  }
-
+const reduce_r = (arr, request) => {
   return arr.reduce((p, fn) => {
     return p.then((v) => {
       if (typeof v !== "undefined") {
         return v // if there is a value, stop iterating
       }
-
-      // url match
-      const route = fn.apply(undefined, args)
-      if (typeof route === "function") {
-        return route.apply(undefined, args)
-      }
+      // wrap_router()(request)
+      return fn(request)
     })
   }, Promise.resolve())
+}
+
+const _handler = (compiled_routes) => {
+  return (request) => {
+    return reduce_r(compiled_routes, request).then((resp) => {
+      if (typeof resp !== "undefined") {
+        return response.response(request, resp)
+      }
+      return resp
+    })
+  }
 }
 
 /**
@@ -185,51 +127,28 @@ const reduce_r = (arr, args, start_idx) => {
  * @param {*} routes - a route, or array of routes or compiled route(s)
  * @return {function} wrapped_route_handler
  */
-const def = (named, routes) => {
-  if (typeof named !== "string") {
-    if (!routes) {
-      routes = named
-    } else {
-      named = ""
-    }
+const define = (named, arr_routes) => {
+  if (typeof arr_routes === "undefined") {
+    arr_routes = named
+    named = ""
   }
 
-  if (!Array.isArray(routes)) {
-    routes = [routes]
-  }
-
-  const compile_and_wrap = routes.map((_route) => {
+  const compile_and_wrap = arr_routes.map((_route) => {
     if (typeof _route === "function") {
       // already been wrapped & compiled
       return _route
     }
-
-    const cr = compile(_route)
-    return (request) => {
-      // check url TODO
-      if (url_ok) {
-        return (request) => {
-          call_route(cr)
-        }
-      }
-      return undefined
-    }
+    _route[1] = named + _route[1]
+    return wrap_router(routes.compile.apply(undefined, _route))
   })
 
-  if (!named) {
-    const url = true
-  }
-
-  return (request) => {
-    // check url  (named prefix only) TODO
-    return reduce_r(compiled_routes, request)
-  }
+  named = named + "*"
+  const _h = _handler(compile_and_wrap)
+  return wrap_router(routes.compile("get", named, ["request"], _h))
 }
-
 
 const wrap = (route, middleware) => {
   // check if compiled already, if not compile
-
   return (request) => {
     const r = route(request)
     if (r) {
@@ -242,8 +161,12 @@ const wrap = (route, middleware) => {
 }
 
 module.exports = {
-  _route_handler,
   _destructure,
   _lookup,
-  not_found
+
+  define, // public
+  reduce_r,
+  call_route,
+  wrap,   // public
+  wrap_router
 }

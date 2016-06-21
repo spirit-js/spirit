@@ -1,18 +1,36 @@
 const spirit = require("../../index")
-const routes = spirit.routes
+const route = spirit.route
 
 const admin_index = () => {
   return "admin index"
 }
 
-const admin = routes.def("/admin", [
-  routes.get("/", [], admin_index)
+const admin = route.define("/admin", [
+  route.get("/", [], admin_index)
 ])
 
-const app = routes.def([
-  routes.get("/", [], "Hello World"),
-  admin,
-  routes.wrap(admin, [])
+const app = route.define([
+  route.get("/a", [], "no"),
+  route.get("/b", [], "no"),
+  route.get("/c", [], "no"),
+  route.get("/d", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/a", [], "no"),
+  route.get("/", [], "Hello World"),
+  //admin,
+  //routes.wrap(admin, [])
 ])
 
 const site = spirit.node(app, [])
