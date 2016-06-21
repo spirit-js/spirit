@@ -1,4 +1,4 @@
-const adapter = require("../../lib/core/node_adapter")
+const adapter = require("../../lib/http/node_adapter")
 const mock_response = require("../support/mock-response")
 
 const stream = require("stream")

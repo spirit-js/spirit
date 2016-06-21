@@ -1,4 +1,4 @@
-const core = require("../../../lib/core/core")
+const core = require("../../lib/core/core")
 
 describe("core", () => {
 

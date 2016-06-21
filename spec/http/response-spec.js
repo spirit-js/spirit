@@ -1,4 +1,4 @@
-const response = require("../../lib/core/response")
+const response = require("../../lib/http/response")
 
 describe("response", () => {
 
