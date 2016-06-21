@@ -15,7 +15,7 @@ const Promise = require("bluebird")
  */
 const _lookup = (route, req_method, req_path) => {
   // lower case route.method here instead of in routes.compile()
-  if (route.method.toLowerCase() === req_method.toLowerCase()) {
+  if (route.method.toLowerCase() === req_method.toLowerCase() || route.method === "*") {
     const params = route.path.re.exec(req_path)
     if (params) {
       return params
@@ -77,21 +77,14 @@ const wrap_router = (Route) => {
     const params = _lookup(Route, request.method, request.url)
     if (params) {
       request.params = routes.decompile(Route, params)
-      return call_route(Route, request)
+      return call_route(Route.body, Route.args, request)
     }
-    return undefined
   }
 }
 
-const call_route = (Route, request) => {
-  let de_args = _destructure(Route.args, request)
-
-  // FIXME
-  if (Route.args[0] === "request" && typeof de_args[0] === "undefined") {
-    de_args = [request]
-  }
-
-  const ret = p_utils.callp(Route.body, de_args)
+const call_route = (fn, args, request) => {
+  let de_args = _destructure(args, request)
+  const ret = p_utils.callp(fn, de_args)
   return p_utils.resolve_response(ret)
 }
 
@@ -107,15 +100,13 @@ const reduce_r = (arr, request) => {
   }, Promise.resolve())
 }
 
-const _handler = (compiled_routes) => {
-  return (request) => {
+const _handler = (compiled_routes, request) => {
     return reduce_r(compiled_routes, request).then((resp) => {
       if (typeof resp !== "undefined") {
         return response.response(request, resp)
       }
       return resp
     })
-  }
 }
 
 /**
@@ -142,13 +133,16 @@ const define = (named, arr_routes) => {
     return wrap_router(routes.compile.apply(undefined, _route))
   })
 
-  named = named + "*"
-  const _h = _handler(compile_and_wrap)
-  return wrap_router(routes.compile("get", named, ["request"], _h))
+  return function(request) {
+    if (request.url.indexOf(named) === 0) {
+      return _handler(compile_and_wrap, request)
+    }
+  }
 }
 
 const wrap = (route, middleware) => {
   // check if compiled already, if not compile
+
   return (request) => {
     const r = route(request)
     if (r) {
