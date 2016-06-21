@@ -90,13 +90,13 @@ const render = (req, resp, middlewares) => {
  * @param {http.Response} res - node http Response object
  * @param {*} body - the result of a route's body function or from a middleware
  */
-const response = (req, res, body) => {
+const response = (req, body) => {
   let rmap = body
   if (!response_map.is_response_map(body)) {
     rmap = response_map.create(body)
   }
 
-  core_response.send(res, render(req, rmap, middlewares.list()))
+  return render(req, rmap, middlewares.list())
 }
 
 // response middleware; sets a default html & utf-8 charset

@@ -3,9 +3,13 @@
  */
 
 const spirit = require("./core")
+spirit.response = require("./response")
 
 const request = (request) => {
-  return {}
+  return {
+    method: request.method,
+    url: request.url
+  }
 }
 
 /**
@@ -33,7 +37,6 @@ const send = (res, resp) => {
   }
 }
 
-const response = require("./response")
 const adapter = (handler, middleware) => {
   return (req, res) => {
     req = request(req)
@@ -41,6 +44,9 @@ const adapter = (handler, middleware) => {
 
     adp(req)
       .then((resp) => {
+        if (!spirit.response.is_response(resp)) {
+          throw "Error: handler did not return a proper response map"
+        }
         send(res, resp)
       })
       .catch((err) => {
@@ -51,7 +57,7 @@ const adapter = (handler, middleware) => {
         // TODO if production, don't bother sending a body
 
         // instead of crashing, just send back a 500
-        send(res, response.internal_err(err))
+        send(res, spirit.response.internal_err(err))
       })
   }
 }
