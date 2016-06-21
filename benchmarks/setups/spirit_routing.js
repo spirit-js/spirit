@@ -24,10 +24,6 @@ const app = route.define([
   route.get("/a", [], "no"),
   route.get("/a", [], "no"),
   route.get("/a", [], "no"),
-  route.get("/a", [], "no"),
-  route.get("/a", [], "no"),
-  route.get("/a", [], "no"),
-  route.get("/a", [], "no"),
   route.get("/", [], "Hello World"),
   //admin,
   //routes.wrap(admin, [])
