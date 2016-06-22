@@ -1,5 +1,5 @@
 /**
- * checks if `resp` is a valid response
+ * checks if `resp` is a valid response map
  *
  * @param {*} resp - object to check
  * @return {boolean}
@@ -31,16 +31,16 @@ const not_found = (body) => {
  * @return {response-map}
  */
 const internal_err = (err) => {
+  if (!err) {
+    err = ""
+  }
   let body = err.toString()
-
   if (err instanceof Error) {
     body += "\n\n" + err.stack
   }
-
   if (!body) {
     body = "An error occured, but there was no error message given."
   }
-
   return { status: 500, headers: {}, body }
 }
 

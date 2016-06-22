@@ -1,6 +1,6 @@
 const response = require("../../lib/http/response")
 
-describe("response", () => {
+describe("http response", () => {
 
   describe("is_response", () => {
     it("returns true for valid response maps", () => {
@@ -46,6 +46,11 @@ describe("response", () => {
         headers: {},
         body: "test 123"
       })
+    })
+
+    it("accepts a Error and will output the err.stack", () => {
+      const err = new Error("err")
+      expect(response.internal_err(err).body).toMatch(/response-spec/)
     })
   })
 

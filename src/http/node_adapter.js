@@ -3,14 +3,8 @@
  */
 
 const core = require("../core/core")
+const request = require("./request")
 const response = require("./response")
-
-const request = (request) => {
-  return {
-    method: request.method,
-    url: request.url
-  }
-}
 
 /**
  * writes a http response map to a node HTTP response object
@@ -39,10 +33,9 @@ const send = (res, resp) => {
 
 const adapter = (handler, middleware) => {
   return (req, res) => {
-    req = request(req)
+    const request_map = request.create(req)
     const adp = core.main(handler, middleware)
-
-    adp(req)
+    adp(request_map)
       .then((resp) => {
         if (!response.is_response(resp)) {
           throw "Error: handler did not return a proper response map"
@@ -50,14 +43,11 @@ const adapter = (handler, middleware) => {
         send(res, resp)
       })
       .catch((err) => {
-        // error for http write
-
-        // TODO warn via log
-
-        // TODO if production, don't bother sending a body
-
-        // instead of crashing, just send back a 500
-        send(res, response.internal_err(err))
+        const resp = response.internal_err(err)
+        if (process.env.NODE_ENV === "production") {
+          resp.body = ""
+        }
+        send(res, resp)
       })
   }
 }
