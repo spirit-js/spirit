@@ -8,8 +8,8 @@ It is written from scratch, with goals to be:
 - modern, embracing modern javascript features
 - flexible & isomorphic
 
-[![Build Status](https://travis-ci.org/hnry/spirit.svg?branch=master)](https://travis-ci.org/hnry/spirit)
-[![Coverage Status](https://coveralls.io/repos/github/hnry/spirit/badge.svg?branch=master)](https://coveralls.io/github/hnry/spirit?branch=master)
+[![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
+[![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
 
 ## Why
 The landscape for what a web application looks like has changed. Javascript has changed. But we are still tied to a legacy and brittle way of doing things.
@@ -20,8 +20,6 @@ Newer alternatives like Koa do not provide much change from the old way of doing
 - Middlewares are not tied to node http `req` & `res` objects. spirit middlewares just take an input and __return__ an output. This makes them easier to test, re-use, and isomorphic.
 
 - Middlewares __flow both ways__ and are bidirectional. (Unlike with Express middleware, where they only move one way). This makes response based middlewares possible.
-
-- Middlewares are __not__ a blackbox http handler. In spirit they have a more defined role as transforming input and output. They do not double as a http handler like in Express.
 
 - __Environment agnostic / Isomorphic__. In spirit, there are _adapters_, they allow spirit to interface with a different environment. For example, there is a node.js http adapter. Their can be a browser adapter that hooks into DOM events.
 
@@ -46,7 +44,7 @@ Middlewares in spirit are just functions that take a input and return an output 
 #### Handlers
 A handler is a function that describes what to do with the incoming data after it's gone through middlewares. And returns back data that will flow back through the middlewares to the adapter.
 
-An example of a handler is [spirit-router](https://github.com/hnry/spirit-router).
+An example of a handler is [spirit-router](https://github.com/spirit-js/spirit-router).
 
 There are plans to write a handler for react-router (coming soon).
 
