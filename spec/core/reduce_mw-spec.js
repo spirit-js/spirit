@@ -82,5 +82,19 @@ describe("reduce_mw", () => {
     })
   })
 
-  it("converts the result of middleware to Promise if it isn't")
+  it("converts the result of middleware to Promise if it isn't", (done) => {
+    const handler = () => {}
+
+    const route = reduce(handler, [
+      (handler) => {
+        return () => {
+          return "ok"
+        }
+      }
+    ])
+    route().then((resp) => {
+      expect(resp).toBe("ok")
+      done()
+    })
+  })
 })

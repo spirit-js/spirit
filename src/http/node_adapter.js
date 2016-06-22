@@ -38,7 +38,7 @@ const adapter = (handler, middleware) => {
     adp(request_map)
       .then((resp) => {
         if (!response.is_response(resp)) {
-          throw "Error: handler did not return a proper response map"
+          throw "Error: node.js http adapter did not receive a proper response map"
         }
         send(res, resp)
       })
