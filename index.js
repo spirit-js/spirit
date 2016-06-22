@@ -1,22 +1,15 @@
 var core = require("./lib/core/core")
+var p_utils = require("./lib/core/promise_utils")
 
-var node_adapter = require("./lib/core/node_adapter")
-
-var router = require("./lib/router/router")
-var routes = require("./lib/router/routes")
-//var resources = require("./lib/router/resource")
-//var response_map = require("./lib/router/response-map")
+var node_adapter = require("./lib/http/node_adapter")
+var response = require("./lib/http/response")
 
 module.exports = {
-  // spirit-core
   core: core.main,
+  utils: p_utils,
 
-  // spirit-nodejs-adapter  (adapter)
-  node: node_adapter.adapter,
-
-  // spirit-router  (handler)
-  route: {
-    define: router.define,
-    get: routes.verbs.get
+  node: {
+    adapter: node_adapter.adapter,
+    response: response
   }
 }
