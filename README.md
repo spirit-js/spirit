@@ -3,7 +3,7 @@ Modern library (or architecture) for building truly modular & isomorphic applica
 
 Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be more modular & isomorphic.
 
-To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router).
+To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router) and other [notable extensions](#notable-extensions).
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
@@ -35,7 +35,7 @@ A handler are simply a function that handles the input after it's flowed through
 
 The following chart shows how data flows:
 
-[![spirit flow chart](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)
+[![spirit flow chart](https://raw.githubusercontent.com/spirit-js/spirit/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit)
 
 ## Install & Usage
 `npm install spirit`
