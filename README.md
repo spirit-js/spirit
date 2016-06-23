@@ -1,52 +1,60 @@
 # spirit
-A modern low level web library that provides extensible abstractions for building web middleware, applications & frameworks.
+Modern library (or architecture) for building truly modular & isomorphic applications or frameworks.
 
-It is similar to Rack in Ruby, or Ring in Clojure. And meant as a different approach to Connect / Express way of doing things.
+Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be more modular & isomorphic.
 
-It is written from scratch, with goals to be:
-- more extensible and modular with better abstractions
-- modern, embracing modern javascript features
-- flexible & isomorphic
+To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router).
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
 
-## Why
-The landscape for what a web application looks like has changed. Javascript has changed. But we are still tied to a legacy and brittle way of doing things.
+## Key Differences
+- It is Promise based and compatible with ES7 (async/await).
 
-Newer alternatives like Koa do not provide much change from the old way of doing things, or other projects just wrap or hack around Express.
+- __Environment agnostic__. Middlewares are not tied to anything like a `req` or `res`. They are simply javascript functions. This allows for them to be easily re-used and tested in different environments (browser, node).
 
-## Features & Key Differences
-- Middlewares are not tied to node http `req` & `res` objects. spirit middlewares just take an input and __return__ an output. This makes them easier to test, re-use, and isomorphic.
+- Middlewares __flow both ways__ and are bidirectional. This is a contrast to Express where it goes one way only.
 
-- Middlewares __flow both ways__ and are bidirectional. (Unlike with Express middleware, where they only move one way). This makes response based middlewares possible.
+- Separation of concerns, middlewares are just middlewares. They transform / reduce data, returning new data. This differs from Express where middlewares also double as handlers. Which makes them sort of magical and a black box.
 
-- __Environment agnostic / Isomorphic__. In spirit, there are _adapters_, they allow spirit to interface with a different environment. For example, there is a node.js http adapter. Their can be a browser adapter that hooks into DOM events.
+- Compatible with Express middlewares. Since spirit middlewares are not tied to any implementation, this makes it possible to wrap Express middlewares and use them.
 
-- Promises over callbacks
+When combined together it makes for truly "plug and play" modular architecture that is easy to test, reason about, and re-use.
+
+## The architecture, how spirit works
+In spirit, there are 3 extensible parts, adapters, middlewares, handlers.
+
+###### Adapters
+An adapter describe how to interface spirit with another environment / API. For instance there is node-http adapter for spirit. Or you can write an adapter for anything, even an adapter to hook into DOM events in the browser.
+
+##### Middlewares
+Middlewares are simply reducers or transformer functions on the input and output of data flowing through spirit.
+
+##### Handlers
+A handler are simply a function that handles the input after it's flowed through all the middlewares and returns an output (which 'rewinds' and flows back through the system).
+
+The following chart shows how data flows:
+
+[![spirit flow chart](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)
 
 ## Install & Usage
 `npm install spirit`
 
-## Extending
-There are 3 core abstractions which allow you to extend spirit: adapters, middlewares, and handlers.
+Docs and guides coming soon...
 
-#### Adapters
-A adapter is a function that describes how to interface with an environment or another library.
+## Notable Extensions
+###### Adapters
+node-http-adapter: Interfaces with node's http, https, and http2 module. Optionally bundled with spirit. See the [Doc]() for usage.
 
-For example, spirit comes with a node.js http adapter. It describes how to handle a `req` object from node.js, and how to write back to `res`. As well as providing abstractions for them.
+###### Middlewares
 
-Is it possible to write other adapters, for instance a DOM event adapter for the browser, so spirit. Or if another http server was written for node.js, all that needs to happen is write a new adapter and all existing middleware and handlers will work.
+###### Handlers
+[spirit-router](https://github.com/spirit-js/spirit-router):
+A URL routing library
 
-#### Middlewares
-Middlewares in spirit are just functions that take a input and return an output (Promise).
-
-#### Handlers
-A handler is a function that describes what to do with the incoming data after it's gone through middlewares. And returns back data that will flow back through the middlewares to the adapter.
-
-An example of a handler is [spirit-router](https://github.com/spirit-js/spirit-router).
-
-There are plans to write a handler for react-router (coming soon).
+###### Misc
+[spirit-express](https://github.com/spirit-js/spirit-express):
+A wrapper for Express API & middleware to get them to work as spirit middleware.
 
 ## Credits
 spirit is heavily influenced by the design of [Ring](https://github.com/ring-clojure/ring)

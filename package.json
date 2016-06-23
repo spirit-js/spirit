@@ -31,6 +31,6 @@
     "jasmine": "^2.4.1"
   },
   "dependencies": {
-    "bluebird": "^3.3.5"
+    "bluebird": "^3.4.1"
   }
 }
