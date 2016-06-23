@@ -27,9 +27,33 @@ describe("spirit spec", () => {
       }
     ]
 
-    const reducer = spirit.core(handler, middlewares)
+    const reducer = spirit.compose(handler, middlewares)
     reducer("a").then((result) => {
       expect(result).toBe("out12")
+      done()
+    })
+  })
+
+  it("the handler can return a Promise, or plain values will be converted to a Promise", (done) => {
+    const handler = (input) => {
+      return new Promise((resolve, reject) => {
+        resolve("ok")
+      })
+    }
+
+    const middleware = [
+      (handler) => {
+        return (input) => {
+          return handler(input).then((result) => {
+            return result + "2"
+          })
+        }
+      }
+    ]
+
+    const reducer = spirit.compose(handler, middleware)
+    reducer("a").then((result) => {
+      expect(result).toBe("ok2")
       done()
     })
   })
@@ -54,7 +78,7 @@ describe("spirit spec", () => {
         }
       }
     ]
-    const reducer = spirit.core(handler, middlewares)
+    const reducer = spirit.compose(handler, middlewares)
     reducer("a").then((result) => {
       expect(result).toBe("stop2")
       done()
@@ -74,7 +98,7 @@ describe("spirit spec", () => {
       }
     ]
 
-    const reducer = spirit.core(handler, middlewares)
+    const reducer = spirit.compose(handler, middlewares)
     const adapter = () => {
       reducer("hi").catch((err) => {
         expect(err).toBe("catch")

@@ -5,7 +5,7 @@ var node_adapter = require("./lib/http/node_adapter")
 var response = require("./lib/http/response")
 
 module.exports = {
-  core: core.main,
+  compose: core.compose,
   utils: p_utils,
 
   node: {

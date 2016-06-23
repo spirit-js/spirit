@@ -1,9 +1,9 @@
 # spirit
-Modern library (or architecture) for building truly modular & isomorphic applications or frameworks.
+Modern architecture for building modular web applications and frameworks.
 
-Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be more modular & isomorphic.
+Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be much more modular and flexible.
 
-To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router).
+To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router) and other [notable extensions](#notable-extensions).
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
@@ -11,7 +11,7 @@ To see an example of what's possible with spirit, check out [spirit-router](http
 ## Key Differences
 - It is Promise based and compatible with ES7 (async/await).
 
-- __Environment agnostic__. Middlewares are not tied to anything like a `req` or `res`. They are simply javascript functions. This allows for them to be easily re-used and tested in different environments (browser, node).
+- __Environment agnostic__. Middlewares are not tied to anything like a `req` or `res`. They are simply javascript functions. This allows for them to be easily re-used and tested in different environments (browser & nodejs).
 
 - Middlewares __flow both ways__ and are bidirectional. This is a contrast to Express where it goes one way only.
 
@@ -35,16 +35,19 @@ A handler are simply a function that handles the input after it's flowed through
 
 The following chart shows how data flows:
 
-[![spirit flow chart](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit/blob/master/docs/flow-chart.png)
+[![spirit flow chart](https://raw.githubusercontent.com/spirit-js/spirit/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit)
 
 ## Install & Usage
 `npm install spirit`
 
-Docs and guides coming soon...
+For usage, please see [API Docs](docs/api)
+
+If you have questions, come
+[![Join the chat at https://gitter.im/spirit-js/spirit](https://badges.gitter.im/spirit-js/spirit.svg)](https://gitter.im/spirit-js/spirit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Notable Extensions
 ###### Adapters
-node-http-adapter: Interfaces with node's http, https, and http2 module. Optionally bundled with spirit. See the [Doc]() for usage.
+node-http-adapter: Interfaces with node's http, https, and http2 module. Optionally bundled with spirit. See the [Doc](docs/api/node-adapter.md) for usage.
 
 ###### Middlewares
 
