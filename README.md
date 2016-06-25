@@ -1,4 +1,6 @@
 # spirit
+
+[![Join the chat at https://gitter.im/spirit-js/spirit](https://badges.gitter.im/spirit-js/spirit.svg)](https://gitter.im/spirit-js/spirit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Modern library (or architecture) for building truly modular & isomorphic applications or frameworks.
 
 Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be more modular & isomorphic.
