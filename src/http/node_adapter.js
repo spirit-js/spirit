@@ -34,11 +34,11 @@ const send = (res, resp) => {
 const adapter = (handler, middleware) => {
   return (req, res) => {
     const request_map = request.create(req)
-    const adp = core.main(handler, middleware)
+    const adp = core.compose(handler, middleware)
     adp(request_map)
       .then((resp) => {
         if (!response.is_response(resp)) {
-          throw "Error: node.js http adapter did not receive a proper response map"
+          throw new Error("Error: node.js adapter did not receive a proper response (response map). Got: " + JSON.stringify(resp))
         }
         send(res, resp)
       })

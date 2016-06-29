@@ -5,6 +5,83 @@ const stream = require("stream")
 
 describe("node adapter", () => {
 
+  describe("adapter", () => {
+    const adp = adapter.adapter
+
+    it("returns a (req, res) fn that wraps core.compose", (done) => {
+      const handler = (request) => {
+        return { status: 200, headers: {}, body: "ok" }
+      }
+
+      const middleware = [
+        (handler) => {
+          return (request) => {
+            return handler(request)
+          }
+        },
+        (handler) => {
+          return (request) => {
+            return handler(request)
+          }
+        }
+      ]
+      const app = adp(handler, middleware)
+      const res = mock_response((result) => {
+        expect(result.body).toBe("ok")
+        done()
+      })
+      app({}, res)
+    })
+
+    it("abstracts node's `req` by creating a request map", (done) => {
+      const handler = (request) => {
+        expect(request).toEqual(jasmine.objectContaining({
+          method: "GET",
+          url: "/hi",
+          headers: { a: 1 }
+        }))
+        expect(typeof request.req).toBe("function")
+        return "ok"
+      }
+
+      const app = adp(handler, [])
+      const res = mock_response(done)
+      app({
+        method: "GET",
+        url: "/hi",
+        headers: { a: 1 }
+      }, res)
+    })
+
+    it("throws an err when a response map is not returned from handler + middleware, as it relies on a response map to write back to node's `res`", (done) => {
+      const handler = (request) => {
+        return "ok"
+      }
+
+      const app = adp(handler, [])
+      const res = mock_response((result) => {
+        expect(result.status).toBe(500)
+        expect(result.body).toMatch(/node.js adapter did not/)
+        done()
+      })
+      app({}, res)
+    })
+
+    it("errors are surpressed when in NODE_ENV 'production'", (done) => {
+      const handler = (request) => {
+        return "ok"
+      }
+      const app = adp(handler, [])
+      const res = mock_response((result) => {
+        expect(result.status).toBe(500)
+        expect(result.body).toBe("")
+        done()
+      })
+      process.env.NODE_ENV = "production"
+      app({}, res)
+    })
+  })
+
   describe("send", () => {
     const send = adapter.send
 

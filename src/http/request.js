@@ -1,6 +1,7 @@
 const url = require("url")
 
 const urlquery = (req, request) => {
+  if (!req.url) return
   const result = url.parse(req.url, true)
   request.url = req.url
   request.query = result.query
@@ -43,6 +44,9 @@ const protocol = (req, request) => {
  * - scheme   {string} the transport protocol ex: "HTTP/1.1"
  * - headers  {object} the request headers (as node delivers it)
  *
+ * - req {function} returns the node IncomingRequest object
+ *
+ *** TODO, add a body?
  * - body  {Stream} raw unparsed request body, this is just `req`, as it is the easiest way to pass the 'raw' body, which would be a node stream
  * NOTE: this may change, treat it as a stream only
  *
@@ -56,8 +60,14 @@ const create = (req) => {
     method: req.method,
     headers: req.headers,
     scheme: req.httpVersion,
-    ip: req.connection.remoteAddress,
-    body: req
+    //body: req
+    req: function() {
+      return req
+    }
+  }
+
+  if (req.connection) {
+    request.ip = req.connection.remoteAddress
   }
 
   protocol(req, request)

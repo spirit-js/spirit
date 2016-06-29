@@ -93,7 +93,8 @@ describe("http request", () => {
       expect(result.scheme).toBe("1.1")
       expect(result.protocol).toBe("http")
       expect(result.headers).toBe(mock_req.headers)
-      expect(result.body).toBe(mock_req)
+      //expect(result.body).toBe(mock_req)
+      expect(result.req()).toBe(mock_req)
       expect(result.query.a).toBe("1")
 
       expect(Object.keys(result).length).toBe(10)
