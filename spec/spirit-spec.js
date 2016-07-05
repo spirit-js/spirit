@@ -11,7 +11,7 @@ describe("spirit spec", () => {
     const middlewares = [
       (handler) => {
         return (input) => {
-          input += "c"
+          input += "b"
           return handler(input).then((result) => {
             return result + "1"
           })
@@ -19,7 +19,7 @@ describe("spirit spec", () => {
       },
       (handler) => {
         return (input) => {
-          input += "b"
+          input += "c"
           return handler(input).then((result) => {
             return result + "2"
           })
@@ -29,7 +29,7 @@ describe("spirit spec", () => {
 
     const reducer = spirit.compose(handler, middlewares)
     reducer("a").then((result) => {
-      expect(result).toBe("out12")
+      expect(result).toBe("out21")
       done()
     })
   })
@@ -65,16 +65,16 @@ describe("spirit spec", () => {
     const middlewares = [
       (handler) => {
         return (input) => {
-          expect(input).toBe("ab")
-          return Promise.resolve("stop")
-        }
-      },
-      (handler) => {
-        return (input) => {
           input += "b"
           return handler(input).then((result) => {
             return result + "2"
           })
+        }
+      },
+      (handler) => {
+        return (input) => {
+          expect(input).toBe("ab")
+          return Promise.resolve("stop")
         }
       }
     ]

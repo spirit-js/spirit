@@ -3,8 +3,8 @@
  */
 const Promise = require("bluebird")
 Promise.onPossiblyUnhandledRejection(function(e, promise) {
-  throw e;
-});
+  throw e
+})
 
 /**
  * checks if `p` is a promise, returning true or false
