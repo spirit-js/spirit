@@ -1,11 +1,11 @@
 const core = require("../../lib/core/core")
 
-describe("compose", () => {
+describe("core - compose", () => {
   const reduce = core.compose
 
   it("order", (done) => {
     const handler = (request) => {
-      expect(request.called).toBe(".cba")
+      expect(request.called).toBe(".abc")
       return Promise.resolve({ resp: "." })
     }
 
@@ -45,7 +45,7 @@ describe("compose", () => {
     const resp = route(mock_req)
     resp.then((response) => {
       expect(response).toEqual({
-        resp: ".123"
+        resp: ".321"
       })
       done()
     })

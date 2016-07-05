@@ -20,6 +20,14 @@ const compose = (handler, middleware) => {
     }
   }
 
+  let prev = wrap(handler)
+
+  for (let i = middleware.length - 1; i >= 0; i--) {
+    prev = wrap(middleware[i](prev))
+  }
+
+  return prev
+  /*
   return middleware.reduce((prev, curr) => {
     const r = curr(prev)
     if (typeof r !== "function") {
@@ -27,6 +35,7 @@ const compose = (handler, middleware) => {
     }
     return wrap(r)
   }, wrap(handler))
+   */
 }
 
 module.exports = {
