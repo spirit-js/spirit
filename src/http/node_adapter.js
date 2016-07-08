@@ -1,7 +1,6 @@
 /**
  * node adapter for spirit
  */
-
 const core = require("../core/core")
 const request = require("./request")
 const response = require("./response")
@@ -19,14 +18,14 @@ const response = require("./response")
 const send = (res, resp) => {
   // TODO handle http2
   res.writeHead(resp.status, resp.headers)
-  if (typeof resp.body !== "undefined") {
-    if (resp.body && resp.body.pipe) {
-      resp.body.pipe(res)
-    } else {
-      res.write(resp.body)
-      res.end()
-    }
+  if (resp.body === "undefined") {
+    return res.end()
+  }
+
+  if (typeof resp.body.pipe === "function") {
+    resp.body.pipe(res)
   } else {
+    res.write(resp.body)
     res.end()
   }
 }

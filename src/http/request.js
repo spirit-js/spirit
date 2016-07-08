@@ -70,6 +70,8 @@ const create = (req) => {
     request.ip = req.connection.remoteAddress
   }
 
+  if (typeof request.method === "string") request.method = request.method.toUpperCase()
+
   protocol(req, request)
   hostport(req, request)
   urlquery(req, request)
