@@ -17,7 +17,7 @@ describe("http response", () => {
 
     it("returns false for invalid response maps", () => {
       const invalid = [
-        "", 123, {}, [],
+        "", 123, {}, [], null,
         { status: "hi", headers: {} },
         { status: 123, body: 123 },
         { status: 123, headers: [] }

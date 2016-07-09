@@ -6,6 +6,7 @@
  */
 const is_response = (resp) => {
   if (typeof resp === "object"
+      && resp !== null
       && typeof resp.status === "number"
       && typeof resp.headers === "object"
       && !Array.isArray(resp.headers)) {
