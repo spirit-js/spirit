@@ -1,17 +1,16 @@
-const response_map = require("../../lib/http/response-map")
-const Response = response_map.Response
+const {Response, is_Response}= require("../../lib/http/response-class")
 
-describe("response map", () => {
+describe("Response", () => {
   describe("is_Response", () => {
     it("returns true if response map", () => {
-      const t = new response_map.Response()
-      const r = response_map.is_Response(t)
+      const t = new Response()
+      const r = is_Response(t)
       expect(r).toBe(true)
     })
 
     it("returns false for {}response map", () => {
       const t = { status: 200, headers: {}, body: "" }
-      const r = response_map.is_Response(t)
+      const r = is_Response(t)
       expect(r).toBe(false)
     })
   })

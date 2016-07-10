@@ -42,7 +42,7 @@ const adapter = (handler, middleware) => {
         send(res, resp)
       })
       .catch((err) => {
-        const resp = response.internal_err(err)
+        const resp = response.err_response(err)
         if (process.env.NODE_ENV === "production") {
           resp.body = ""
         }
