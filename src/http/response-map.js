@@ -10,15 +10,51 @@ class Response {
   constructor(body) {
     this.status = 200
     this.headers = {}
-    this.body = body || ""
+    this.body = body
   }
 
-  statusCode(n) {
+  code(n) {
+    return this.status_(n)
+  }
+
+  status_(n) {
     this.status = parseInt(n)
     return this
   }
 
-  type(content_type) {
+  get(k) {
+    k = k.toLowerCase()
+    const keys = Object.keys(this.headers)
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() === k) {
+        return this.headers[keys[i]]
+      }
+    }
+  }
+
+  set(k, v, overwrite=true) {
+    // avoid doing this song and dance if there's nothing
+    // to even do
+    if (v === undefined) {
+      return this
+    }
+
+    const lk = k.toLowerCase()
+    const keys = Object.keys(this.headers)
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() === lk) {
+        if (overwrite !== true) { // since a existing key is found, just exit
+          return this
+        }
+        k = keys[i]
+        break
+      }
+    }
+    this.headers[k] = v
+    return this
+  }
+
+  type(content_type, _overwrite) {
     let t = mime.lookup(content_type)
     if (!t) {
       return this
@@ -27,21 +63,17 @@ class Response {
     let charset = ""
     if (mime.charsets.lookup(t)) charset = "; charset=utf-8"
 
-    this.headers["Content-Type"] = t + charset
-    return this
+    return this.set("Content-Type", t + charset, _overwrite)
   }
 
-  _type(content_type) {
-    if (!this.headers["Content-Type"]) {
-      return this.type(content_type)
-    }
-    return this
+  location(url, _overwrite) {
+    return this.set("Location", url, _overwrite)
   }
 
-  location(url) {
-    this.headers["Location"] = url
-    return this
+  len(size, _overwrite) {
+    return this.set("Content-Length", size, _overwrite)
   }
+
 }
 
 const is_Response = (obj) => {

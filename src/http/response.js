@@ -1,5 +1,9 @@
+const {Response} = require("./response-map")
+const {size_of} = require("./utils")
+
 /**
  * checks if `resp` is a valid response map
+ * this test will return true for a Response too
  *
  * @param {*} resp - object to check
  * @return {boolean}
@@ -16,19 +20,21 @@ const is_response = (resp) => {
 }
 
 /**
- * returns a 404 response map with `body`
+ * returns a 404 Response with `body`
  *
  * @param {*} body - the body of a response-map
- * @return {response-map}
+ * @return {Response}
  */
 const not_found = (body) => {
-  return { status: 404, headers: {}, body }
+  return new Response(body)
+    .status_(404)
+    .len(size_of(body))
 }
 
 /**
- * returns a 500 response map with `body`
+ * returns a 500 response map with `err`
  *
- * @param {*} err - an Error or string
+ * @param {*} err - typically an Errors
  * @return {response-map}
  */
 const internal_err = (err) => {
@@ -42,7 +48,9 @@ const internal_err = (err) => {
   if (!body) {
     body = "An error occured, but there was no error message given."
   }
-  return { status: 500, headers: {}, body }
+  return new Response(body)
+    .status_(500)
+    .len(size_of(body))
 }
 
 module.exports = {

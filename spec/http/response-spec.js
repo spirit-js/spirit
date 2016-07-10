@@ -1,6 +1,6 @@
 const response = require("../../lib/http/response")
 
-describe("http response", () => {
+describe("http.response", () => {
 
   describe("is_response", () => {
     it("returns true for valid response maps", () => {
@@ -31,21 +31,25 @@ describe("http response", () => {
 
   describe("not_found", () => {
     it("returns a response map with 404 status", () => {
-      expect(response.not_found("hi")).toEqual({
+      expect(response.not_found("hi")).toEqual(jasmine.objectContaining({
         status: 404,
-        headers: {},
+        headers: {
+          "Content-Length": 2
+        },
         body: "hi"
-      })
+      }))
     })
   })
 
   describe("internal_err", () => {
     it("returns a response map with status 500", () => {
-      expect(response.internal_err("test 123")).toEqual({
+      expect(response.internal_err("test 123")).toEqual(jasmine.objectContaining({
         status: 500,
-        headers: {},
+        headers: {
+          "Content-Length": 8
+        },
         body: "test 123"
-      })
+      }))
     })
 
     it("accepts a Error and will output the err.stack", () => {

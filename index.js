@@ -15,6 +15,7 @@ module.exports = {
   node: {
     adapter: node_adapter.adapter,
     response: resp,
-    Response: response_map.Response
+    Response: response_map.Response,
+    utils: require("./lib/http/utils")
   }
 }
