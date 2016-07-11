@@ -16,9 +16,8 @@ const response = require("./response")
  * @param {response-map} resp - response map
  */
 const send = (res, resp) => {
-  // TODO handle http2
   res.writeHead(resp.status, resp.headers)
-  if (resp.body === "undefined") {
+  if (resp.body === undefined) {
     return res.end()
   }
 

@@ -140,6 +140,21 @@ describe("node adapter", () => {
       })
     })
 
+    it("undefined body ok", (done) => {
+      const res = mock_response((result) => {
+        expect(result.status).toBe(1)
+        expect(result.headers).toEqual({
+          a: 1
+        })
+        expect(result.body).toBe(undefined)
+        done()
+      })
+
+      send(res, {
+        status: 1, headers: {a: 1}, body: undefined
+      })
+    })
+
     it("supports http2 api")
   })
 
