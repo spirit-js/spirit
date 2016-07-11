@@ -7,7 +7,7 @@ var response_map = require("./lib/http/response-class")
 
 
 var node = response
-node.adapter = node_adapter
+node.adapter = node_adapter.adapter
 node.Response = response_map.Response
 node.is_Response = response_map.is_Response
 node.utils = require("./lib/http/utils")

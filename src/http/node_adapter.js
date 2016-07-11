@@ -52,7 +52,6 @@ const adapter = (handler, middleware) => {
 }
 
 module.exports = {
-  request,
   adapter,
   send
 }

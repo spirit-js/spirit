@@ -27,15 +27,6 @@ const compose = (handler, middleware) => {
   }
 
   return prev
-  /*
-  return middleware.reduce((prev, curr) => {
-    const r = curr(prev)
-    if (typeof r !== "function") {
-      throw new TypeError("Expected middleware to return a function that takes a request")
-    }
-    return wrap(r)
-  }, wrap(handler))
-   */
 }
 
 module.exports = {

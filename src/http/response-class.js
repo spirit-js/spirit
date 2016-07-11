@@ -56,9 +56,7 @@ class Response {
 
   type(content_type, _overwrite) {
     let t = mime.lookup(content_type)
-    if (!t) {
-      return this
-    }
+    if (!t) t = content_type
 
     let charset = ""
     if (mime.charsets.lookup(t)) charset = "; charset=utf-8"

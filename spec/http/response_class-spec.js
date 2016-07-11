@@ -78,9 +78,9 @@ describe("response-class", () => {
         expect(result).toBe(r)
       })
 
-      it("nothing happens if content type is unknown", () => {
+      it("if content type is unknown sets the content type to be argument passed in", () => {
         const r = new Response().type("json123")
-        expect(r.headers["Content-Type"]).toBe(undefined)
+        expect(r.headers["Content-Type"]).toBe("json123")
       })
 
       it("sets utf-8 charset by default for text/* content types", () => {
