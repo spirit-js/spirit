@@ -71,6 +71,8 @@ class Response {
   }
 
   len(size, _overwrite) {
+    // there is no point in setting 0
+    if (size === 0) return this
     return this.set("Content-Length", size, _overwrite)
   }
 

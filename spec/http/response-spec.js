@@ -1,5 +1,6 @@
 const response = require("../../lib/http/response")
 const Response = require("../../lib/http/response-class").Response
+const fs = require("fs")
 
 describe("http.response", () => {
 
@@ -70,6 +71,47 @@ describe("http.response", () => {
     })
   })
 
+  describe("file_response", () => {
+
+    const test_file = __dirname + "/../../package.json"
+
+    const test_expect = (resp) => {
+      expect(resp.status).toBe(200)
+      // file is probably greater than 500 bytes
+      expect(resp.headers["Content-Length"] > 500).toBe(true)
+      expect(resp.headers["Content-Type"]).toBe("application/json")
+      expect(Object.keys(resp.headers).length).toBe(2)
+      expect(typeof resp.body.pipe).toBe("function")
+
+      // also attaches file information to ._file
+      expect(resp._file.filepath).toMatch(/package.json$/)
+      expect(resp._file instanceof fs.Stats).toBe(true)
+    }
+
+    it("creates response from file path string with a body stream", (done) => {
+      response.file_response(test_file)
+        .then((resp) => {
+          test_expect(resp)
+          done()
+        })
+    })
+
+    it("creates response from a file stream", (done) => {
+      const f = fs.createReadStream(test_file)
+      response.file_response(f).then((resp) => {
+        test_expect(resp)
+        done()
+      })
+    })
+
+    it("errors are catchable", (done) => {
+      response.file_response("no_exist.txt").catch((err) => {
+        expect(err).toMatch(/no_exist.txt/)
+        done()
+      })
+    })
+  })
+
   describe("redirect", () => {
     it("generates a response map for redirecting", () => {
       let rmap = response.redirect(123, "google")
@@ -112,6 +154,12 @@ describe("http.response", () => {
         },
         body: "hi"
       }))
+
+      expect(response.not_found()).toEqual(jasmine.objectContaining({
+        status: 404,
+        headers: {},
+        body: undefined
+      }))
     })
   })
 
@@ -124,6 +172,17 @@ describe("http.response", () => {
         },
         body: "test 123"
       }))
+    })
+
+    it("returns a default message if no body", () => {
+      const resp = response.err_response()
+      expect(resp).toEqual(jasmine.objectContaining({
+        status: 500,
+        headers: {
+          "Content-Length": Buffer.byteLength(resp.body)
+        }
+      }))
+      expect(resp.body).toMatch(/no error message/)
     })
 
     it("accepts a Error and will output the err.stack", () => {

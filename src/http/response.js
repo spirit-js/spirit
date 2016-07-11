@@ -1,6 +1,10 @@
 const {Response} = require("./response-class")
 const {size_of} = require("./utils")
 
+const fs = require("fs")
+const path = require("path")
+const Promise = require("bluebird")
+
 /**
  * checks if `resp` is a valid response map
  * this test will return true for a Response too
@@ -70,19 +74,33 @@ const response = (body) => {
  * @param  {string} file_path path to file
  * @return {Promise} Promise of a Response
  */
-const file_response = (file_path) => {
-  // TODO
-  if (typeof r.pipe === "function" && typeof r.path === "string") {
-    return new Promise((resolve, reject) => {
-      fs.stat(r.path, (err, file) => {
-        if (!err) {
-          resolve(file.size)
-        } else {
-          resolve()
-        }
-      })
-    })
+const file_response = (file) => {
+  const resp = response()
+
+  if (typeof file !== "string") {
+    if (typeof file.path !== "string" || typeof file.pipe !== "function") {
+      throw new TypeError("Expected a file path (string) or a file stream for `file_response`")
+    }
+    resp.body = file
+    file = file.path
   }
+
+  return new Promise((resolve, reject) => {
+    fs.stat(file, (err, fdata) => {
+      if (err || !fdata.isFile()) {
+        if (!err) err = new TypeError(file + " is not a file.")
+        return reject(err)
+      }
+
+      resp._file = fdata
+      resp._file.filepath = file
+      if (!resp.body) {
+        resp.body = fs.createReadStream(file)
+      }
+      resp.type(path.extname(file)).len(fdata.size)
+      resolve(resp)
+    })
+  })
 }
 
 /**
@@ -149,10 +167,10 @@ const err_response = (err) => {
 }
 
 module.exports = {
+  is_response,
   response,
   file_response,
   redirect,
-  err_response,
   not_found,
-  is_response
+  err_response
 }

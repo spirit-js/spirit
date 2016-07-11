@@ -1,6 +1,6 @@
 const {Response, is_Response}= require("../../lib/http/response-class")
 
-describe("Response", () => {
+describe("response-class", () => {
   describe("is_Response", () => {
     it("returns true if response map", () => {
       const t = new Response()
@@ -100,5 +100,8 @@ describe("Response", () => {
       it("")
     })
 
+    describe("len", () => {
+      it("")
+    })
   })
 })
