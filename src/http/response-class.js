@@ -1,6 +1,13 @@
 const mime = require("mime")
 mime.default_type = undefined
 
+const is_Response = (obj) => {
+  if (obj !== null && typeof obj === "object") {
+    return obj instanceof Response
+  }
+  return false
+}
+
 /*
  * Response is for making response maps
  * with chainable helper functions
@@ -95,13 +102,6 @@ class Response {
     this.set("Content-Disposition", v, _overwrite)
   }
 
-}
-
-const is_Response = (obj) => {
-  if (obj !== null && typeof obj === "object") {
-    return obj instanceof Response
-  }
-  return false
 }
 
 module.exports = {

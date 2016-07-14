@@ -80,7 +80,7 @@ describe("http.response", () => {
       // file is probably greater than 500 bytes
       expect(resp.headers["Content-Length"] > 500).toBe(true)
       expect(resp.headers["Content-Type"]).toBe("application/json")
-      expect(Object.keys(resp.headers).length).toBe(2)
+      expect(Object.keys(resp.headers).length).toBe(3)
       expect(typeof resp.body.pipe).toBe("function")
 
       // also attaches file information to ._file
@@ -110,6 +110,8 @@ describe("http.response", () => {
         done()
       })
     })
+
+    it("sets Last-Modified headers to the file's mtime")
   })
 
   describe("redirect", () => {

@@ -2,51 +2,68 @@
 - [type_of](#type_of)
 - [resolve_response](#resolve_response)
 
+
 -------------------------------------------
+
+
 # size_of
-##### (spirit.)
+##### (spirit.node.utils.size_of)
 
-description
+Returns the size of `v` in bytes, utf-8 is assumed.
 
-[Source: src/core/promise_utils.js (callp)](../../src/core/promise_utils.js#L20)
+It only returns a size for a string or buffer. Otherwise it returns undefined.
+
+This function is useful for determining the "Content-Length" of a response body that is a string or buffer.
+
+[Source: src/http/utils.js (size_of)](../../src/http/utils.js#L1)
 
 #### Arguments
-* fn {*} xxx
-* args {array} xxx
+* v {string|buffer} A string or buffer to check
 
 #### Return
-{Promise} xxx
-
+{number} The size of the `v` (string or buffer)
 
 
 -------------------------------------------
+
+
 # type_of
-##### (spirit.)
+##### (spirit.node.utils.type_of)
 
-description
+Returns a string representation of the type of `v`. It is similar to `typeof` but it will also correctly detect and report types for: null, array, buffer, stream, file-stream.
 
-[Source: src/core/promise_utils.js (callp)](../../src/core/promise_utils.js#L20)
+As well as all types that `typeof` already identifies (undefined, string, number, etc.)
+
+Example:
+```js
+type_of([1, 2, 3]) // "array"
+type_of(new Buffer("hi")) // "buffer"
+type_of(null) // "null"
+```
+
+[Source: src/http/utils.js (type_of)](../../src/http/utils.js#L18)
 
 #### Arguments
-* fn {*} xxx
-* args {array} xxx
+* v {*} value or object to check
 
 #### Return
-{Promise} xxx
-
+{string} A string representation of the type of `v`
 
 
 -------------------------------------------
+
+
 # resolve_response
-##### (spirit.)
+##### (spirit.node.utils.resolve_response)
 
-description
+Resolves a response's body if it's a Promise.
 
-[Source: src/core/promise_utils.js (callp)](../../src/core/promise_utils.js#L20)
+This is mostly used internally.
+
+[Source: src/core/promise_utils.js (resolve_response)](../../src/core/promise_utils.js#L42)
 
 #### Arguments
-* fn {*} xxx
-* args {array} xxx
+* p {Promise}
 
 #### Return
-{Promise} xxx
+{Promise}

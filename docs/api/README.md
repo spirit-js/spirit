@@ -6,6 +6,7 @@ When using the node http adapter (`spirit.node`) be sure to become familiar with
 - [compose](spirit.md#compose)
 - [callp](spirit.md#callp)
 - [is_promise](spirit.md#is_promise)
+
 - node
   * [adapter](node.md#adapter)
   * [is_Response](node.md#is_Response)
@@ -16,9 +17,11 @@ When using the node http adapter (`spirit.node`) be sure to become familiar with
   * [redirect](node.md#redirect)
   * [not_found](node.md#not_found)
   * [Response](Response.md)
+  
   * utils
     - [size_of](node-utils.md#size_of)
     - [type_of](node-utils.md#type_of)
     - [resolve_response](node-utils.md#resolve_response)
+    
   * middleware
     - [head](node-middleware.md#head)
