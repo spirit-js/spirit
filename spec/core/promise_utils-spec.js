@@ -1,4 +1,4 @@
-const p_utils = require("../../lib/core/promise_utils")
+const p_utils = require("../../index").utils
 const Promise = require("bluebird")
 
 describe("promise utils", () => {

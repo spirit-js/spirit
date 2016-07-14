@@ -1,8 +1,6 @@
-const core = require("../../lib/core/core")
+const reduce = require("../../index").compose
 
 describe("core - compose", () => {
-  const reduce = core.compose
-
   it("order", (done) => {
     const handler = (request) => {
       expect(request.called).toBe(".abc")

@@ -1,4 +1,4 @@
-const {Response, is_Response}= require("../../lib/http/response-class")
+const {Response, is_Response}= require("../../index").node
 
 describe("response-class", () => {
   describe("is_Response", () => {
@@ -178,5 +178,14 @@ describe("response-class", () => {
         })
       })
     })
+
+    describe("cookie", () => {
+      it("")
+    })
+
+    describe("charset", () => {
+      it("")
+    })
   })
+
 })

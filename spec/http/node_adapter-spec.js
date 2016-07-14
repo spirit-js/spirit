@@ -1,4 +1,5 @@
-const adapter = require("../../lib/http/node_adapter")
+const adp = require("../../index").node.adapter
+const send = require("../../lib/http/node_adapter").send
 const mock_response = require("../support/mock-response")
 
 const stream = require("stream")
@@ -6,8 +7,6 @@ const stream = require("stream")
 describe("node adapter", () => {
 
   describe("adapter", () => {
-    const adp = adapter.adapter
-
     it("returns a (req, res) fn that wraps core.compose", (done) => {
       const handler = (request) => {
         return { status: 200, headers: {}, body: "ok" }
@@ -83,8 +82,6 @@ describe("node adapter", () => {
   })
 
   describe("send", () => {
-    const send = adapter.send
-
     it("writes a response map (string)", (done) => {
       const res = mock_response((result) => {
         expect(result.status).toBe(123)

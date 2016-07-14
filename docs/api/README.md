@@ -1,12 +1,23 @@
 ## spirit API
-This covers spirit's exported API.
+This covers spirit's exported API. Be sure to become familiar with [request map]() and [response map]() as the terms come up in the API docs.
 
 - [compose](spirit.md#compose) Composes together a handler and middleware into a single function
-
-- [utils](utils.md) Utility functions for working with Promises
-
-- [node](node-adapter.md) Node HTTP adapter
+- utils
+  * [callp]()
+  * [is_promise]()
+  * [resolve_response]()
+- node
   * [adapter](node-adapter.md#adapter) The adapter for interfacing with node http, https, http2
-  * [response](node-adapter.md#response) helpers for dealing with a response
-      - is_response
-      - internal_err
+  * [Response]()
+  * [is_Response]()
+  * [is_response]()
+  * [response]()
+  * [file_response]()
+  * [err_response]() 
+  * [redirect]()
+  * [not_found]()
+  * utils
+    - [size_of]()
+    - [type_of]()
+  * middleware
+    - [head]()

@@ -1,4 +1,4 @@
-const utils = require("../../lib/http/utils")
+const utils = require("../../index").node.utils
 
 const stream = require("stream")
 const fs = require("fs")
