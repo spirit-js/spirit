@@ -1,10 +1,8 @@
 /**
  * utility functions for working with Promises
  */
+
 const Promise = require("bluebird")
-Promise.onPossiblyUnhandledRejection(function(e, promise) {
-  throw e
-})
 
 /**
  * checks if `p` is a promise, returning true or false
@@ -40,7 +38,7 @@ const callp = (fn, args) => {
   return Promise.resolve(fn)
 }
 
-const response = require("../http/response")
+const {is_response} = require("../http/response")
 /**
  * Resolve a Promise of a Promise (as it pertains to a response
  * map)
@@ -57,7 +55,7 @@ const response = require("../http/response")
 const resolve_response = (p) => {
   return p.then((result) => {
     // if it is a response map, resolve the body
-    if (response.is_response(result)
+    if (is_response(result)
         && is_promise(result.body)) {
       return new Promise((resolve, reject) => {
         result.body.then((body) => {
@@ -73,6 +71,6 @@ const resolve_response = (p) => {
 
 module.exports = {
   callp,
-  resolve_response,
-  is_promise
+  is_promise,
+  resolve_response
 }

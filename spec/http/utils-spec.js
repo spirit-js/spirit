@@ -2,6 +2,58 @@ const utils = require("../../index").node.utils
 
 const stream = require("stream")
 const fs = require("fs")
+const Promise = require("bluebird")
+
+describe("resolve_response", () => {
+  const resolve = utils.resolve_response
+
+  it("returns the value when giving a response map with a promise as it's body", (done) => {
+    const p = new Promise((resolve, reject) => {
+      const bodyp = {
+        status: 123,
+        headers: {},
+        body: new Promise((resolve, reject) => {
+          resolve("hi!")
+        })
+      }
+      resolve(bodyp)
+    })
+
+    resolve(p).then((result) => {
+      expect(result).toEqual({
+        status: 123,
+        headers: {},
+        body: "hi!"
+      })
+      done()
+    })
+  })
+
+  it("returns the promise passed in if it's resolved value is a response map but non-promise body", (done) => {
+    const p = Promise.resolve({
+      status: 123,
+      headers: {a:1},
+      body: "yay"
+    })
+
+    resolve(p).then((result) => {
+      expect(result).toEqual({
+        status: 123,
+        headers: {a:1},
+        body: "yay"
+      })
+      done()
+    })
+  })
+
+  it("returns the promise passed in if it's resolved value is not a response map", (done) => {
+    const p = Promise.resolve(123)
+    resolve(p).then((result) => {
+      expect(result).toBe(123)
+      done()
+    })
+  })
+})
 
 describe("size_of", () => {
   it("returns the size in bytes of a string", () => {

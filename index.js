@@ -11,9 +11,11 @@ node.adapter = node_adapter.adapter
 node.Response = response_map.Response
 node.is_Response = response_map.is_Response
 node.utils = require("./lib/http/utils")
+node.utils.resolve_response = p_utils.resolve_response
 
 module.exports = {
   compose: core.compose,
-  utils: p_utils,
+  callp: p_utils.callp,
+  is_promise: p_utils.is_promise,
   node: node
 }

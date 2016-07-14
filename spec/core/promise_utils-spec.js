@@ -1,11 +1,9 @@
-const p_utils = require("../../index").utils
+const {callp, is_promise} = require("../../index")
 const Promise = require("bluebird")
 
 describe("promise utils", () => {
 
   describe("callp", () => {
-    const callp = p_utils.callp
-
     it("accepts values instead of a function, returns value back wrapped as Promise", (done) => {
       const vals = ["string", 123, {a:1}, [1, 2, 3]]
       const _args = [1, 2] // shouldn't actually be used
@@ -80,8 +78,6 @@ describe("promise utils", () => {
   })
 
   describe("is_promise", () => {
-    const is_promise = p_utils.is_promise
-
     it("returns true for promise", () => {
       const ok = [new Promise(()=>{}), Promise.resolve()]
       ok.forEach((p) => {
@@ -102,54 +98,4 @@ describe("promise utils", () => {
     })
   })
 
-  describe("resolve_response", () => {
-    const resolve = p_utils.resolve_response
-
-    it("returns the value when giving a response map with a promise as it's body", (done) => {
-      const p = new Promise((resolve, reject) => {
-        const bodyp = {
-          status: 123,
-          headers: {},
-          body: new Promise((resolve, reject) => {
-            resolve("hi!")
-          })
-        }
-        resolve(bodyp)
-      })
-
-      resolve(p).then((result) => {
-        expect(result).toEqual({
-          status: 123,
-          headers: {},
-          body: "hi!"
-        })
-        done()
-      })
-    })
-
-    it("returns the promise passed in if it's resolved value is a response map but non-promise body", (done) => {
-      const p = Promise.resolve({
-        status: 123,
-        headers: {a:1},
-        body: "yay"
-      })
-
-      resolve(p).then((result) => {
-        expect(result).toEqual({
-          status: 123,
-          headers: {a:1},
-          body: "yay"
-        })
-        done()
-      })
-    })
-
-    it("returns the promise passed in if it's resolved value is not a response map", (done) => {
-      const p = Promise.resolve(123)
-      resolve(p).then((result) => {
-        expect(result).toBe(123)
-        done()
-      })
-    })
-  })
 })
