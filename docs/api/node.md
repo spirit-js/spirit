@@ -192,7 +192,7 @@ Example:
 err_response(new Error("oops"))
 ```
 
-[Source: src/core/promise_utils.js (callp)](../../src/core/promise_utils.js#L20)
+[Source: src/http/response.js (err_response)](../../src/http/response.js#L153)
 
 #### Arguments
 * body {undefined|string|buffer|stream|Error} the body of the response
