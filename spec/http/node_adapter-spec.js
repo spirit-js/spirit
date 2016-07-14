@@ -155,6 +155,23 @@ describe("node adapter", () => {
       })
     })
 
+    it("strips headers with undefined values before writing", (done) => {
+      const res = mock_response((result) => {
+        expect(result.headers).toEqual({
+          "Content-Length": 10
+        })
+        done()
+      })
+
+      send(res, {
+        status: 123,
+        headers: {
+          "Content-Length": 10,
+          "Content-Type": undefined
+        }
+      })
+    })
+
     it("supports http2 api")
   })
 

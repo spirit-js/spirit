@@ -33,12 +33,6 @@ class Response {
   }
 
   set(k, v, overwrite=true) {
-    // avoid doing this song and dance if there's nothing
-    // to even do
-    if (v === undefined) {
-      return this
-    }
-
     const lk = k.toLowerCase()
     const keys = Object.keys(this.headers)
     for (let i = 0; i < keys.length; i++) {

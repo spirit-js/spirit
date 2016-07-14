@@ -5,6 +5,26 @@ const core = require("../core/core")
 const request = require("./request")
 const response = require("./response")
 
+
+/**
+ * strips all undefined values from `headers`
+ *
+ * this is needed because node `res.writeHead` will still write
+ * headers with undefined values
+ *
+ * @param {object} headers - response headers
+ * @return {object} response headers
+ */
+const strip = (headers) => {
+  const keys = Object.keys(headers)
+  for (var i = 0; i < keys.length; i++) {
+    if (typeof headers[keys[i]] === "undefined") {
+      delete headers[keys[i]]
+    }
+  }
+  return headers
+}
+
 /**
  * writes a http response map to a node HTTP response object
  *
@@ -16,7 +36,7 @@ const response = require("./response")
  * @param {response-map} resp - response map
  */
 const send = (res, resp) => {
-  res.writeHead(resp.status, resp.headers)
+  res.writeHead(resp.status, strip(resp.headers))
   if (resp.body === undefined) {
     return res.end()
   }
