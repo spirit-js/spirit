@@ -97,7 +97,9 @@ const file_response = (file) => {
       if (!resp.body) {
         resp.body = fs.createReadStream(file)
       }
-      resp.type(path.extname(file)).len(fdata.size)
+      resp.type(path.extname(file))
+        .len(fdata.size)
+        .set("Last-Modified", fdata.mtime.toUTCString())
       resolve(resp)
     })
   })

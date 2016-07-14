@@ -79,6 +79,15 @@ describe("node adapter", () => {
       process.env.NODE_ENV = "production"
       app({}, res)
     })
+
+    it("middleware argument is optional", (done) => {
+      const handler = (request) => {
+        return "ok"
+      }
+      const res = mock_response(done)
+      const app = adp(handler)
+      app({}, res)
+    })
   })
 
   describe("send", () => {

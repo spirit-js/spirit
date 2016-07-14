@@ -111,7 +111,16 @@ describe("http.response", () => {
       })
     })
 
-    it("sets Last-Modified headers to the file's mtime")
+    it("sets Last-Modified headers to the file's mtime", (done) => {
+      fs.stat(test_file, (err, stat) => {
+        response.file_response(test_file)
+          .then((resp) => {
+            test_expect(resp)
+            expect(resp.headers["Last-Modified"]).toBe(stat.mtime.toUTCString())
+            done()
+          })
+      })
+    })
   })
 
   describe("redirect", () => {

@@ -50,6 +50,8 @@ const send = (res, resp) => {
 }
 
 const adapter = (handler, middleware) => {
+  if (typeof middleware === "undefined") middleware = []
+
   return (req, res) => {
     const request_map = request.create(req)
     const adp = core.compose(handler, middleware)

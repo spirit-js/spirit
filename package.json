@@ -1,9 +1,10 @@
 {
   "name": "spirit",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "extensible web library for building applications & frameworks",
   "main": "index.js",
   "scripts": {
+    "prepublish": "make release",
     "test": "make test"
   },
   "repository": {

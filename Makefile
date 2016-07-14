@@ -7,7 +7,10 @@ bench: build
 	@NODE_ENV=production go run benchmarks/runner.go
 
 clean:
-	@rm -r lib/
+	@if [ -a lib ] ; \
+	then \
+		rm -r lib/ ; \
+	fi;
 
 build:
 	@echo "Building src..."
