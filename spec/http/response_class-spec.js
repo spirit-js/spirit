@@ -32,7 +32,7 @@ describe("response-class", () => {
       }))
     })
 
-    describe("statusCode", () => {
+    describe("status_ , code", () => {
       it("sets the status code and returns this", () => {
         const r = new Response()
         const result = r.status_(78)
@@ -68,6 +68,21 @@ describe("response-class", () => {
         r.set("content-length", 1)
         expect(r.headers["Content-Length"]).toBe(1)
       })
+
+      it("if overwrite is false, will not overwrite a key", () => {
+        const r = new Response()
+        r.set("Content-Length", 123)
+        r.set("Content-Length", 0, false)
+        expect(r.headers).toEqual({
+          "Content-Length": 123
+        })
+      })
+
+      it("avoids writing a header if it doesn't exist and the value to be set is undefined", () => {
+        const r = new Response()
+        r.set("Content-Length", undefined)
+        expect(r.headers).toEqual({})
+      })
     })
 
     describe("type", () => {
@@ -97,11 +112,71 @@ describe("response-class", () => {
     })
 
     describe("location", () => {
-      it("")
+      it("sets 'Location' header to url passed in", () => {
+        const r = new Response()
+        r.location("hi.cOm")
+        expect(r.headers).toEqual({
+          "Location": "hi.cOm"
+        })
+      })
     })
 
     describe("len", () => {
-      it("")
+      it("sets the 'Content-Length'", () => {
+        const r = new Response()
+        r.len(154)
+        expect(r.headers).toEqual({
+          "Content-Length": 154
+        })
+      })
+
+      it("size of 0 is considered undefined", () => {
+        const r = new Response()
+        r.len(0)
+        expect(r.headers).toEqual({})
+
+        r.len(123)
+        expect(r.headers).toEqual({
+          "Content-Length": 123
+        })
+
+        r.len(0)
+        expect(r.headers).toEqual({
+          "Content-Length": undefined
+        })
+
+        r.len(123).len()
+        expect(r.headers).toEqual({
+          "Content-Length": undefined
+        })
+      })
+
+      it("will throw for non-number", () => {
+        const r = new Response()
+        expect(() => {
+          r.len(null)
+        }).toThrowError(/Expected number/)
+      })
+    })
+
+    describe("attachment", () => {
+      it("sets 'Content-Disposition'", () => {
+        const r = new Response()
+        r.attachment("")
+        expect(r.headers).toEqual({
+          "Content-Disposition": "attachment"
+        })
+
+        r.attachment("blah.txt")
+        expect(r.headers).toEqual({
+          "Content-Disposition": "attachment; filename=blah.txt"
+        })
+
+        r.attachment()
+        expect(r.headers).toEqual({
+          "Content-Disposition": undefined
+        })
+      })
     })
   })
 })

@@ -33,17 +33,32 @@ class Response {
   }
 
   set(k, v, overwrite=true) {
+    const typ_v = typeof v
+    // if overwrite is false, and v is undefined
+    // there is never anything to set
+    if (overwrite !== true && typ_v === "undefined") {
+      return this
+    }
+
     const lk = k.toLowerCase()
     const keys = Object.keys(this.headers)
+    let exists = false
+
     for (let i = 0; i < keys.length; i++) {
       if (keys[i].toLowerCase() === lk) {
         if (overwrite !== true) { // since a existing key is found, just exit
           return this
         }
+        exists = true
         k = keys[i]
         break
       }
     }
+
+    if (exists === false && typ_v === "undefined") {
+      return this
+    }
+
     this.headers[k] = v
     return this
   }
@@ -63,9 +78,21 @@ class Response {
   }
 
   len(size, _overwrite) {
-    // there is no point in setting 0
-    if (size === 0) return this
+    const typ_size = typeof size
+    if (typ_size !== "undefined" && typ_size !== "number") {
+      throw new TypeError("Expected number for Response len() instead got: " + size)
+    }
+    if (size === 0) size = undefined
     return this.set("Content-Length", size, _overwrite)
+  }
+
+  attachment(filename, _overwrite) {
+    let v
+    if (typeof filename === "string") {
+      v = "attachment"
+      if (filename !== "") v = v + "; filename=" + filename
+    }
+    this.set("Content-Disposition", v, _overwrite)
   }
 
 }
