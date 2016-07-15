@@ -156,24 +156,6 @@ describe("http.response", () => {
     })
   })
 
-  describe("not_found", () => {
-    it("returns a response map with 404 status", () => {
-      expect(response.not_found("hi")).toEqual(jasmine.objectContaining({
-        status: 404,
-        headers: {
-          "Content-Length": 2
-        },
-        body: "hi"
-      }))
-
-      expect(response.not_found()).toEqual(jasmine.objectContaining({
-        status: 404,
-        headers: {},
-        body: undefined
-      }))
-    })
-  })
-
   describe("err_response", () => {
     it("returns a response map with status 500", () => {
       expect(response.err_response("test 123")).toEqual(jasmine.objectContaining({

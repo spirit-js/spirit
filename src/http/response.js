@@ -135,18 +135,6 @@ const redirect = (status, url) => {
 }
 
 /**
- * returns a 404 Response with `body`
- *
- * @param {*} body - the body of a response-map
- * @return {Response}
- */
-const not_found = (body) => {
-  return new Response(body)
-    .status_(404)
-    .len(size_of(body))
-}
-
-/**
  * returns a 500 Response with `err`
  *
  * @param {*} err - typically a Error
@@ -173,6 +161,5 @@ module.exports = {
   response,
   file_response,
   redirect,
-  not_found,
   err_response
 }

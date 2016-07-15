@@ -158,28 +158,6 @@ redirect(301, "http://www.google.com")
 -------------------------------------------
 
 
-# not_found
-##### (spirit.node.not_found)
-
-Returns a [Response](Response.md) with a 404 status code and `body` as it's body.
-
-Example:
-```js
-not_found("sorry, the page wasn't found")
-```
-
-[Source: src/http/response.js (not_found)](../../src/http/response.js#L135)
-
-#### Arguments
-* body {undefined|string|buffer|stream} the body of the response
-
-#### Return
-{Response}
-
-
--------------------------------------------
-
-
 # err_response
 ##### (spirit.node.err_response)
 

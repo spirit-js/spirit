@@ -15,7 +15,6 @@ When using the node http adapter (`spirit.node`) be sure to become familiar with
   * [file_response](node.md#file_response)
   * [err_response](node.md#err_response)
   * [redirect](node.md#redirect)
-  * [not_found](node.md#not_found)
   * [Response](Response.md)
   
   * utils
