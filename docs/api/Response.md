@@ -9,3 +9,8 @@
 - [type](#type)
 - [location](#location)
 - [len](#len)
+
+
+# Response
+
+A Response is a class object

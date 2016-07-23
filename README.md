@@ -24,7 +24,7 @@ When combined together it makes for truly "plug and play" modular architecture t
 ## The architecture, how spirit works
 In spirit, there are 3 extensible parts, adapters, middlewares, handlers.
 
-###### Adapters
+##### Adapters
 An adapter describe how to interface spirit with another environment / API. For instance there is node-http adapter for spirit. Or you can write an adapter for anything, even an adapter to hook into DOM events in the browser.
 
 ##### Middlewares
