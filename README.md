@@ -1,12 +1,13 @@
 # spirit
 Modern architecture for building modular web applications and frameworks.
 
-Similar to Rack in Ruby and Connect / Express. Except it takes a dramatically different approach to be much more modular and flexible.
+Similar to Rack in Ruby and Connect with Express. However it takes a dramatically different approach to be much more modular and flexible.
 
-To see an example of what's possible with spirit, check out [spirit-router](https://github.com/spirit-js/spirit-router) and other [notable extensions](#notable-extensions).
+To see an complete example, see [spirit-router](https://github.com/spirit-js/spirit-router/)
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
+[![Join the chat at https://gitter.im/spirit-js/spirit](https://badges.gitter.im/spirit-js/spirit.svg)](https://gitter.im/spirit-js/spirit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Key Differences
 - It is Promise based and compatible with ES7 (async/await).
@@ -17,47 +18,58 @@ To see an example of what's possible with spirit, check out [spirit-router](http
 
 - Separation of concerns, middlewares are just middlewares. They transform / reduce data, returning new data. This differs from Express where middlewares also double as handlers. Which makes them sort of magical and a black box.
 
-- Compatible with Express middlewares. Since spirit middlewares are not tied to any implementation, this makes it possible to wrap Express middlewares and use them.
+- Works with Express middlewares via an adapter. Since spirit middlewares are not tied to node.js (req, res) implementation and are just arbitrary functions that take a input and return an output, this makes it possible with an adapter that simply wraps over Express middleware.
 
 When combined together it makes for truly "plug and play" modular architecture that is easy to test, reason about, and re-use.
 
-## The architecture, how spirit works
-In spirit, there are 3 extensible parts, adapters, middlewares, handlers.
+## How spirit works
+spirit is a library that defines a architecture that has three extensible parts, adapters, middlewares, handlers.
 
-##### Adapters
-An adapter describe how to interface spirit with another environment / API. For instance there is node-http adapter for spirit. Or you can write an adapter for anything, even an adapter to hook into DOM events in the browser.
+##### Adapter
+An adapter describe how to interface spirit with another environment / API. For instance there is node-http adapter that comes with spirit. Or you can write an adapter for anything, even an adapter that hooks into DOM events in the browser.
 
-##### Middlewares
-Middlewares are simply reducers or transformer functions on the input and output of data flowing through spirit.
+##### Middleware(s)
+Middlewares are just reducers or transformer functions on the input and output of data flowing through spirit.
 
-##### Handlers
-A handler are simply a function that handles the input after it's flowed through all the middlewares and returns an output (which 'rewinds' and flows back through the system).
+##### Handler
+A handler is a function that handles the input after it's flowed through all the middlewares and returns an output (which 'rewinds' and flows back through the system).
 
 The following chart shows how data flows:
 
 [![spirit flow chart](https://raw.githubusercontent.com/spirit-js/spirit/master/docs/flow-chart.png)](https://github.com/spirit-js/spirit)
 
-## Install & Usage
-`npm install spirit`
+## Usage
+To install `npm install spirit`
 
-For usage, please see [API Docs](docs/api)
+Most likely, you will want to use [spirit-router](https://github.com/spirit-js/spirit-router) as a handler for spirit. (Unless you are interested in writing one yourself, or using another handler).
 
-If you have questions, come
-[![Join the chat at https://gitter.im/spirit-js/spirit](https://badges.gitter.im/spirit-js/spirit.svg)](https://gitter.im/spirit-js/spirit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[spirit API Docs](docs/api)
+[spirit + spirit-router Guide](https://github.com/spirit-js/spirit-router/tree/master/docs/Guide.md)
+
 
 ## Notable Extensions
 ###### Adapters
-node-http-adapter: Interfaces with node's http, https, and http2 module. Optionally bundled with spirit. See the [Doc](docs/api/node-adapter.md) for usage.
+[node-adapter](docs/api/node-adapter.md): Interfaces with node's http, https, and http2 module. It's optionally bundled with spirit.
 
 ###### Middlewares
+[spirit-common](https://github.com/spirit-js/spirit-common): A collection of common http middleware that most people will want
 
 ###### Handlers
 [spirit-router](https://github.com/spirit-js/spirit-router):
-A URL routing library
+A http URL routing library
 
 ###### Misc
 [spirit-express](https://github.com/spirit-js/spirit-express):
 A wrapper for Express API & middleware to get them to work as spirit middleware.
+
+## Contributing
+All contributions are appreciated and welcomed.
+
+For backwards incompatible changes, or large changes, it would be best if you opened an issue before hand to outline your plans (to avoid conflict later on).
+
+The code style omits ending semi-colons. It also does not use camel case. And one-liners should be avoided unless it's very clear.
+
+To run tests, use `make test`. This will also build changes to src/*, if you do not have "make" installed, you can look at the Makefile to see the steps to accomplish the task.
 
 ## Credits
 spirit is heavily influenced by the design of [Ring](https://github.com/ring-clojure/ring)

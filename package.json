@@ -1,6 +1,6 @@
 {
   "name": "spirit",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "extensible web library for building applications & frameworks",
   "main": "index.js",
   "scripts": {

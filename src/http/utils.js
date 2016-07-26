@@ -50,5 +50,7 @@ const type_of = (v) => {
 
 module.exports = {
   type_of,
-  size_of
+  typeOf: type_of, // alias
+  size_of,
+  sizeOf: size_of // alias
 }

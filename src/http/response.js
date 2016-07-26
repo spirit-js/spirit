@@ -158,8 +158,15 @@ const err_response = (err) => {
 
 module.exports = {
   is_response,
+  isResponse: is_response, // alias
+
   response,
+
   file_response,
+  fileResponse: file_response, // alias
+
   redirect,
-  err_response
+
+  err_response,
+  errResponse: err_response // alias
 }
