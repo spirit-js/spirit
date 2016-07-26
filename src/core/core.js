@@ -20,13 +20,13 @@ const compose = (handler, middleware) => {
     }
   }
 
-  let prev = wrap(handler)
+  let accum = wrap(handler)
 
   for (let i = middleware.length - 1; i >= 0; i--) {
-    prev = wrap(middleware[i](prev))
+    accum = wrap(middleware[i](accum))
   }
 
-  return prev
+  return accum
 }
 
 module.exports = {
