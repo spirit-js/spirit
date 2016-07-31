@@ -3,7 +3,7 @@ Modern architecture for building modular web applications and frameworks.
 
 Similar to Rack in Ruby and Connect with Express. However it takes a dramatically different approach to be much more modular and flexible.
 
-To see an complete example, see [spirit-router](https://github.com/spirit-js/spirit-router/)
+To see an complete example, see [spirit-router](https://github.com/spirit-js/spirit-router/) or, see the [introduction video](https://www.youtube.com/watch?v=YvxLBd12ZX8).
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
@@ -52,15 +52,12 @@ Most likely, you will want to use [spirit-router](https://github.com/spirit-js/s
 [node-adapter](docs/api/node-adapter.md): Interfaces with node's http, https, and http2 module. It's optionally bundled with spirit.
 
 ###### Middlewares
-[spirit-common](https://github.com/spirit-js/spirit-common): A collection of common http middleware that most people will want
+[spirit-express](https://github.com/spirit-js/spirit-express): A wrapper for Express API & middleware to get them to work as spirit middleware.
 
 ###### Handlers
 [spirit-router](https://github.com/spirit-js/spirit-router):
 A http URL routing library
 
-###### Misc
-[spirit-express](https://github.com/spirit-js/spirit-express):
-A wrapper for Express API & middleware to get them to work as spirit middleware.
 
 ## Contributing
 All contributions are appreciated and welcomed.
