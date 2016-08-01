@@ -3,7 +3,7 @@ Modern architecture for building modular web applications and frameworks.
 
 Similar to Rack in Ruby and Connect with Express. However it takes a dramatically different approach to be much more modular and flexible.
 
-To see an complete example, see [spirit-router](https://github.com/spirit-js/spirit-router/) or, see the [introduction video](https://www.youtube.com/watch?v=YvxLBd12ZX8).
+To see an complete example, see [spirit-router](https://github.com/spirit-js/spirit-router/) or, see the [introduction video](https://www.youtube.com/watch?v=YvxLBd12ZX8&list=PLHw25bReXDKvHd-5mCjMxVkgDvWrx5IFY).
 
 [![Build Status](https://travis-ci.org/spirit-js/spirit.svg?branch=master)](https://travis-ci.org/spirit-js/spirit)
 [![Coverage Status](https://coveralls.io/repos/github/spirit-js/spirit/badge.svg?branch=master)](https://coveralls.io/github/spirit-js/spirit?branch=master)
@@ -21,6 +21,8 @@ To see an complete example, see [spirit-router](https://github.com/spirit-js/spi
 - Works with Express middlewares via an adapter. Since spirit middlewares are not tied to node.js (req, res) implementation and are just arbitrary functions that take a input and return an output, this makes it possible with an adapter that simply wraps over Express middleware.
 
 When combined together it makes for truly "plug and play" modular architecture that is easy to test, reason about, and re-use.
+
+There is also a article on [why I created spirit](https://medium.com/@hnry/why-spirit-2990a65ff89f)
 
 ## How spirit works
 spirit is a library that defines a architecture that has three extensible parts, adapters, middlewares, handlers.
