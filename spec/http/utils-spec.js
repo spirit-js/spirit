@@ -29,7 +29,7 @@ describe("resolve_response", () => {
     })
   })
 
-  it("returns the promise passed in if it's resolved value is a response map but non-promise body", (done) => {
+  it("returns the promise passed in, if it's resolved value is a response map but non-promise body", (done) => {
     const p = Promise.resolve({
       status: 123,
       headers: {a:1},
@@ -46,10 +46,25 @@ describe("resolve_response", () => {
     })
   })
 
-  it("returns the promise passed in if it's resolved value is not a response map", (done) => {
+  it("returns the promise passed in, if it's resolved value is not a response map", (done) => {
     const p = Promise.resolve(123)
     resolve(p).then((result) => {
       expect(result).toBe(123)
+      done()
+    })
+  })
+
+  it("if the response body is a rejected promise, it ignores the responses and returns the rejected promise", (done) => {
+    const p = Promise.reject("error")
+
+    const resp = {
+      status: 123,
+      headers: {a:1},
+      body: p
+    }
+
+    resolve(Promise.resolve(resp)).catch((err) => {
+      expect(err).toBe("error")
       done()
     })
   })

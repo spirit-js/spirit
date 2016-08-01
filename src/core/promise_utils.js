@@ -58,10 +58,16 @@ const resolve_response = (p) => {
     if (is_response(result)
         && is_promise(result.body)) {
       return new Promise((resolve, reject) => {
-        result.body.then((body) => {
-          result.body = body
-          resolve(result)
-        })
+        result.body
+          .then((body) => {
+            result.body = body
+            resolve(result)
+          })
+          .catch((err) => {
+            // if the body is rejected Promise
+            // throw the error of the body instead of the resp
+            reject(err)
+          })
       })
     }
     // otherwise just return
