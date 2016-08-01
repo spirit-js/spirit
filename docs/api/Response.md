@@ -5,6 +5,7 @@
 - [get](#get)
 - [set](#set)
 - [status_](#status_)
+- [body_](#body_)
 - [code](#code)
 - [type](#type)
 - [location](#location)

@@ -46,6 +46,19 @@ describe("response-class", () => {
       })
     })
 
+    describe("body_", () => {
+      it("sets the body of the response, but also adjusts the content length", () => {
+        const r = new Response("hello")
+        expect(r.headers["Content-Length"]).toBe(undefined)
+
+        const result = r.body_("hello world")
+        expect(r.headers["Content-Length"]).toBe(11)
+        expect(r.body).toBe("hello world")
+
+        expect(result).toBe(r)
+      })
+    })
+
     describe("get", () => {
       it("returns value of the passed in key from headers", () => {
         const r = new Response()

@@ -1,6 +1,8 @@
 const mime = require("mime")
 mime.default_type = undefined
 
+const utils = require("../http/utils")
+
 const is_Response = (obj) => {
   if (obj !== null && typeof obj === "object") {
     return obj instanceof Response
@@ -26,6 +28,12 @@ class Response {
 
   status_(n) {
     this.status = parseInt(n)
+    return this
+  }
+
+  body_(body) {
+    this.body = body
+    this.len(utils.size_of(body))
     return this
   }
 
