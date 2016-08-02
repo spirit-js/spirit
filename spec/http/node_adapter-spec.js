@@ -96,7 +96,7 @@ describe("node adapter", () => {
         expect(result.status).toBe(123)
         expect(result.body).toBe("hi")
         expect(result.headers).toEqual({
-          a: 1
+          A: 1
         })
         done()
       })
@@ -112,7 +112,7 @@ describe("node adapter", () => {
       const res = mock_response((result) => {
         expect(result.status).toBe(100)
         expect(result.headers).toEqual({
-          a: 2
+          A: 2
         })
         expect(result.body).toBe("hi from streamhi from stream")
         done()
@@ -150,7 +150,7 @@ describe("node adapter", () => {
       const res = mock_response((result) => {
         expect(result.status).toBe(1)
         expect(result.headers).toEqual({
-          a: 1
+          A: 1
         })
         expect(result.body).toBe(undefined)
         done()
@@ -174,6 +174,49 @@ describe("node adapter", () => {
         headers: {
           "Content-Length": 10,
           "Content-Type": undefined
+        }
+      })
+    })
+
+    it("response headers are capitalized properly", (done) => {
+      const res = mock_response((result) => {
+        expect(result.headers).toEqual({
+          "Content-Length": 10,
+          "Content-Type": "abc",
+          "Aa": 123
+        })
+        done()
+      })
+
+      send(res, {
+        status: 123,
+        headers: {
+          "coNtent-LEngTh": 10,
+          "ConTENT-tYpe": "abc",
+          "aa": 123
+        }
+      })
+    })
+
+    it("duplicate response headers are overwritten with the last instance", (done) => {
+      const res = mock_response((result) => {
+        expect(result.headers).toEqual({
+          "Content-Length": 3,
+          "A": 2
+        })
+        done()
+      })
+
+      send(res, {
+        status: 123,
+        headers: {
+          // the following are unique properties in JS
+          // but they are the same header field
+          "Content-length": 1,
+          "Content-LEngth": 2,
+          "Content-LeNgth": 3,
+          "A": 1,
+          "a": 2
         }
       })
     })

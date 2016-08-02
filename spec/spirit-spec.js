@@ -58,7 +58,7 @@ describe("spirit spec", () => {
     })
   })
 
-  it("middlewares can decide to stop passing data forward (input), data 'rewinds' and flows back out through all middleware called along the way", () => {
+  it("middlewares can decide to stop passing data forward (input), data 'rewinds' and flows back out through all middleware called along the way", (done) => {
     const handler = (input) => {
       throw "never gets run"
     }
@@ -85,7 +85,7 @@ describe("spirit spec", () => {
     })
   })
 
-  it("a adapter transforms data between spirit and another interface. an adapter controls the first entry point and last exit point, it can also catch any uncaught errors along the way", () => {
+  it("a adapter transforms data between spirit and another interface. an adapter controls the first entry point and last exit point, it can also catch any uncaught errors along the way", (done) => {
     const handler = (input) => {
       throw "catch"
     }
@@ -102,8 +102,11 @@ describe("spirit spec", () => {
     const adapter = () => {
       reducer("hi").catch((err) => {
         expect(err).toBe("catch")
+        done()
       })
     }
+
+    adapter()
   })
 
 })
