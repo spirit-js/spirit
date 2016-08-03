@@ -22,10 +22,19 @@ const Response = require("../response-class").Response
 module.exports = (handler) => {
   return (request) => {
     return handler(request).then((response) => {
-      const if_mod = request.headers["if-modified-since"]
-      const last_mod = Response.get(response, "Last-Modified")
+      let match = false
 
-      if (if_mod && if_mod === last_mod) {
+      const if_etag = request.headers["if-none-match"]
+      const etag = Response.get(response, "ETag")
+      if (if_etag !== undefined && if_etag === etag) match = true
+
+      if (match === false) {
+        const if_mod = request.headers["if-modified-since"]
+        const last_mod = Response.get(response, "Last-Modified")
+        if (if_mod !== undefined && if_mod === last_mod) match = true
+      }
+
+      if (match === true) {
         response.status = 304
         response.body = undefined
       }

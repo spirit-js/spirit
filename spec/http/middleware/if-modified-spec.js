@@ -11,7 +11,7 @@ describe("middleware - if-modified", () => {
 
   const req_ts = req.headers["if-modified-since"]
 
-  it("sends 304 with empty body when last-mod matches", (done) => {
+  it("last-mod matches", (done) => {
     const mw = if_mod((request) => {
       const resp = {
         status: 200,
@@ -31,7 +31,7 @@ describe("middleware - if-modified", () => {
     })
   })
 
-  it("leaves as-is when last-mod doesn't match", (done) => {
+  it("last-mod exists but doesn't match", (done) => {
     const mw = if_mod((request) => {
       const resp = {
         status: 200,
@@ -62,6 +62,58 @@ describe("middleware - if-modified", () => {
     mw(req).then((response) => {
       expect(response.status).toBe(200)
       expect(Object.keys(response.headers).length).toBe(0)
+      expect(response.body).toBe("abc123")
+      done()
+    })
+  })
+
+  it("if-none-match matches", (done) => {
+    const mw = if_mod((request) => {
+      const resp = {
+        status: 200,
+        headers: {
+          eTag: "686897696a7c876b7e"
+        },
+        body: "abc123"
+      }
+      return Promise.resolve(resp)
+    })
+
+    const r = {
+      headers: {
+        "if-none-match": "686897696a7c876b7e"
+      }
+    }
+
+    mw(r).then((response) => {
+      expect(response.status).toBe(304)
+      expect(Object.keys(response.headers).length).toBe(1)
+      expect(response.body).toBe(undefined)
+      done()
+    })
+  })
+
+  it("if-none-match does not matches", (done) => {
+    const mw = if_mod((request) => {
+      const resp = {
+        status: 200,
+        headers: {
+          etag: "686897696a7c876b7e11111"
+        },
+        body: "abc123"
+      }
+      return Promise.resolve(resp)
+    })
+
+    const r = {
+      headers: {
+        "if-none-match": "686897696a7c876b7e"
+      }
+    }
+
+    mw(r).then((response) => {
+      expect(response.status).toBe(200)
+      expect(Object.keys(response.headers).length).toBe(1)
       expect(response.body).toBe("abc123")
       done()
     })

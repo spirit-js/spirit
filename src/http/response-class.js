@@ -43,7 +43,11 @@ class Response {
 
   static set(response, k, v) {
     const kk = k.split("-").map((p) => {
-      return p[0].toUpperCase() + p.substr(1).toLowerCase()
+      const c = p[0].toUpperCase() + p.substr(1).toLowerCase()
+      if (c === "Etag") {
+        return "ETag"
+      }
+      return c
     }).join("-")
 
     // remove any existing fields with the same name
