@@ -23,7 +23,7 @@ class Response {
   }
 
   static field(response, k) {
-    // if k is correct, then just return
+    // if k exists, then just return
     if (response[k] !== undefined) {
       return k
     }
@@ -42,28 +42,32 @@ class Response {
   }
 
   static set(response, k, v) {
-    const kk = k.split("-").map((p) => {
-      const c = p[0].toUpperCase() + p.substr(1).toLowerCase()
-      if (c === "Etag") {
-        return "ETag"
-      }
-      return c
-    }).join("-")
-
-    // remove any existing fields with the same name
-    // if the case isn't correct
-    // this enforces a standard for the case of field names
-    // also can avoid
-    // duplicate headers that are in different cases
     const existk = Response.field(response, k)
+
     if (existk !== undefined) {
-      if (existk !== kk) delete response.headers[existk]
+      // if the header already exists, and does not match
+      // in case, resolve the duplicate headers by correcting
+      // the case
+      if (existk !== k) {
+        k = k.split("-").map((p) => {
+          const c = p[0].toUpperCase() + p.substr(1).toLowerCase()
+          if (c === "Etag") {
+            return "ETag"
+          }
+          return c
+        }).join("-")
+
+        // if existk is not the correct case compared to k
+        // then delete existk and use k instead
+        if (existk !== k) delete response.headers[existk]
+      }
     } else {
-      // nothing to set
+      // if header doesnt exist & the value is empty
+      // then there is nothing to do
       if (v === undefined) return response
     }
 
-    response.headers[kk] = v
+    response.headers[k] = v
     return response
   }
 

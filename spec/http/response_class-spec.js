@@ -69,18 +69,23 @@ describe("response-class", () => {
     })
 
     describe("set", () => {
-      it("sets the value to key in headers with the field name corrected", () => {
+      it("will correct the field name on possible duplicate", () => {
         const r = new Response()
+
         r.set("content-length", 100)
-        expect(r.headers["Content-Length"]).toBe(100)
-        expect(r.headers["content-length"]).toBe(undefined)
+        expect(r.headers["content-length"]).toBe(100)
+        r.set("content-length", 10)
+        expect(r.headers["content-length"]).toBe(10)
+
+        r.set("conTent-length", 900)
+        expect(r.headers["Content-Length"]).toBe(900)
       })
 
       it("replaces field names with proper one", () => {
         const r = new Response()
         r.headers["content-length"] = 1
         expect(r.headers["content-length"]).toBe(1)
-        r.set("content-length", 100)
+        r.set("contenT-length", 100)
         expect(r.headers["Content-Length"]).toBe(100)
         expect(r.headers["content-length"]).toBe(undefined)
         expect(Object.keys(r.headers).length).toBe(1)
