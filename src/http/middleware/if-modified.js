@@ -17,13 +17,15 @@
  *
  */
 
+const Response = require("../response-class").Response
+
 module.exports = (handler) => {
   return (request) => {
     return handler(request).then((response) => {
       const if_mod = request.headers["if-modified-since"]
+      const last_mod = Response.get(response, "Last-Modified")
 
-      if (if_mod
-          && if_mod === response.headers["Last-Modified"]) {
+      if (if_mod && if_mod === last_mod) {
         response.status = 304
         response.body = undefined
       }

@@ -22,8 +22,54 @@ class Response {
     this.body = body
   }
 
-  code(n) {
-    return this.status_(n)
+  static field(response, k) {
+    // if k is correct, then just return
+    if (response[k] !== undefined) {
+      return k
+    }
+
+    k = k.toLowerCase()
+    const keys = Object.keys(response.headers)
+    for (let i = 0; i < keys.length; i++) {
+      if (keys[i].toLowerCase() === k) {
+        return keys[i]
+      }
+    }
+  }
+
+  static get(response, k) {
+    return response.headers[Response.field(response, k)]
+  }
+
+  static set(response, k, v) {
+    const kk = k.split("-").map((p) => {
+      return p[0].toUpperCase() + p.substr(1).toLowerCase()
+    }).join("-")
+
+    // remove any existing fields with the same name
+    // if the case isn't correct
+    // this enforces a standard for the case of field names
+    // also can avoid
+    // duplicate headers that are in different cases
+    const existk = Response.field(response, k)
+    if (existk !== undefined) {
+      if (existk !== kk) delete response.headers[existk]
+    } else {
+      // nothing to set
+      if (v === undefined) return response
+    }
+
+    response.headers[kk] = v
+    return response
+  }
+
+  set(k, v) {
+    Response.set(this, k, v)
+    return this
+  }
+
+  get(k) {
+    return Response.get(this, k)
   }
 
   status_(n) {
@@ -37,77 +83,36 @@ class Response {
     return this
   }
 
-  get(k) {
-    k = k.toLowerCase()
-    const keys = Object.keys(this.headers)
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].toLowerCase() === k) {
-        return this.headers[keys[i]]
-      }
-    }
-  }
-
-  set(k, v, overwrite=true) {
-    const typ_v = typeof v
-    // if overwrite is false, and v is undefined
-    // there is never anything to set
-    if (overwrite !== true && typ_v === "undefined") {
-      return this
-    }
-
-    const lk = k.toLowerCase()
-    const keys = Object.keys(this.headers)
-    let exists = false
-
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].toLowerCase() === lk) {
-        if (overwrite !== true) { // since a existing key is found, just exit
-          return this
-        }
-        exists = true
-        k = keys[i]
-        break
-      }
-    }
-
-    if (exists === false && typ_v === "undefined") {
-      return this
-    }
-
-    this.headers[k] = v
-    return this
-  }
-
-  type(content_type, _overwrite) {
+  type(content_type) {
     let t = mime.lookup(content_type)
     if (!t) t = content_type
 
     let charset = ""
     if (mime.charsets.lookup(t)) charset = "; charset=utf-8"
 
-    return this.set("Content-Type", t + charset, _overwrite)
+    return this.set("Content-Type", t + charset)
   }
 
-  location(url, _overwrite) {
-    return this.set("Location", url, _overwrite)
+  location(url) {
+    return this.set("Location", url)
   }
 
-  len(size, _overwrite) {
+  len(size) {
     const typ_size = typeof size
     if (typ_size !== "undefined" && typ_size !== "number") {
       throw new TypeError("Expected number for Response len() instead got: " + size)
     }
     if (size === 0) size = undefined
-    return this.set("Content-Length", size, _overwrite)
+    return this.set("Content-Length", size)
   }
 
-  attachment(filename, _overwrite) {
+  attachment(filename) {
     let v
     if (typeof filename === "string") {
       v = "attachment"
       if (filename !== "") v = v + "; filename=" + filename
     }
-    this.set("Content-Disposition", v, _overwrite)
+    this.set("Content-Disposition", v)
   }
 
 }

@@ -15,7 +15,7 @@ const response = require("./response")
  * @param {object} headers - response headers
  * @return {object} response headers
  */
-/*const strip = (headers) => {
+const strip = (headers) => {
   const keys = Object.keys(headers)
   for (var i = 0; i < keys.length; i++) {
     if (typeof headers[keys[i]] === "undefined") {
@@ -23,34 +23,6 @@ const response = require("./response")
     }
   }
   return headers
-}*/
-
-const strip = (obj, k) => {
-  if (typeof obj[k] === "undefined") {
-    return true
-  }
-  return false
-}
-
-const fix_case = (k) => {
-  return k.split("-").map((p) => {
-    return p[0].toUpperCase() + p.substr(1).toLowerCase()
-  }).join("-")
-}
-
-const proper = (headers) => {
-  const keys = Object.keys(headers)
-  if (keys.length === 0) {
-    return undefined
-  }
-
-  const new_headers = {}
-  for (var i = 0; i < keys.length; i++) {
-    if (strip(headers, keys[i]) === false) {
-      new_headers[fix_case(keys[i])] = headers[keys[i]]
-    }
-  }
-  return new_headers
 }
 
 /**
@@ -64,7 +36,7 @@ const proper = (headers) => {
  * @param {response-map} resp - response map
  */
 const send = (res, resp) => {
-  res.writeHead(resp.status, proper(resp.headers))
+  res.writeHead(resp.status, strip(resp.headers))
   if (resp.body === undefined) {
     return res.end()
   }

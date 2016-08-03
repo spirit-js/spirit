@@ -69,10 +69,21 @@ describe("response-class", () => {
     })
 
     describe("set", () => {
-      it("sets the value to key in headers", () => {
+      it("sets the value to key in headers with the field name corrected", () => {
         const r = new Response()
         r.set("content-length", 100)
-        expect(r.headers["content-length"]).toBe(100)
+        expect(r.headers["Content-Length"]).toBe(100)
+        expect(r.headers["content-length"]).toBe(undefined)
+      })
+
+      it("replaces field names with proper one", () => {
+        const r = new Response()
+        r.headers["content-length"] = 1
+        expect(r.headers["content-length"]).toBe(1)
+        r.set("content-length", 100)
+        expect(r.headers["Content-Length"]).toBe(100)
+        expect(r.headers["content-length"]).toBe(undefined)
+        expect(Object.keys(r.headers).length).toBe(1)
       })
 
       it("will overwrites an existing key (case-insensitive)", () => {
@@ -80,15 +91,7 @@ describe("response-class", () => {
         r.headers["Content-Length"] = 200
         r.set("content-length", 1)
         expect(r.headers["Content-Length"]).toBe(1)
-      })
-
-      it("if overwrite is false, will not overwrite a key", () => {
-        const r = new Response()
-        r.set("Content-Length", 123)
-        r.set("Content-Length", 0, false)
-        expect(r.headers).toEqual({
-          "Content-Length": 123
-        })
+        expect(r.headers["content-length"]).toBe(undefined)
       })
 
       it("avoids writing a header if it doesn't exist and the value to be set is undefined", () => {
@@ -115,13 +118,6 @@ describe("response-class", () => {
         const r = new Response().type("text")
         expect(r.headers["Content-Type"]).toBe("text/plain; charset=utf-8")
       })
-    })
-
-    it("will do nothing if content type already exists and overwrite is false", () => {
-      const r = new Response().type("html")
-      expect(r.headers["Content-Type"]).toBe("text/html; charset=utf-8")
-      r.type("json", false)
-      expect(r.headers["Content-Type"]).toBe("text/html; charset=utf-8")
     })
 
     describe("location", () => {
