@@ -4,6 +4,7 @@ const Promise = require("bluebird")
 describe("middleware - if-modified", () => {
 
   const req = {
+    method: "GET",
     headers: {
       "if-modified-since": new Date()
     }
@@ -80,6 +81,7 @@ describe("middleware - if-modified", () => {
     })
 
     const r = {
+      method: "GET",
       headers: {
         "if-none-match": "686897696a7c876b7e"
       }
@@ -93,7 +95,7 @@ describe("middleware - if-modified", () => {
     })
   })
 
-  it("if-none-match does not matches", (done) => {
+  it("if-none-match exists but does not match", (done) => {
     const mw = if_mod((request) => {
       const resp = {
         status: 200,
@@ -106,6 +108,7 @@ describe("middleware - if-modified", () => {
     })
 
     const r = {
+      method: "GET",
       headers: {
         "if-none-match": "686897696a7c876b7e"
       }
@@ -118,5 +121,36 @@ describe("middleware - if-modified", () => {
       done()
     })
   })
+
+  it("if-none-match exists but does not match and if-modified is skipped", (done) => {
+    const ts = Date.now()
+    const mw = if_mod((request) => {
+      const resp = {
+        status: 200,
+        headers: {
+          etag: "686897696a7c876b7e11111",
+          "Last-Modified": ts
+        },
+        body: "abc123"
+      }
+      return Promise.resolve(resp)
+    })
+
+    const r = {
+      method: "GET",
+      headers: {
+        "if-none-match": "686897696a7c876b7e",
+        "if-modified-since": ts
+      }
+    }
+
+    mw(r).then((response) => {
+      expect(response.status).toBe(200)
+      expect(Object.keys(response.headers).length).toBe(2)
+      expect(response.body).toBe("abc123")
+      done()
+    })
+  })
+
 
 })

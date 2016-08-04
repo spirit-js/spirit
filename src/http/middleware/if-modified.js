@@ -22,16 +22,31 @@ const Response = require("../response-class").Response
 module.exports = (handler) => {
   return (request) => {
     return handler(request).then((response) => {
+      // typically if the response is not a 200 or 2xx response
+      // then this should not 304 even if match
+      if (response.status < 200
+          || response.status > 299) {
+        return response
+      }
+
       let match = false
 
       const if_etag = request.headers["if-none-match"]
       const etag = Response.get(response, "ETag")
-      if (if_etag !== undefined && if_etag === etag) match = true
+      if (if_etag !== undefined) {
+        if (if_etag === etag) {
+          match = true
+        } else {
+          // request etag provided, but mismatch
+          // means ignore if-modified header, so return here
+          return response
+        }
+      }
 
       if (match === false) {
-        const if_mod = request.headers["if-modified-since"]
-        const last_mod = Response.get(response, "Last-Modified")
-        if (if_mod !== undefined && if_mod === last_mod) match = true
+        const if_mod = new Date(request.headers["if-modified-since"]).getTime()
+        const mod = new Date(Response.get(response, "Last-Modified")).getTime()
+        if (isNaN(if_mod) === false && mod === if_mod) match = true
       }
 
       if (match === true) {
