@@ -24,6 +24,8 @@ When combined together it makes for truly "plug and play" modular architecture t
 
 There is also a article on [why I created spirit](https://medium.com/@hnry/why-spirit-2990a65ff89f)
 
+As well as a article on the [performance](https://medium.com/p/node-js-web-frameworks-are-slow-3b7dfb5e204d) compared to other web libraries and frameworks.
+
 ## How spirit works
 spirit is a library that defines a architecture that has three extensible parts, adapters, middlewares, handlers.
 
