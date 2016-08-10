@@ -1,4 +1,4 @@
-const proxy = require("../../../lib/http/middleware/proxy")
+const proxy = require("../../../index").node.middleware.proxy
 const Promise = require("bluebird")
 
 describe("Middleware: X-Forwarded-For proxy", () => {

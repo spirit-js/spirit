@@ -6,7 +6,11 @@ const p_utils = require("./promise_utils")
 
 
 /**
- * Returns a function that wraps `reduce_mw`
+ * A reducer function, for reducing over a handler
+ * and middlewares
+ *
+ * All functions are expected to return a Promise
+ * It is wrapped to ensure a Promise is returned
  *
  * @param {function} handler - a handler function
  * @param {array} middleware - an array of middleware function

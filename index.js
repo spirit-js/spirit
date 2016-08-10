@@ -16,6 +16,14 @@ node.utils = require("./lib/http/utils")
 node.utils.resolve_response = p_utils.resolve_response
 node.utils.resolveResponse = p_utils.resolve_response
 
+// node http middleware
+node.middleware = {
+  proxy: require("./lib/http/middleware/proxy"),
+  head: require("./lib/http/middleware/head"),
+  ifmod: require("./lib/http/middleware/if-modified"),
+  log: require("./lib/http/middleware/log")
+}
+
 module.exports = {
   compose: core.compose,
   callp: p_utils.callp,

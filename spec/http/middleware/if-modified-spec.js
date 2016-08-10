@@ -1,7 +1,7 @@
-const if_mod = require("../../../lib/http/middleware/if-modified")
+const if_mod = require("../../../index").node.middleware.ifmod
 const Promise = require("bluebird")
 
-describe("middleware - if-modified", () => {
+describe("Middleware: if-modified", () => {
 
   const req = {
     method: "GET",
