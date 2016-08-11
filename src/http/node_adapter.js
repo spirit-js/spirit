@@ -41,8 +41,10 @@ const send = (res, resp) => {
     return res.end()
   }
 
+  // resp body is a stream
   if (typeof resp.body.pipe === "function") {
     resp.body.pipe(res)
+  // resp body is a string or buffer
   } else {
     res.write(resp.body)
     res.end()

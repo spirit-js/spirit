@@ -1,11 +1,16 @@
-- [adapter](#adapter)
-- [is_Response](#is_Response)
-- [is_response](#is_response)
+- [adapter](#adapter) node http adapter
+
+- [streaming](#streaming) creates a writable stream (useful for creating a streaming response)
+
+Functions for creating common responses with chainable helpers:
 - [response](#response)
 - [file_response](#file_response)
 - [err_response](#err_response)
 - [redirect](#redirect)
-- [not_found](#not_found)
+
+For checking if an object is a valid response:
+- [is_Response](#is_Response)
+- [is_response](#is_response)
 
 
 
@@ -52,35 +57,50 @@ And a response would flow backwards in the same order:
 -------------------------------------------
 
 
-# is_Response
-##### (spirit.node.is_Response)
+# streaming
+##### (spirit.node.streaming)
 
-Returns `true` or `false` depending on if `v` is a [Response](Response.md)
+It is meant as a helper to create a generic writable stream for when you need to stream a response body.
 
-[Source: src/http/response-class.js (is_Response)](../../src/http/response-class.js#L4)
+It is a __must__ to end() the stream once you are done.
+
+__Note__, if you already have a stream, you do not need to use this function. It is meant to quickly create a generic writable stream if you do not have one already.
+
+Example:
+```js
+const res = streaming()
+
+// pass res to some async function, or can do some async here
+setTimeout(() => {
+  res.write("streaming")
+  
+  setTimeout(() => {
+    res.write("streaming still")
+    res.end()
+  }, 1000)
+  
+}, 1000)
+
+return response(res) // 'return res' is ok if you are using spirit-router
+```
+
+In the example:
+
+1. before the setTimeouts are called, the function returns the response with the stream as it's body.
+
+2. The response goes through any middlewares, then the headers and status are written. This is similar to res.writeHead(). The body has not been written yet as the stream still has no body.
+
+3. 1000ms later, the first setTimeout is triggered and the first chunk of the response body is written and sent to the client.
+
+4. another 1000ms later, the final chunk of the response body is written to the client, and the stream has ended, thus ending the response.
+
+[Source: src/http/response.js (streaming)](../../src/http/response.js#L57)
 
 #### Arguments
-* v {*} 
+None
 
 #### Return
-{boolean} 
-
-
--------------------------------------------
-
-
-# is_response
-##### (spirit.node.is_response)
-
-Returns `true` or `false` depending on if `v` is a [response map](request-response-map.md#response-map)
-
-[Source: src/http/response.js (is_response)](../../src/http/response.js#L8)
-
-#### Arguments
-* v {*} 
-
-#### Return
-{boolean} 
+{Stream} 
 
 
 -------------------------------------------
@@ -177,3 +197,42 @@ err_response(new Error("oops"))
 
 #### Return
 {Response}
+
+
+-------------------------------------------
+
+
+# is_Response
+##### (spirit.node.is_Response)
+
+Returns `true` or `false` depending on if `v` is a instance of [Response](Response.md)
+
+Does not return true for a response map, this is a specific check.
+
+[Source: src/http/response-class.js (is_Response)](../../src/http/response-class.js#L4)
+
+#### Arguments
+* v {*} 
+
+#### Return
+{boolean} 
+
+
+-------------------------------------------
+
+
+# is_response
+##### (spirit.node.is_response)
+
+Returns `true` or `false` depending on if `v` is a [response map](request-response-map.md#response-map)
+
+It will also return `true` for a Response (instace of the class) as a Response is a valid response map.
+
+[Source: src/http/response.js (is_response)](../../src/http/response.js#L8)
+
+#### Arguments
+* v {*} 
+
+#### Return
+{boolean} 
+

@@ -31,6 +31,35 @@ describe("http.response", () => {
     })
   })
 
+  const stream = require("stream")
+  describe("streaming", () => {
+    it("returns a writable stream", (done) => {
+      const buf = []
+      const t = new stream.Transform({
+        transform(chunk, enc, cb) {
+          buf.push(chunk.toString())
+          if (buf.join("") === "test123") done()
+          cb()
+        }
+      })
+
+      const s = response.streaming()
+      s.write("test")
+      s.write("1")
+      s.write("2")
+      s.end("3")
+      s.pipe(t)
+    })
+
+    it("using with a response is ok", () => {
+      const s = response.streaming()
+      const resp = response.response(s)
+      expect(resp.status).toBe(200)
+      expect(resp.headers).toEqual({})
+      expect(resp.body).toBe(s)
+    })
+  })
+
   describe("response", () => {
     it("returns a response map from value", () => {
       const r = response.response("hey")

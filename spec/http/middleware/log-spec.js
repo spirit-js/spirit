@@ -50,7 +50,28 @@ describe("Middleware: log", () => {
     })
   })
 
-  it("visual test", (done) => {
+  it("does not do anything if production env set", (done) => {
+    process.env.NODE_ENV = "production"
+    console.log = () => {
+      throw new Error("should not be called")
+    }
+    const handler = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(123)
+        }, 3)
+      })
+    }
+    log(handler)({ method: "TEST", url: "/test/path" }).then((resp) => {
+      expect(resp).toBe(123)
+      process.env.NODE_ENV = ""
+      done()
+    })
+  })
+})
+
+xdescribe("visual test", () => {
+  it("output", (done) => {
     console.log("\nvisual test for log middleware (4 lines will be outputted):")
     let called = false
 
@@ -71,23 +92,5 @@ describe("Middleware: log", () => {
       log(handler)({ method: "TEST", url: "/test/path" }).catch(done)
     })
   })
-
-  it("does not do anything if production env set", (done) => {
-    process.env.NODE_ENV = "production"
-    console.log = () => {
-      throw new Error("should not be called")
-    }
-    const handler = () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve(123)
-        }, 3)
-      })
-    }
-    log(handler)({ method: "TEST", url: "/test/path" }).then((resp) => {
-      expect(resp).toBe(123)
-      process.env.NODE_ENV = ""
-      done()
-    })
-  })
 })
+

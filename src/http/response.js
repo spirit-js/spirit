@@ -5,6 +5,8 @@ const fs = require("fs")
 const path = require("path")
 const Promise = require("bluebird")
 
+const stream = require("stream") // for stream_response
+
 /**
  * checks if `resp` is a valid response map
  * this test will return true for a Response too
@@ -50,6 +52,20 @@ const response = (body) => {
     }
   }
   return rmap
+}
+
+/**
+ * Creates a writable stream that can be used with response()
+ *
+ * @return {stream.Transform}
+ */
+const streaming = () => {
+  return new stream.Transform({
+    transform(data, encoding, callback) {
+      this.push(data)
+      callback()
+    }
+  })
 }
 
 /**
@@ -159,6 +175,8 @@ const err_response = (err) => {
 module.exports = {
   is_response,
   isResponse: is_response, // alias
+
+  streaming,
 
   response,
 

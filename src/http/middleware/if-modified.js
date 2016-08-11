@@ -37,7 +37,7 @@ module.exports = (handler) => {
         if (if_etag === etag) {
           match = true
         } else {
-          // request etag provided, but mismatch
+          // request etag provided, but mismatch (rfc)
           // means ignore if-modified header, so return here
           return response
         }
@@ -51,7 +51,7 @@ module.exports = (handler) => {
 
       if (match === true) {
         response.status = 304
-        response.body = undefined
+        //response.body = undefined
       }
 
       return response
