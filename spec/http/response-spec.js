@@ -1,4 +1,4 @@
-const response = require("../../lib/http/response")
+const response = require("../../index").node
 const Response = require("../../lib/http/response-class").Response
 const fs = require("fs")
 
@@ -32,7 +32,7 @@ describe("http.response", () => {
   })
 
   const stream = require("stream")
-  describe("streaming", () => {
+  describe("make_stream", () => {
     it("returns a writable stream", (done) => {
       const buf = []
       const t = new stream.Transform({
@@ -43,7 +43,7 @@ describe("http.response", () => {
         }
       })
 
-      const s = response.streaming()
+      const s = response.make_stream()
       s.write("test")
       s.write("1")
       s.write("2")
@@ -52,7 +52,7 @@ describe("http.response", () => {
     })
 
     it("using with a response is ok", () => {
-      const s = response.streaming()
+      const s = response.make_stream()
       const resp = response.response(s)
       expect(resp.status).toBe(200)
       expect(resp.headers).toEqual({})

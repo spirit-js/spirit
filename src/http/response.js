@@ -5,7 +5,7 @@ const fs = require("fs")
 const path = require("path")
 const Promise = require("bluebird")
 
-const stream = require("stream") // for stream_response
+const stream = require("stream") // for make_stream
 
 /**
  * checks if `resp` is a valid response map
@@ -59,7 +59,7 @@ const response = (body) => {
  *
  * @return {stream.Transform}
  */
-const streaming = () => {
+const make_stream = () => {
   return new stream.Transform({
     transform(data, encoding, callback) {
       this.push(data)
@@ -176,7 +176,8 @@ module.exports = {
   is_response,
   isResponse: is_response, // alias
 
-  streaming,
+  make_stream,
+  makeStream: make_stream, // alias
 
   response,
 

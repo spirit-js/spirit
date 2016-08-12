@@ -47,13 +47,14 @@ To install `npm install spirit`
 
 Most likely, you will want to use [spirit-router](https://github.com/spirit-js/spirit-router) as a handler for spirit. (Unless you are interested in writing one yourself, or using another handler).
 
-[spirit API Docs](docs/api)
-[spirit + spirit-router Guide](https://github.com/spirit-js/spirit-router/tree/master/docs/Guide.md)
+- [collection of Examples](https://github.com/spirit-js/examples)
+- [spirit API Docs](docs/api)
+- [spirit + spirit-router Guide](https://github.com/spirit-js/spirit-router/tree/master/docs/Guide.md)
 
 
 ## Notable Extensions
 ###### Adapters
-[node-adapter](docs/api/node-adapter.md): Interfaces with node's http, https, and http2 module. It's optionally bundled with spirit.
+[node-adapter](https://github.com/spirit-js/spirit/blob/master/docs/api/node.md#adapter): Interfaces with node's http, https, and http2 module. It's optionally bundled with spirit.
 
 ###### Middlewares
 [spirit-express](https://github.com/spirit-js/spirit-express): A wrapper for Express API & middleware to get them to work as spirit middleware.

@@ -1,6 +1,6 @@
 - [adapter](#adapter) node http adapter
 
-- [streaming](#streaming) creates a writable stream (useful for creating a streaming response)
+- [make_stream](#make_stream) creates a writable stream (useful for creating a streaming response)
 
 Functions for creating common responses with chainable helpers:
 - [response](#response)
@@ -57,8 +57,10 @@ And a response would flow backwards in the same order:
 -------------------------------------------
 
 
-# streaming
-##### (spirit.node.streaming)
+# make_stream
+##### (spirit.node.make_stream)
+##### Added 0.1.1
+##### Alias makeStream
 
 It is meant as a helper to create a generic writable stream for when you need to stream a response body.
 
@@ -68,7 +70,7 @@ __Note__, if you already have a stream, you do not need to use this function. It
 
 Example:
 ```js
-const res = streaming()
+const res = make_stream()
 
 // pass res to some async function, or can do some async here
 setTimeout(() => {
@@ -94,7 +96,7 @@ In the example:
 
 4. another 1000ms later, the final chunk of the response body is written to the client, and the stream has ended, thus ending the response.
 
-[Source: src/http/response.js (streaming)](../../src/http/response.js#L57)
+[Source: src/http/response.js (make_stream)](../../src/http/response.js#L57)
 
 #### Arguments
 None
