@@ -68,6 +68,10 @@ describe("resolve_response", () => {
       done()
     })
   })
+
+  it("alias", () => {
+    expect(utils.resolve_response).toBe(utils.resolveResponse)
+  })
 })
 
 describe("size_of", () => {
@@ -90,6 +94,10 @@ describe("size_of", () => {
     expect(size).toBe(undefined)
     size = utils.size_of(0)
     expect(size).toBe(undefined)
+  })
+
+  it("alias", () => {
+    expect(utils.size_of).toBe(utils.sizeOf)
   })
 })
 
@@ -121,6 +129,10 @@ describe("type_of", () => {
   it("file-stream", () => {
     const f = fs.createReadStream(__dirname + "/node_adapter-spec.js")
     expect(utils.type_of(f)).toBe("file-stream")
+  })
+
+  it("alias", () => {
+    expect(utils.type_of).toBe(utils.typeOf)
   })
 
 })

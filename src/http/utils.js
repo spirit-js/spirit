@@ -32,18 +32,16 @@ const size_of = (v) => {
 const type_of = (v) => {
   let t = typeof v
   if (t === "object") {
-    if (v === null) {
-      return "null"
-    } else if (Buffer.isBuffer(v)) {
-      return "buffer"
-    } else if (typeof v.pipe === "function") {
-      if (typeof v.path === "string") {
-        return "file-stream"
-      }
+    if (v === null) return "null"
+
+    if (Buffer.isBuffer(v)) return "buffer"
+
+    if (typeof v.pipe === "function") {
+      if (typeof v.path === "string") return "file-stream"
       return "stream"
-    } else if (Array.isArray(v)) {
-      return "array"
     }
+
+    if (Array.isArray(v)) return "array"
   }
   return t
 }

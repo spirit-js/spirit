@@ -101,6 +101,14 @@ class Response {
     return this.set("Content-Type", t + charset)
   }
 
+  cookie() {
+    return this
+  }
+
+  charset() {
+    return this
+  }
+
   location(url) {
     return this.set("Location", url)
   }

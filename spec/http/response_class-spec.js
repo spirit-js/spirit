@@ -13,6 +13,13 @@ describe("response-class", () => {
       const r = is_Response(t)
       expect(r).toBe(false)
     })
+
+    it("returns false for invalid types", () => {
+      const invalid = [null, undefined, "", 123, {}]
+      invalid.forEach((notok) => {
+        expect(is_Response(notok)).toBe(false)
+      })
+    })
   })
 
   describe("Response", () => {
@@ -91,7 +98,7 @@ describe("response-class", () => {
         expect(Object.keys(r.headers).length).toBe(1)
       })
 
-      it("will overwrites an existing key (case-insensitive)", () => {
+      it("will overwrite an existing key (case-insensitive)", () => {
         const r = new Response()
         r.headers["Content-Length"] = 200
         r.set("content-length", 1)
@@ -103,6 +110,19 @@ describe("response-class", () => {
         const r = new Response()
         r.set("Content-Length", undefined)
         expect(r.headers).toEqual({})
+      })
+
+      it("ETag has special handling to correct it's case", () => {
+        const r = new Response()
+        r.set("Etag", 123)
+        expect(r.headers).toEqual({
+          "Etag": 123
+        })
+
+        r.set("ETAG", 321)
+        expect(r.headers).toEqual({
+          "ETag": 321
+        })
       })
     })
 

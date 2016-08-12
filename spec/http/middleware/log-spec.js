@@ -8,7 +8,7 @@ describe("Middleware: log", () => {
     console.log = orig_log
   })
 
-  it("outputs a request", (done) => {
+  it("console logs a request once for incoming, and once for when outgoing", (done) => {
     let called = 0
     console.log = (prefix, method, url, status, time) => {
       expect(method).toBe("TEST")
@@ -28,6 +28,7 @@ describe("Middleware: log", () => {
       if (ms < 3 && ms > 7) {
         throw new Error("time in milliseconds seems unlikely")
       }
+      expect(status).toBe(123)
       called = 2
     }
 
@@ -45,6 +46,43 @@ describe("Middleware: log", () => {
         headers: {},
         body: "hi"
       })
+      expect(called).toBe(2)
+      done()
+    })
+  })
+
+  it("console logs for outgoing errors", (done) => {
+    let called = 0
+    console.log = (prefix, method, url, status, time) => {
+      expect(method).toBe("TEST")
+      expect(url).toBe("/test/path")
+
+      if (!called) {
+        called = 1
+        expect(status).toBe(undefined)
+        expect(time).toBe(undefined)
+        return
+      }
+
+      const ms = parseInt(time.substr(0, time.length))
+      expect(ms).not.toBe(NaN)
+      if (ms < 2 && ms > 6) {
+        throw new Error("time in milliseconds seems unlikely")
+      }
+      expect(status).toBe("ERR")
+      called = 2
+    }
+
+    const handler = () => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject("an error")
+        }, 2)
+      })
+    }
+
+    log(handler)({ method: "TEST", url: "/test/path" }).catch((err) => {
+      expect(err).toBe("an error")
       expect(called).toBe(2)
       done()
     })

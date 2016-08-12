@@ -154,5 +154,27 @@ describe("Middleware: if-modified", () => {
     })
   })
 
+  // same tests as "if-last-mod matches" which will run
+  // the middleware
+  // but change the response status to see that it ignores
+  it("ignores non 2xx responses", (done) => {
+    const mw = if_mod((request) => {
+      const resp = {
+        status: 199,
+        headers: {"Last-Modified": req_ts},
+        body: "abc123"
+      }
+      return Promise.resolve(resp)
+    })
+
+    mw(req).then((response) => {
+      expect(response.status).toBe(199)
+      expect(response.headers).toEqual({
+        "Last-Modified": req_ts
+      })
+      expect(response.body).toBe("abc123")
+      done()
+    })
+  })
 
 })

@@ -29,6 +29,10 @@ describe("http.response", () => {
         expect(response.is_response(v)).toBe(false)
       })
     })
+
+    it("alias", () => {
+      expect(response.is_response).toBe(response.isResponse)
+    })
   })
 
   const stream = require("stream")
@@ -57,6 +61,10 @@ describe("http.response", () => {
       expect(resp.status).toBe(200)
       expect(resp.headers).toEqual({})
       expect(resp.body).toBe(s)
+    })
+
+    it("alias", () => {
+      expect(response.make_stream).toBe(response.makeStream)
     })
   })
 
@@ -150,6 +158,31 @@ describe("http.response", () => {
           })
       })
     })
+
+    it("alias", () => {
+      expect(response.file_response).toBe(response.fileResponse)
+    })
+
+    it("throws when called with non-string or non-file stream argument", () => {
+      expect(() => {
+        response.file_response(123)
+      }).toThrowError(/Expected a file/)
+
+      expect(() => {
+        response.file_response({})
+      }).toThrowError(/Expected a file/)
+
+      expect(() => {
+        response.file_response({ path: "hi" })
+      }).toThrowError(/Expected a file/)
+    })
+
+    it("throws when argument is not a file", (done) => {
+      response.file_response("lib/").catch((err) => {
+        expect(err).toMatch(/not a file/)
+        done()
+      })
+    })
   })
 
   describe("redirect", () => {
@@ -210,6 +243,10 @@ describe("http.response", () => {
     it("accepts a Error and will output the err.stack", () => {
       const err = new Error("err")
       expect(response.err_response(err).body).toMatch(/response-spec/)
+    })
+
+    it("alias", () => {
+      expect(response.err_response).toBe(response.errResponse)
     })
   })
 
