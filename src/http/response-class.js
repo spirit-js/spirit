@@ -101,12 +101,109 @@ class Response {
     return this.set("Content-Type", t + charset)
   }
 
-  cookie() {
-    return this
+  _clear_cookies(cookies, name, path) {
+    path = path || "/"
+    return cookies.filter((ck) => {
+      // get cookie name
+      const _name = ck.slice(0, ck.indexOf("="))
+      let _path = "/"
+
+      if (_name === name) {
+        // if name matches, check path
+        const ck_lower = ck.toLowerCase()
+        const _begin = ck_lower.indexOf("path=")
+
+        if (_begin !== -1) {
+          ck = ck.slice(_begin + 5)
+          const _end = ck.indexOf(";")
+
+          if (_end === -1) {
+            _path = ck
+          } else {
+            _path = ck.slice(0, _end)
+          }
+        }
+
+        return _path !== path
+      }
+
+      return true
+    })
   }
 
-  charset() {
-    return this
+ /**
+  * Sets a cookie to headers, if the header already exists
+  * It will append to the array (and be converted to one, if
+  * it isn't already one)
+  *
+  * No encoding is done, if needed, encode the value before
+  * calling this method
+  *
+  * If value is undefined, then the cookie will not be set
+  * And if it already exists, then all instances of it
+  * will be removed
+  *
+  * Possible duplicate cookies of the same name & path
+  * are not handled
+  * NOTE: cookies are considered unique to it's name & path
+  *
+  * Options: {
+  *   path {string}
+  *   domain {string}
+  *   httponly {boolean}
+  *   maxage {string}
+  *   secure {boolean}
+  *   expires {Date}
+  * }
+  *
+  * @param {string} name - cookie name
+  * @param {string} value - cookie value
+  * @param {object} opts - an object of options
+  * @return {this}
+  */
+  cookie(name, value, opts) {
+    // get current cookies (as an array)
+    let curr_cookies = this.get("Set-Cookie")
+    if (curr_cookies === undefined) {
+      curr_cookies = []
+    } else {
+      if (Array.isArray(curr_cookies) === false) {
+        curr_cookies = [curr_cookies]
+      }
+    }
+
+    // optional arguments & default values
+    if (typeof value === "object") {
+      opts = value
+      value = undefined
+    } else if (opts === undefined) {
+      opts = {}
+    }
+
+    // is this for deletion?
+    if (value === undefined) {
+      const _filtered_cookies = this._clear_cookies(curr_cookies, name, opts.path)
+      return this.set("Set-Cookie", _filtered_cookies)
+    }
+
+    // begin constructing cookie string
+    value = [value]
+    // * set optional values *
+    if (opts.path) value.push("Path=" + opts.path)
+    if (opts.domain) value.push("Domain=" + opts.domain)
+    if (opts.maxage) value.push("Max-Age=" + opts.maxage)
+    if (opts.secure === true) value.push("Secure")
+    if (opts.expires) {
+      if (typeof opts.expires.toUTCString === "function") {
+        value.push("Expires=" + opts.expires.toUTCString())
+      } else {
+        value.push("Expires=" + opts.expires)
+      }
+    }
+    if (opts.httponly === true) value.push("HttpOnly")
+
+    curr_cookies.push(name + "=" + value.join("; "))
+    return this.set("Set-Cookie", curr_cookies)
   }
 
   location(url) {

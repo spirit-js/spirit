@@ -214,7 +214,125 @@ describe("response-class", () => {
     })
 
     describe("cookie", () => {
-      it("")
+      it("sets a cookie in headers", () => {
+        const r = new Response()
+        r.cookie("test", "123")
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123"])
+
+        const t = r.cookie("another", "hi")
+        expect(r.headers["Set-Cookie"]).toEqual([
+          "test=123",
+          "another=hi"
+        ])
+
+        expect(t).toBe(r) // returns this
+      })
+
+      it("non-string values are converted to string", () => {
+        const r = new Response()
+        r.cookie("test", 123)
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123"])
+      })
+
+      it("duplicates are not handled in any way", () => {
+        const r = new Response()
+        r.cookie("test", 123)
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123"])
+        r.cookie("test", 123)
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123", "test=123"])
+      })
+
+      it("path option", () => {
+        const r = new Response()
+        r.cookie("test", "123", { path: "/" })
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123; Path=/"])
+        r.cookie("aBc", "123", { path: "/test" })
+        expect(r.headers["Set-Cookie"]).toEqual([
+          "test=123; Path=/",
+          "aBc=123; Path=/test"
+        ])
+      })
+
+      it("domain, httponly, maxage, secure options", () => {
+        const r = new Response()
+        // domain
+        r.cookie("test", "123", { domain: "test.com" })
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123; Domain=test.com"])
+        // httponly
+        r.cookie("a", "b", { httponly: true })
+        expect(r.headers["Set-Cookie"][1]).toBe("a=b; HttpOnly")
+        // maxage
+        r.cookie("a", "b", { maxage: "2000" })
+        expect(r.headers["Set-Cookie"][2]).toBe("a=b; Max-Age=2000")
+        // secure
+        r.cookie("a", "b", { secure: true })
+        expect(r.headers["Set-Cookie"][3]).toBe("a=b; Secure")
+
+        // all together
+        r.cookie("a", "b", {
+          httponly: true,
+          secure: true,
+          maxage: 4000,
+          domain: "test.com"
+        })
+        expect(r.headers["Set-Cookie"][4]).toBe("a=b; Domain=test.com; Max-Age=4000; Secure; HttpOnly")
+      })
+
+      it("expires option", () => {
+        // date object ok
+        const date = new Date()
+        const r = new Response()
+        r.cookie("c", "d", { expires: date })
+        expect(r.headers["Set-Cookie"][0]).toBe("c=d; Expires=" + date.toUTCString())
+
+        // string ok
+        r.cookie("c", "d", { expires: "hihihi" })
+        expect(r.headers["Set-Cookie"][1]).toBe("c=d; Expires=hihihi")
+      })
+
+      describe("deleting cookies", () => {
+        it("setting an undefined value means to delete any previous cookie matching the same name & path", () => {
+          const r = new Response()
+          r.cookie("test", "123", { path: "/" })
+          expect(r.headers["Set-Cookie"]).toEqual(["test=123; Path=/"])
+          r.cookie("test", undefined, { path: "/" })
+          expect(r.headers["Set-Cookie"]).toEqual([])
+
+          r.cookie("test", "123", { path: "/" })
+          r.cookie("test", "123", { path: "/" })
+          r.cookie("test", "123", { path: "/" })
+          expect(r.headers["Set-Cookie"].length).toBe(3)
+          const t = r.cookie("test", { path: "/" })
+          expect(r.headers["Set-Cookie"]).toEqual([])
+
+          expect(t).toBe(r) // returns this
+        })
+      })
+
+      it("path always defaults to '/' and options do not affect matching", () => {
+        const r = new Response()
+        r.cookie("test", "123", { path: "/", httponly: true })
+        r.cookie("test", "123")
+        r.cookie("test", "123", { path: "/", domain: "hi.com" })
+        expect(r.headers["Set-Cookie"].length).toBe(3)
+        r.cookie("test")
+        expect(r.headers["Set-Cookie"]).toEqual([])
+      })
+
+      it("doesn't touch non-matching cookies", () => {
+        const r = new Response()
+        r.cookie("test", "123", { path: "/" })
+        r.cookie("test", "123", { path: "/test" })
+        r.cookie("tesT", "123", { path: "/" })
+        expect(r.headers["Set-Cookie"].length).toBe(3)
+        r.cookie("test", undefined)
+        expect(r.headers["Set-Cookie"].length).toBe(2)
+        expect(r.headers["Set-Cookie"]).toEqual([
+          "test=123; Path=/test",
+          "tesT=123; Path=/"
+        ])
+      })
+
     })
 
     describe("charset", () => {
