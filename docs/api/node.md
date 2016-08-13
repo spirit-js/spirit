@@ -132,6 +132,7 @@ If `body` is a string, "Content-Length" will be populated appropriately with the
 
 # file_response
 ##### (spirit.node.file_response)
+##### Alias fileResponse
 
 `file` is either a string of the path of a file or a readable file stream (usually from `fs.createReadStream`).
 
@@ -182,6 +183,7 @@ redirect(301, "http://www.google.com")
 
 # err_response
 ##### (spirit.node.err_response)
+##### Alias errResponse
 
 Returns a [Response](Response.md) with a 500 status code and it's body set as `body`.
 

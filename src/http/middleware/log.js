@@ -5,12 +5,12 @@
  * It is meant purely for development
  */
 
-//const arrow_in = "\u001b[33m=\u001b[93m>\u001b[39m"
-//const arrow_out = "\u001b[92m<\u001b[32m=\u001b[39m"
+//const prefix_in = "⇢ "
+//const prefix_out = "↩︎ "
+//const prefix_err = "⚠︎ "
 
-const prefix_in = "⇢ "
-const prefix_out = "↩︎ "
-const prefix_err = "⚠︎ "
+const prefix_in = "->"
+const prefix_out = "<-"
 
 module.exports = (handler) => {
   if (typeof process !== "undefined"
@@ -21,19 +21,33 @@ module.exports = (handler) => {
     }
   }
 
+  const reqtag = (str) => {
+    const tag = str.split("").reduce((h, c) => {
+      let n = parseInt(c)
+      if (isNaN(n)) n = c.charCodeAt()
+      n += 1
+      return h * n
+    }, 0)
+    const seed = Math.floor(Math.random() * 100000)
+    return tag + seed
+  }
+
   return (request) => {
     const t = new Date()
-    console.log(prefix_in, request.method, request.url)
+
+    const tag = reqtag(t.getTime() + request.method + request.url)
+
+    console.log(prefix_in, tag, request.method, request.url)
 
     return handler(request)
       .then((response) => {
         const diff = new Date - t
-        console.log(prefix_out, request.method, request.url, response.status, diff + "ms")
+        console.log(prefix_out, tag, response.status, diff + "ms")
         return response
       })
       .catch((err) => {
         const diff = new Date - t
-        console.log(prefix_err, request.method, request.url, "ERR", diff + "ms")
+        console.log(prefix_out, tag, "err", diff + "ms")
         throw err
       })
   }

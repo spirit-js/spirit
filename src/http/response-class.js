@@ -206,10 +206,6 @@ class Response {
     return this.set("Set-Cookie", curr_cookies)
   }
 
-  location(url) {
-    return this.set("Location", url)
-  }
-
   len(size) {
     const typ_size = typeof size
     if (typ_size !== "undefined" && typ_size !== "number") {

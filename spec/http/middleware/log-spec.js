@@ -10,25 +10,22 @@ describe("Middleware: log", () => {
 
   it("console logs a request once for incoming, and once for when outgoing", (done) => {
     let called = 0
-    console.log = (prefix, method, url, status, time) => {
-      expect(method).toBe("TEST")
-      expect(url).toBe("/test/path")
-
+    console.log = (prefix, tag, x, y) => {
       if (!called) {
         called = 1
-        expect(status).toBe(undefined)
-        expect(time).toBe(undefined)
+        expect(x).toBe("TEST")
+        expect(y).toBe("/test/path")
         return
       }
 
-      const ms = parseInt(time.substr(0, time.length))
+      const ms = parseInt(y.substr(0, y.length))
       expect(ms).not.toBe(NaN)
       // the time it took to run the test should
       // at least be 3ms but probably not greater than 7ms
       if (ms < 3 && ms > 7) {
         throw new Error("time in milliseconds seems unlikely")
       }
-      expect(status).toBe(123)
+      expect(x).toBe(123)
       called = 2
     }
 
@@ -53,23 +50,20 @@ describe("Middleware: log", () => {
 
   it("console logs for outgoing errors", (done) => {
     let called = 0
-    console.log = (prefix, method, url, status, time) => {
-      expect(method).toBe("TEST")
-      expect(url).toBe("/test/path")
-
+    console.log = (prefix, tag, x, y) => {
       if (!called) {
         called = 1
-        expect(status).toBe(undefined)
-        expect(time).toBe(undefined)
+        expect(x).toBe("TEST")
+        expect(y).toBe("/test/path")
         return
       }
 
-      const ms = parseInt(time.substr(0, time.length))
+      const ms = parseInt(y.substr(0, y.length))
       expect(ms).not.toBe(NaN)
       if (ms < 2 && ms > 6) {
         throw new Error("time in milliseconds seems unlikely")
       }
-      expect(status).toBe("ERR")
+      expect(x).toBe("err")
       called = 2
     }
 
@@ -108,7 +102,7 @@ describe("Middleware: log", () => {
   })
 })
 
-xdescribe("visual test", () => {
+describe("visual test", () => {
   it("output", (done) => {
     console.log("\nvisual test for log middleware (4 lines will be outputted):")
     let called = false
@@ -122,7 +116,7 @@ xdescribe("visual test", () => {
         called = true
         setTimeout(() => {
           resolve({ status: 123, headers: {}, body: "hi" })
-        }, 3)
+        }, 1)
       })
     }
 

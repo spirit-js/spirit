@@ -147,7 +147,7 @@ const redirect = (status, url) => {
 
   return new Response()
     .status_(status)
-    .location(url)
+    .set("Location", url)
 }
 
 /**

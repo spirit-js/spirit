@@ -36,11 +36,11 @@ const x_forwarded = (request) => {
 module.exports = (handler) => {
   return (request) => {
     let v = forwarded(request)
-    if (!v) {
+    if (v === undefined) {
       v = x_forwarded(request)
     }
 
-    if (v) request.ip = v.for
+    if (v !== undefined) request.ip = v.for
     return handler(request)
   }
 }

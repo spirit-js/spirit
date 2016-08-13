@@ -54,15 +54,35 @@ describe("response-class", () => {
     })
 
     describe("body_", () => {
-      it("sets the body of the response, but also adjusts the content length", () => {
+      it("sets the body of the response, but also adjusts the content length when it is a string or buffer", () => {
         const r = new Response("hello")
         expect(r.headers["Content-Length"]).toBe(undefined)
 
-        const result = r.body_("hello world")
+        let result = r.body_("hello world")
         expect(r.headers["Content-Length"]).toBe(11)
         expect(r.body).toBe("hello world")
 
-        expect(result).toBe(r)
+        const buf = new Buffer("hello")
+        result = r.body_(buf)
+        expect(r.headers["Content-Length"]).toBe(5)
+        expect(r.body).toBe(buf)
+
+        expect(result).toBe(r) // returns this
+      })
+
+      it("for undefined or a stream (or non string / buffer), removes previous content-length",() => {
+        const r = new Response("hello")
+        r.headers["Content-Length"] = 5
+        expect(r.body).toBe("hello")
+        r.body_(undefined)
+        expect(r.body).toBe(undefined)
+        expect(r.headers["Content-Length"]).toBe(undefined)
+
+        r.body_("hello")
+        expect(r.headers["Content-Length"]).toBe(5)
+
+        r.body_({}) // pretend this object is stream
+        expect(r.headers["Content-Length"]).toBe(undefined)
       })
     })
 
@@ -142,16 +162,6 @@ describe("response-class", () => {
       it("sets utf-8 charset by default for text/* content types", () => {
         const r = new Response().type("text")
         expect(r.headers["Content-Type"]).toBe("text/plain; charset=utf-8")
-      })
-    })
-
-    describe("location", () => {
-      it("sets 'Location' header to url passed in", () => {
-        const r = new Response()
-        r.location("hi.cOm")
-        expect(r.headers).toEqual({
-          "Location": "hi.cOm"
-        })
       })
     })
 
@@ -332,12 +342,8 @@ describe("response-class", () => {
           "tesT=123; Path=/"
         ])
       })
-
     })
 
-    describe("charset", () => {
-      it("")
-    })
   })
 
 })

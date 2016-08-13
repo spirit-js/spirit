@@ -1,5 +1,9 @@
+Internal APIs
+
+** denotes a high probablity of change
+
 - [size_of](#size_of)
-- [type_of](#type_of)
+- [type_of **](#type_of)
 - [resolve_response](#resolve_response)
 
 
@@ -29,6 +33,8 @@ This function is useful for determining the "Content-Length" of a response body 
 
 # type_of
 ##### (spirit.node.utils.type_of)
+
+** This function is expected to change in the future
 
 Returns a string representation of the type of `v`. It is similar to `typeof` but it will also correctly detect and report types for: null, array, buffer, stream, file-stream.
 
