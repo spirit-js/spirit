@@ -60,6 +60,7 @@ describe("node adapter", () => {
       const app = adp(handler, [])
       const res = mock_response((result) => {
         expect(result.status).toBe(500)
+        expect(result.headers["Content-Length"] > 20).toBe(true)
         expect(result.body).toMatch(/node.js adapter did not/)
         done()
       })
@@ -73,7 +74,8 @@ describe("node adapter", () => {
       const app = adp(handler, [])
       const res = mock_response((result) => {
         expect(result.status).toBe(500)
-        expect(result.body).toBe("")
+        expect(result.headers).toEqual({})
+        expect(result.body).toBe(undefined)
         done()
       })
       process.env.NODE_ENV = "production"

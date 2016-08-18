@@ -60,14 +60,14 @@ const adapter = (handler, middleware) => {
     adp(request_map)
       .then((resp) => {
         if (!response.is_response(resp)) {
-          throw new Error("Error: node.js adapter did not receive a proper response (response map). Got: " + JSON.stringify(resp))
+          throw new Error("node.js adapter did not receive a proper response (response map). Got: " + JSON.stringify(resp))
         }
         send(res, resp)
       })
       .catch((err) => {
         const resp = response.err_response(err)
         if (process.env.NODE_ENV === "production") {
-          resp.body = ""
+          resp.body_()
         }
         send(res, resp)
       })

@@ -200,6 +200,9 @@ describe("response-class", () => {
         expect(() => {
           r.len(null)
         }).toThrowError(/Expected number/)
+
+        // but undefined is ok
+        r.len(undefined)
       })
     })
 
@@ -216,10 +219,12 @@ describe("response-class", () => {
           "Content-Disposition": "attachment; filename=blah.txt"
         })
 
-        r.attachment()
+        const ret = r.attachment()
         expect(r.headers).toEqual({
           "Content-Disposition": undefined
         })
+
+        expect(ret).toBe(r)
       })
     })
 
@@ -244,6 +249,12 @@ describe("response-class", () => {
         expect(r.headers["Set-Cookie"]).toEqual(["test=123"])
       })
 
+      it("values are always encoded with encodeURIComponent", () => {
+        const r = new Response()
+        r.cookie("test", "hi ! á")
+        expect(r.headers["Set-Cookie"]).toEqual(["test=hi%20!%20%C3%A1"])
+      })
+
       it("duplicates are not handled in any way", () => {
         const r = new Response()
         r.cookie("test", 123)
@@ -255,11 +266,11 @@ describe("response-class", () => {
       it("path option", () => {
         const r = new Response()
         r.cookie("test", "123", { path: "/" })
-        expect(r.headers["Set-Cookie"]).toEqual(["test=123; Path=/"])
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123;Path=/"])
         r.cookie("aBc", "123", { path: "/test" })
         expect(r.headers["Set-Cookie"]).toEqual([
-          "test=123; Path=/",
-          "aBc=123; Path=/test"
+          "test=123;Path=/",
+          "aBc=123;Path=/test"
         ])
       })
 
@@ -267,16 +278,16 @@ describe("response-class", () => {
         const r = new Response()
         // domain
         r.cookie("test", "123", { domain: "test.com" })
-        expect(r.headers["Set-Cookie"]).toEqual(["test=123; Domain=test.com"])
+        expect(r.headers["Set-Cookie"]).toEqual(["test=123;Domain=test.com"])
         // httponly
         r.cookie("a", "b", { httponly: true })
-        expect(r.headers["Set-Cookie"][1]).toBe("a=b; HttpOnly")
+        expect(r.headers["Set-Cookie"][1]).toBe("a=b;HttpOnly")
         // maxage
         r.cookie("a", "b", { maxage: "2000" })
-        expect(r.headers["Set-Cookie"][2]).toBe("a=b; Max-Age=2000")
+        expect(r.headers["Set-Cookie"][2]).toBe("a=b;Max-Age=2000")
         // secure
         r.cookie("a", "b", { secure: true })
-        expect(r.headers["Set-Cookie"][3]).toBe("a=b; Secure")
+        expect(r.headers["Set-Cookie"][3]).toBe("a=b;Secure")
 
         // all together
         r.cookie("a", "b", {
@@ -285,7 +296,7 @@ describe("response-class", () => {
           maxage: 4000,
           domain: "test.com"
         })
-        expect(r.headers["Set-Cookie"][4]).toBe("a=b; Domain=test.com; Max-Age=4000; Secure; HttpOnly")
+        expect(r.headers["Set-Cookie"][4]).toBe("a=b;Domain=test.com;Max-Age=4000;Secure;HttpOnly")
       })
 
       it("expires option", () => {
@@ -293,18 +304,18 @@ describe("response-class", () => {
         const date = new Date()
         const r = new Response()
         r.cookie("c", "d", { expires: date })
-        expect(r.headers["Set-Cookie"][0]).toBe("c=d; Expires=" + date.toUTCString())
+        expect(r.headers["Set-Cookie"][0]).toBe("c=d;Expires=" + date.toUTCString())
 
         // string ok
         r.cookie("c", "d", { expires: "hihihi" })
-        expect(r.headers["Set-Cookie"][1]).toBe("c=d; Expires=hihihi")
+        expect(r.headers["Set-Cookie"][1]).toBe("c=d;Expires=hihihi")
       })
 
       describe("deleting cookies", () => {
         it("setting an undefined value means to delete any previous cookie matching the same name & path", () => {
           const r = new Response()
           r.cookie("test", "123", { path: "/" })
-          expect(r.headers["Set-Cookie"]).toEqual(["test=123; Path=/"])
+          expect(r.headers["Set-Cookie"]).toEqual(["test=123;Path=/"])
           r.cookie("test", undefined, { path: "/" })
           expect(r.headers["Set-Cookie"]).toEqual([])
 
@@ -338,8 +349,8 @@ describe("response-class", () => {
         r.cookie("test", undefined)
         expect(r.headers["Set-Cookie"].length).toBe(2)
         expect(r.headers["Set-Cookie"]).toEqual([
-          "test=123; Path=/test",
-          "tesT=123; Path=/"
+          "test=123;Path=/test",
+          "tesT=123;Path=/"
         ])
       })
     })

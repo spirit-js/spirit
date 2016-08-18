@@ -95,4 +95,33 @@ describe("core - compose", () => {
       done()
     })
   })
+
+  it("can exit early and does not call remaining middlewares/handler", (done) => {
+    let free = "a"
+
+    const handler = () => {
+      free += "_final"
+    }
+
+    const route = reduce(handler, [
+      (handler) => {
+        return () => {
+          return "ok"
+        }
+      },
+      (handler) => {
+        return () => {
+          free += "_mw2"
+          return handler()
+        }
+      }
+    ])
+    route().then((resp) => {
+      expect(resp).toBe("ok")
+      setTimeout(() => {
+        expect(free).toBe("a")
+        done()
+      }, 10)
+    })
+  })
 })

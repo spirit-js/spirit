@@ -22,6 +22,18 @@ class Response {
     this.body = body
   }
 
+  /**
+   * Looks up `k` from `response`'s headers
+   *
+   * Where `response` is a response map or Response
+   * `k` is a case insensitive look up
+   *
+   * Returns back the header field matching `k` in it's original case
+   *
+   * @param {response} response - a response map or object that conforms to one
+   * @param {string} k - the header field to look up (case insensitive)
+   * @return {string|undefined} the header field that matches `k` or undefined if it doesn't exist
+   */
   static field(response, k) {
     // if k exists, then just return
     if (response[k] !== undefined) {
@@ -51,9 +63,7 @@ class Response {
       if (existk !== k) {
         k = k.split("-").map((p) => {
           const c = p[0].toUpperCase() + p.substr(1).toLowerCase()
-          if (c === "Etag") {
-            return "ETag"
-          }
+          if (c === "Etag") return "ETag" // special handling for ETag
           return c
         }).join("-")
 
@@ -101,7 +111,7 @@ class Response {
     return this.set("Content-Type", t + charset)
   }
 
-  _clear_cookies(cookies, name, path) {
+  _clear_cookie(cookies, name, path) {
     path = path || "/"
     return cookies.filter((ck) => {
       // get cookie name
@@ -136,8 +146,7 @@ class Response {
   * It will append to the array (and be converted to one, if
   * it isn't already one)
   *
-  * No encoding is done, if needed, encode the value before
-  * calling this method
+  * encodeURIComponent() is used to encode the value by default
   *
   * If value is undefined, then the cookie will not be set
   * And if it already exists, then all instances of it
@@ -154,6 +163,7 @@ class Response {
   *   maxage {string}
   *   secure {boolean}
   *   expires {Date}
+  *   encode {function} defaults to encodeURIComponent
   * }
   *
   * @param {string} name - cookie name
@@ -179,21 +189,22 @@ class Response {
     } else if (opts === undefined) {
       opts = {}
     }
+    if (typeof opts.encode !== "function") opts.encode = encodeURIComponent
 
     // is this for deletion?
     if (value === undefined) {
-      const _filtered_cookies = this._clear_cookies(curr_cookies, name, opts.path)
+      const _filtered_cookies = this._clear_cookie(curr_cookies, name, opts.path)
       return this.set("Set-Cookie", _filtered_cookies)
     }
 
     // begin constructing cookie string
-    value = [value]
+    value = [opts.encode(value)]
     // * set optional values *
-    if (opts.path) value.push("Path=" + opts.path)
-    if (opts.domain) value.push("Domain=" + opts.domain)
-    if (opts.maxage) value.push("Max-Age=" + opts.maxage)
+    if (opts.path !== undefined) value.push("Path=" + opts.path)
+    if (opts.domain !== undefined) value.push("Domain=" + opts.domain)
+    if (opts.maxage !== undefined) value.push("Max-Age=" + opts.maxage)
     if (opts.secure === true) value.push("Secure")
-    if (opts.expires) {
+    if (opts.expires !== undefined) {
       if (typeof opts.expires.toUTCString === "function") {
         value.push("Expires=" + opts.expires.toUTCString())
       } else {
@@ -202,14 +213,14 @@ class Response {
     }
     if (opts.httponly === true) value.push("HttpOnly")
 
-    curr_cookies.push(name + "=" + value.join("; "))
+    curr_cookies.push(name + "=" + value.join(";"))
     return this.set("Set-Cookie", curr_cookies)
   }
 
   len(size) {
     const typ_size = typeof size
     if (typ_size !== "undefined" && typ_size !== "number") {
-      throw new TypeError("Expected number for Response len() instead got: " + size)
+      throw new TypeError("Expected number for Response len() instead got: " + typ_size)
     }
     if (size === 0) size = undefined
     return this.set("Content-Length", size)
@@ -221,7 +232,7 @@ class Response {
       v = "attachment"
       if (filename !== "") v = v + "; filename=" + filename
     }
-    this.set("Content-Disposition", v)
+    return this.set("Content-Disposition", v)
   }
 
 }
