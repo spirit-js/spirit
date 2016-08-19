@@ -1,4 +1,6 @@
-const {Response, is_Response}= require("../../index").node
+const spirit = require("../../index")
+const Response = spirit.node.Response
+const is_Response = spirit.node.utils.is_Response
 
 describe("response-class", () => {
   describe("is_Response", () => {

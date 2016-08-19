@@ -1,10 +1,32 @@
-Internal APIs
+Internal API
 
-** denotes a high probablity of change
+Considered stable unless denoted with "**".
 
+NOTE: Unlike the rest of the spirit API, there are no camelCase variants.
+
+- [is_Response](#is_Response)
 - [size_of](#size_of)
 - [type_of **](#type_of)
 - [resolve_response](#resolve_response)
+
+
+-------------------------------------------
+
+
+# is_Response
+##### (spirit.node.utils.is_Response)
+
+Returns `true` or `false` depending on if `v` is a instance of [Response](Response.md)
+
+Does not return true for a response map, this is a specific check.
+
+[Source: src/http/response-class.js (is_Response)](../../src/http/response-class.js#L4)
+
+#### Arguments
+* v {*} 
+
+#### Return
+{boolean} 
 
 
 -------------------------------------------

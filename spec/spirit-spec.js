@@ -110,3 +110,64 @@ describe("spirit spec", () => {
   })
 
 })
+
+describe("spirit exported API", () => {
+  it("core", () => {
+    const api = Object.keys(spirit)
+    expect(api).toEqual([
+      "compose",
+      "callp",
+      "is_promise", // not documented as exported
+      "node"
+    ])
+    expect(api.length).toEqual(4)
+  })
+
+  it("node", () => {
+    const api = Object.keys(spirit.node).sort()
+    const test_api = [
+      "adapter",
+      "response",
+      "redirect",
+      "make_stream",
+      "is_response",
+      "file_response",
+      "err_response",
+      "Response",
+      "middleware",
+      "utils"
+    ]
+
+    // add in camelCase aliases
+    const test_aliases = test_api.reduce((ta, api_name) => {
+      const t = api_name.split("_")
+      if (t.length === 2) {
+        const alias = t[0] + t[1][0].toUpperCase() + t[1].slice(1)
+        ta.push(alias)
+      }
+      return ta
+    }, [])
+
+    expect(api).toEqual(test_api.concat(test_aliases).sort())
+    expect(api.length).toEqual(14)
+  })
+
+  it("node.middleware", () => {
+    const api = Object.keys(spirit.node.middleware).sort()
+    expect(api).toEqual([
+      "ifmod",
+      "log",
+      "proxy"
+    ])
+  })
+
+  it("node.utils", () => {
+    const api = Object.keys(spirit.node.utils).sort()
+    expect(api).toEqual([
+      "is_Response",
+      "resolve_response",
+      "size_of",
+      "type_of"
+    ])
+  })
+})

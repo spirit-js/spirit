@@ -1,23 +1,20 @@
 var core = require("./lib/core/core")
 var p_utils = require("./lib/core/promise_utils")
 
+//-- spirit.node
 var node_adapter = require("./lib/http/node_adapter")
 var response = require("./lib/http/response")
 var response_map = require("./lib/http/response-class")
-
-
 var node = response
 node.adapter = node_adapter.adapter
 node.Response = response_map.Response
-// is_Response has no camelCase alias as it'll overwrite
-// isResponse which is camelCase for is_response
-node.is_Response = response_map.is_Response
+///////// setup node camelCase aliases
+node.isResponse = node.is_response
+node.makeStream = node.make_stream
+node.fileResponse = node.file_response
+node.errResponse = node.err_response
 
-node.utils = require("./lib/http/utils")
-node.utils.resolve_response = p_utils.resolve_response
-node.utils.resolveResponse = p_utils.resolve_response
-
-// node http middleware
+//-- spirit.node.middleware
 node.middleware = {
   proxy: require("./lib/http/middleware/proxy"),
 //  head: require("./lib/http/middleware/head"),
@@ -25,12 +22,16 @@ node.middleware = {
   log: require("./lib/http/middleware/log")
 }
 
+//-- spirit.utils (Internal API but exported)
+// no camelCase aliases!
+node.utils = require("./lib/http/utils")
+node.utils.is_Response = response_map.is_Response
+node.utils.resolve_response = p_utils.resolve_response
+
 module.exports = {
   compose: core.compose,
   callp: p_utils.callp,
-
-  is_promise: p_utils.is_promise,
-  isPromise: p_utils.is_promise,
+  is_promise: p_utils.is_promise, // exported but not documented
 
   node: node
 }

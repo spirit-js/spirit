@@ -1,3 +1,6 @@
+- [compose](#compose)
+- [callp](#callp)
+
 # compose
 ##### (spirit.compose)
 
@@ -43,19 +46,3 @@ Additionally if `fn` is _not_ a function, it will ignore `args` and return `fn` 
 #### Return
 {Promise} The value of `fn(args)` wrapped as a Promise if it's not a Promise already
 
-
---------------------------------------------------
-
-
-# is_promise
-##### (spirit.is_promise)
-
-Returns `true` or `false` depending on if `v` is a Promise
-
-[Source: src/core/promise_utils.js (callp)](../../src/core/promise_utils.js#L20)
-
-#### Arguments
-* v {*} 
-
-#### Return
-{boolean}

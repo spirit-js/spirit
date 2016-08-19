@@ -9,7 +9,6 @@ Functions for creating common responses with chainable helpers:
 - [redirect](#redirect)
 
 For checking if an object is a valid response:
-- [is_Response](#is_Response)
 - [is_response](#is_response)
 
 
@@ -201,25 +200,6 @@ err_response(new Error("oops"))
 
 #### Return
 {Response}
-
-
--------------------------------------------
-
-
-# is_Response
-##### (spirit.node.is_Response)
-
-Returns `true` or `false` depending on if `v` is a instance of [Response](Response.md)
-
-Does not return true for a response map, this is a specific check.
-
-[Source: src/http/response-class.js (is_Response)](../../src/http/response-class.js#L4)
-
-#### Arguments
-* v {*} 
-
-#### Return
-{boolean} 
 
 
 -------------------------------------------
