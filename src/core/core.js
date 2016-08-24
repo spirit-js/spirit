@@ -19,8 +19,8 @@ const p_utils = require("./promise_utils")
 const compose = (handler, middleware) => {
   // wrap `fn` to always returns a promise
   const wrap = function(fn) {
-    return function(input) {
-      return p_utils.callp(fn, [input])
+    return function() {
+      return p_utils.callp(fn, arguments)
     }
   }
 

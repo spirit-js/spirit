@@ -53,10 +53,10 @@ const send = (res, resp) => {
 
 const adapter = (handler, middleware) => {
   if (middleware === undefined) middleware = []
+  const adp = core.compose(handler, middleware)
 
   return (req, res) => {
     const request_map = request.create(req)
-    const adp = core.compose(handler, middleware)
     adp(request_map)
       .then((resp) => {
         if (!response.is_response(resp)) {

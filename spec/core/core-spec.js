@@ -124,4 +124,56 @@ describe("core - compose", () => {
       }, 10)
     })
   })
+
+  it("each middleware will correctly call the next func with arguments", (done) => {
+    const handler = function() {
+      return Array.prototype.slice.call(arguments).join(",")
+    }
+    const route = reduce(handler, [
+      (handler) => {
+        return (a, b, c) => {
+          expect(a).toBe(1)
+          expect(b).toBe(2)
+          expect(c).toBe(undefined)
+          return handler(a, b, 3)
+        }
+      },
+      (handler) => {
+        return (a, b, c, d) => {
+          expect(a).toBe(1)
+          expect(b).toBe(2)
+          expect(c).toBe(3)
+          expect(d).toBe(undefined)
+          return handler(a, b, c, 4)
+        }
+      }
+    ])
+    route(1, 2).then((result) => {
+      expect(result).toBe("1,2,3,4")
+      done()
+    })
+  })
+
+  it("promises ok", (done) => {
+    const handler = () => {
+      return new Promise((resolve, reject) => {
+        resolve("ok")
+      })
+    }
+
+    const middleware = (_handler) => {
+      return () => {
+        return new Promise((resolve, reject) => {
+          const result = _handler()
+          resolve(result)
+        })
+      }
+    }
+
+    const fn = reduce(handler, [middleware, middleware])
+    fn().then((result) => {
+      expect(result).toBe("ok")
+      done()
+    })
+  })
 })

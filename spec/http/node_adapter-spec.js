@@ -12,19 +12,13 @@ describe("node adapter", () => {
         return { status: 200, headers: {}, body: "ok" }
       }
 
-      const middleware = [
-        (handler) => {
-          return (request) => {
-            return handler(request)
-          }
-        },
-        (handler) => {
-          return (request) => {
-            return handler(request)
-          }
+      const middleware = (handler) => {
+        return (request) => {
+          return handler(request)
         }
-      ]
-      const app = adp(handler, middleware)
+      }
+
+      const app = adp(handler, [middleware, middleware])
       const res = mock_response((result) => {
         expect(result.body).toBe("ok")
         done()
@@ -89,6 +83,36 @@ describe("node adapter", () => {
       const res = mock_response(done)
       const app = adp(handler)
       app({}, res)
+    })
+
+    it("middleware are initialized once only", (done) => {
+      let init = 0
+      let called = 0
+
+      const handler = (request) => {
+        return { status: 200, headers: {}, body: "ok" }
+      }
+      const middleware = (handler) => {
+        init += 1
+        return (request) => {
+          called += 1
+          return handler(request)
+        }
+      }
+      const app = adp(handler, [middleware, middleware])
+
+      const fake_request = (test_val, cb) => {
+        app({}, mock_response(() => {
+          expect(init).toBe(2)
+          expect(called).toBe(test_val)
+          cb()
+        }))
+      }
+
+      const a = fake_request.bind(undefined, 8, done)
+      const b = fake_request.bind(undefined, 6, a)
+      const c = fake_request.bind(undefined, 4, b)
+      fake_request(2, c)
     })
   })
 
