@@ -121,6 +121,12 @@ describe("spirit exported API", () => {
       "node"
     ])
     expect(api.length).toEqual(4)
+    api.forEach((f) => {
+      if (f === "node") {
+        return expect(typeof spirit[f]).toBe("object")
+      }
+      expect(typeof spirit[f]).toBe("function")
+    })
   })
 
   it("node", () => {
@@ -134,7 +140,6 @@ describe("spirit exported API", () => {
       "file_response",
       "err_response",
       "Response",
-      "middleware",
       "utils"
     ]
 
@@ -149,16 +154,13 @@ describe("spirit exported API", () => {
     }, [])
 
     expect(api).toEqual(test_api.concat(test_aliases).sort())
-    expect(api.length).toEqual(14)
-  })
 
-  it("node.middleware", () => {
-    const api = Object.keys(spirit.node.middleware).sort()
-    expect(api).toEqual([
-      "ifmod",
-      "log",
-      "proxy"
-    ])
+    api.forEach((f) => {
+      if (f === "utils") {
+        return expect(typeof spirit.node[f]).toBe("object")
+      }
+      expect(typeof spirit.node[f]).toBe("function")
+    })
   })
 
   it("node.utils", () => {
@@ -169,5 +171,9 @@ describe("spirit exported API", () => {
       "size_of",
       "type_of"
     ])
+
+    api.forEach((f) => {
+      expect(typeof spirit.node.utils[f]).toBe("function")
+    })
   })
 })

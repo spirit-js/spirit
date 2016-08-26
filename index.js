@@ -14,14 +14,6 @@ node.makeStream = node.make_stream
 node.fileResponse = node.file_response
 node.errResponse = node.err_response
 
-//-- spirit.node.middleware
-node.middleware = {
-  proxy: require("./lib/http/middleware/proxy"),
-//  head: require("./lib/http/middleware/head"),
-  ifmod: require("./lib/http/middleware/if-modified"),
-  log: require("./lib/http/middleware/log")
-}
-
 //-- spirit.utils (Internal API but exported)
 // no camelCase aliases!
 node.utils = require("./lib/http/utils")
