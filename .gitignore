@@ -3,5 +3,5 @@ node_modules
 notes
 benchmarks/runner
 coverage/
-
+.DS_Store
 npm-debug.log

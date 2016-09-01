@@ -1,6 +1,6 @@
 {
   "name": "spirit",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "extensible web library for building applications & frameworks",
   "main": "index.js",
   "scripts": {
@@ -29,10 +29,10 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-register": "^6.11.6",
     "istanbul": "^1.0.0-alpha.2",
-    "jasmine": "^2.4.1"
+    "jasmine": "2.4.x"
   },
   "dependencies": {
-    "bluebird": "^3.4.1",
-    "mime": "^1.3.4"
+    "bluebird": "3.4.x",
+    "mime": "1.3.x"
   }
 }
