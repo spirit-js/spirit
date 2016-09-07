@@ -34,11 +34,11 @@ test-ci: build
 
 doc-build:
 	@rm -rf _book
-	node_modules.bin/gitbook install
+	node_modules/.bin/gitbook install
 	node_modules/.bin/gitbook build
 
 doc: doc-build
-	cd _book && git init && git commit --allow-empty -m "make doc" && git checkout -b gh-pages && git add . && git commit -am "make doc" && git push git@github.com:spirit-js/spirit gh-pages --force
+	cd _book && cp ../CNAME . && git init && git commit --allow-empty -m "make doc" && git checkout -b gh-pages && git add . && git commit -am "make doc" && git push git@github.com:spirit-js/spirit gh-pages --force
 
 
 .PHONY: default build test watch bench test-ci clean release

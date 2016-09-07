@@ -1,16 +1,16 @@
 # Summary
 
-* [Home](README.md)
+* [Home](_home.md)
 
 -------
 
-* [Introduction](docs/intro.md)
-* [Getting Started](docs/getting-started.md)
-* [Request & Response](docs/request--response.md)
-* [Defining Routes](docs/defining-routes.md)
-* [Return From Routes](docs/return-from-routes.md)
-* [Using Middleware](docs/using-middleware.md)
-* [Error Handling](docs/error-handling.md)
-* [Writing Middleware](docs/writing-middleware.md)
-* [Rendering Routes](docs/rendering-routes.md)
+* [Introduction](intro.md)
+* [Getting Started](getting-started.md)
+* [Request & Response](request--response.md)
+* [Defining Routes](defining-routes.md)
+* [Return From Routes](return-from-routes.md)
+* [Using Middleware](using-middleware.md)
+* [Error Handling](error-handling.md)
+* [Writing Middleware](writing-middleware.md)
+* [Rendering Routes](rendering-routes.md)
 

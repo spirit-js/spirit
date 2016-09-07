@@ -1,0 +1,15 @@
+{
+  "root": "docs/",
+  "title": "spirit",
+  "description": "javascript web library",
+  "structure": {
+    "readme": "_home.md",
+    "summary": "README.md"
+  },
+  "plugins": [ "github" ],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/spirit-js"
+    }
+  }
+}
