@@ -9,9 +9,6 @@ Let's start by setting up a starting app with common middlewares already loaded.
 2. Create a file (example: app.js) with the following starting content:
 
 ```js
-// import spirit libraries
-// NOTE: the {adapter} we will import more from spirit.node
-// in later examples, but for now just the adapter is fine
 const {adapter} = require("spirit").node
 const route = require("spirit-router")
 const common = require("spirit-common").defaults
@@ -40,16 +37,13 @@ In our example, there are only two areas we really deal with http related ideas 
 
 The first area is where we define our routes `route.define(...)`.
 
-The second area is when setup the http server and call our node adapter `adapter(app, [...])`.
+The second area is where we setup the http server and combine our routes and middleware together, `adapter(app, [...])`.
 
 Our `hello()` function is just a _regular_ javascript function. It doesn't know what a `req` or `res` is and doesn't deal with writing to a socket. It simply runs and returns a value.
 
-It's __important__ to understand this distinction, it will help in understanding how spirit works as we move on in this guide.
+It's __important__ to understand this separation as it's a key concept in spirit. In the next chapters we will go over how it's possible.
 
-### The main entry point
-
-In the next chapters we will go over how to write routes, and how they work. But for now a quick overview of how spirit gets started and using common middleware.
-
+#### The main entry point
 
 The main entry point to our app is setup when we called:
 ```js
@@ -78,7 +72,7 @@ If session support is not needed, we can instead do `common("api")` which sets u
 
 For more info, see [spirit-common](https://github.com/spirit-js/spirit-common).
 
-__NOTE:__ Our example is simple enough to not need any middleware, but in the real world, we will almost always need the common ones provided by `spirit-common` module.
+> Our example is simple enough to not need any middleware, but in real world apps, we will almost always need the common ones provided by `spirit-common`, so it's included in this section.
 
 
 

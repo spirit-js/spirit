@@ -6,10 +6,13 @@
     "readme": "_home.md",
     "summary": "README.md"
   },
-  "plugins": [ "github" ],
+  "plugins": [ "github", "ga" ],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/spirit-js"
+    },
+    "ga": {
+      "token": "UA-83795647-1"
     }
   }
 }
