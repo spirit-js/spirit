@@ -32,6 +32,9 @@ test: build
 test-ci: build
 	@node_modules/.bin/istanbul cover -x "**/spec/**" node_modules/jasmine/bin/jasmine.js
 
+doc-watch: doc-build
+	node_modules/.bin/gitbook serve
+
 doc-build:
 	@rm -rf _book
 	node_modules/.bin/gitbook install

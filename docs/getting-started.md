@@ -1,78 +1,63 @@
-## Getting Started
+Install spirit and spirit-router: 
+```bash
+$ npm install spirit spirit-router
+```
 
-Let's start by setting up a starting app with common middlewares already loaded.
-
-1. First setup a working dir, and install spirit and spirit-router: 
-
-   `npm install spirit spirit-router spirit-common --save`
-
-2. Create a file (example: app.js) with the following starting content:
+Start off with a simple app:
 
 ```js
 const {adapter} = require("spirit").node
 const route = require("spirit-router")
-const common = require("spirit-common").defaults
 
 const hello = () => {
   return "Hello World!"
 }
 
-const app = route.define([  // defines a group of routes
-  route.get("/", [], hello) // defines a route
+const app = route.define([
+  route.get("/", [], hello)
 ])
 
 const http = require("http")
-const server = http.createServer(adapter(app, [
-  common("site")            // sets up common middleware
-]))
+const server = http.createServer(adapter(app))
 server.listen(3000)
 ```
 
-To run our first spirit app, run `node app.js` (or whatever name you chose to save your file as).
-
-Now visit `http://localhost:3000` in a browser, you will be greeted with Hello World!
+If we run our example and visit `http://localhost:3000` in a browser, you will be greeted with Hello World!
 
 ### Separation of code
-In our example, there are only two areas we really deal with http related ideas or code.
+Our `hello()` function is just a normal javascript function, what gets returned is what is sent back as the response.
 
-The first area is where we define our routes `route.define(...)`.
+It does __not__ need to deal with a `req` or `res` object.
 
-The second area is where we setup the http server and combine our routes and middleware together, `adapter(app, [...])`.
+Separation of concerns is a central concept to spirit.
 
-Our `hello()` function is just a _regular_ javascript function. It doesn't know what a `req` or `res` is and doesn't deal with writing to a socket. It simply runs and returns a value.
+If we think about a web request in it's simpliest form, it's basically a function, it takes a input (request) and returns an output (response). So why not write web applications this way?
 
-It's __important__ to understand this separation as it's a key concept in spirit. In the next chapters we will go over how it's possible.
+spirit simplifies everything by abstracting away the complexity of `req` and `res` that normally resulted in impure and complex functions.
 
-#### The main entry point
+### Routes as definitions
+Routes in spirit should be thought of as _definitions_ and not some proprietary operation to perform.
 
-The main entry point to our app is setup when we called:
 ```js
-adapter(app, [ common("site") ])
+  route.get("/", [], hello)
 ```
-The adapter takes our routes (`app`) and middlewares (`[ common("site") ]`) and combines them together into a  handler for creating a http server.
 
-The `[ common("site") ]` is an array of middlewares, in our example we only have one. They are ran on _every_ request.
+When we defined this route, do not think of `hello` as a "routing function". 
 
-#### Common Middleware
+When we define a route, we are simply describing the __when__ and __how__. When should we call `hello`, and how to call it.
 
-`common("site")` middleware sets up common functionality that a "site" will need, such as a body parser, proxy forwarding, handling 304 responses, as well as session support.
+Routes in spirit serve as a boundary between http related ideas and regular javascript.
 
-Session support is currently provided by [express-session](https://www.npmjs.com/package/express-session) module.
-
-You can also customize how the middleware are setup by passing in an options object:
+### Adapter
 ```js
-common("site", {
-  session: {
-    key: "my-own-key",
-    store: ..., // A compatible express-session store 
-  }
-})
+const server = http.createServer(adapter(app))
+server.listen(3000)
 ```
-If session support is not needed, we can instead do `common("api")` which sets up functionality that most "api" web apps will need.
+spirit has a concept of an adapter where most of the abstractions happen. 
 
-For more info, see [spirit-common](https://github.com/spirit-js/spirit-common).
+spirit comes with an adapter already for node.js. It converts our routes and app into something node.js's http module can understand.
 
-> Our example is simple enough to not need any middleware, but in real world apps, we will almost always need the common ones provided by `spirit-common`, so it's included in this section.
+It can optionally take middlewares `adapter(app, _middleware_)` (more on that in [Using Middleware](using-middleware.md)).
 
 
 
