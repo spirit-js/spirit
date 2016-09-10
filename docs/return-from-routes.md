@@ -20,7 +20,7 @@ const app = route.define([
 
 ### Custom Response
 
-Sometimes we want a more custom response, and as mentioned in the Response chapter, you can return your own response directly:
+Sometimes we may want to customize our response, and as mentioned in the Response chapter, you can return your own response directly:
 
 ```js
 const hello = () => {

@@ -27,6 +27,23 @@ route.define([
 ])
 ```
 
+Routes are tried in the order they first appear, and are considered matched when the incoming request's method and path matches the routes. Once this happens, the function for the route will be called with any arguments defined.
+
+However, the router will only consider the routing is over _if_ the function of the route returns a value that isn't `undefined`. 
+
+If `undefined` is returned, the router will keep trying until a route finally has a response.
+
+```js
+// #=> GET /
+
+route.define([
+  // matches but returns undefined, the router continues
+  route.get("/", () => undefined),
+  // matches and returns a value, routing ends
+  route.get("/", () => "Hello")
+])
+```
+
 #### Method
 
 `spirit-router` exports common methods besides just `get`.
