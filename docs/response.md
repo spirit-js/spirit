@@ -12,9 +12,9 @@ When we ran our very first example above, it worked, we see "Hello World!" in ou
 
 But you may wonder how it's possible since a http response requires more information such as a status code or headers.
 
-## response
+## Response
 
-In the previous chapter [Request](request.md)), you saw how a request is abstracted to be a simple JSON-like object, the same applies to a response (or sometimes called response map).
+In the previous chapter [Request](request.md), you saw how a request is abstracted to be a simple JSON-like object, the same applies to a response (or sometimes called response map).
 
 A response is a JSON-like object (or can be thought of as a hash, dict, map in other programming languages) representing the response intended to be sent back to a client (browser).
 
@@ -57,7 +57,7 @@ Which is still easier than mocking a `res` object to pass in and extract informa
 Often times you will not need to write out a response map, but it's important to understanding how spirit works.
 
 
-### Custom responses & Extending
+### Custom Responses & Extending
 
 There are helper functions for creating responses when you want a more custom response. Explained in [Return From Routes](return-from-routes.md).
 
