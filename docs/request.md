@@ -79,7 +79,7 @@ Unlike `req` it only has a few properties (or keys) with simple values associate
 
 A request always has the following properties: port, host, ip, url, method, protocol, scheme, headers, query. See the [API doc](https://github.com/spirit-js/spirit/blob/master/docs/api/request-response-map.md#request-map) for more info.
 
-More properties can be added to the request (usually through middleware, such as a 'body').
+More properties can be added to the request (usually through middleware, such as a 'body'). `spirit-router` also adds the property 'param' to request. More on this in [Defining Routes](defining-routes.md).
 
 Sometimes you might need the request or `req` object for a route, which you can also inject it in:
 

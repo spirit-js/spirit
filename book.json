@@ -6,7 +6,7 @@
     "readme": "_home.md",
     "summary": "README.md"
   },
-  "plugins": [ "github", "ga" ],
+  "plugins": [ "github", "ga", "anchorjs" ],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/spirit-js"

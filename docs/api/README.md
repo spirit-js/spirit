@@ -15,10 +15,6 @@ node http adapter (`spirit.node`) requires you to be familiar with [request map]
   * [redirect](node.md#redirect)
   * [Response](Response.md)
   * [is_response](node.md#is_response)
-  * middleware
-    - [if-modified](node-middleware.md#if-modified)
-    - [log](node-middleware.md#log)
-    - [proxy](node-middleware.md#proxy)
 
 
 #### Internal API
