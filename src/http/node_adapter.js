@@ -52,7 +52,11 @@ const send = (res, resp) => {
 }
 
 const adapter = (handler, middleware) => {
-  if (middleware === undefined) middleware = []
+  if (middleware === undefined) {
+    middleware = []
+  } else if (typeof middleware === "function") {
+    middleware = [middleware]
+  }
   const adp = core.compose(handler, middleware)
 
   return (req, res) => {

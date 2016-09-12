@@ -1,3 +1,7 @@
+## v0.2.2
+#### Release Date: 09-12-2016
+- `spirit.node.adapter` now also accepts a single function as it's middleware argument
+
 ## v0.2.0
 #### Release Date: 08-29-2016
 - API has underwent minor changes:

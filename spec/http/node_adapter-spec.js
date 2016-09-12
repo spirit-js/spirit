@@ -85,6 +85,18 @@ describe("node adapter", () => {
       app({}, res)
     })
 
+    it("middleware argument accepts a function", (done) => {
+      const handler = (request) => {
+        expect(request.a).toBe(1)
+        return "ok"
+      }
+      const mw = (handler) => (request) => handler({a:1})
+      const app = adp(handler, mw)
+
+      const res = mock_response(done)
+      app({}, res)
+    })
+
     it("middleware are initialized once only", (done) => {
       let init = 0
       let called = 0
