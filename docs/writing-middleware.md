@@ -89,7 +89,7 @@ This code gets called __once__ for every time your middleware is loaded. This is
 
 ### Testing
 
-Notice middleware is just a closure function that then takes a input (request) and returns an (output).
+Notice middleware is just a closure function that takes a input (request) and returns an (output).
 
 They do not deal with with `req` or `res` either, but instead a request map or response map (which are small JSON-like objects).
 
@@ -106,12 +106,12 @@ const middleware = (handler) => (request) => {
 it("sets GET for every HEAD", () => {
   const test = (assertion) => (request) => expect(request.method).toBe(assertion)
   middleware(test("GET"))({ method: "HEAD" })
-  middleware(test("GET"))({ method: "GET" })
-  middleware(test("POST"))({ method: "POST" })
+  middleware(test("GET"))({ method: "GET" })   // doesn't change if already GET
+  middleware(test("POST"))({ method: "POST" }) // doesn't change if POST
 })
 ```
 
-If you see, we don't need to mock a `req` object at all, we only needed to pass in an object with the same properties the middleware actually uses.
+We don't need to mock a `req` object at all, we only needed to pass in an object with the same properties the middleware actually uses.
 
 ### Composing
 spirit's middleware signature may look familiar to some of you, as it's a common closure pattern.
@@ -120,3 +120,19 @@ It was purposely chosen because it's a natural way of composing functions togeth
 
 There is nothing magical that happens when spirit runs or sets up our middleware together, it's basically composing (or wrapping) functions together.
 
+For example if we had 3 middlewares `a, b, c`:
+```js
+const final = (request) => { status: 200, headers: { "Content-Length": 11 }, body: "Hello World" }
+
+// wrap the middlewares together with `final`
+const app = a(b(c(final)))
+
+// now we have a single function that runs through `a, b, c, final` returning the response along the way
+app(web_request) 
+```
+
+> This is basically what spirit does. Except spirit also ensures a Promise is always returned.
+
+You can compose manually this way, but spirit also provides a helper function to automatically do this for you in `spirit.compose`.
+
+`spirit-router.wrap` also does this, but it has special handling for working with routes.
