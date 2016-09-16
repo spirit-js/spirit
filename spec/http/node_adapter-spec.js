@@ -12,10 +12,8 @@ describe("node adapter", () => {
         return { status: 200, headers: {}, body: "ok" }
       }
 
-      const middleware = (handler) => {
-        return (request) => {
+      const middleware = (handler) => (request) => {
           return handler(request)
-        }
       }
 
       const app = adp(handler, [middleware, middleware])
@@ -134,7 +132,8 @@ describe("node adapter", () => {
         expect(result.status).toBe(123)
         expect(result.body).toBe("hi")
         expect(result.headers).toEqual({
-          a: 1
+          a: 1,
+          "Content-Length": 2
         })
         done()
       })
@@ -144,6 +143,14 @@ describe("node adapter", () => {
         headers: {"a": 1},
         body: "hi"
       })
+    })
+
+    it("does not set Content-Length header if already set", (done) => {
+      const res = mock_response((result) => {
+        expect(result.headers["Content-lEnGth"]).toBe("abc")
+        done()
+      })
+      send(res, { status: 200, headers: { "Content-lEnGth": "abc" }, body: "ok" })
     })
 
     it("writes a response map with piping (stream)", (done) => {

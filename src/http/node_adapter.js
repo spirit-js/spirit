@@ -5,6 +5,26 @@ const core = require("../core/core")
 const request = require("./request")
 const response = require("./response")
 
+const Response = require("./response-class.js").Response
+const size_of = require("./utils.js").size_of
+/**
+ * Detects if 'Content-Length' headers are set
+ * If not set, it sets the header
+ * Only possible for string, buffer
+ * stream type will usually not have a length and need
+ * to be closed manually with `.end()`
+ *
+ * For file-stream, it's possible to fs.stat for a length
+ * But this function is more of a simple fail-safe
+ *
+ * @param {response} resp - response
+ * @return {object} response headers
+ */
+const content_length = (resp) => {
+  const h = Response.get(resp, "Content-Length")
+  if (h === undefined) resp.headers["Content-Length"] = size_of(resp.body)
+  return resp.headers
+}
 
 /**
  * strips all undefined values from `headers`
@@ -36,7 +56,7 @@ const strip = (headers) => {
  * @param {response-map} resp - response map
  */
 const send = (res, resp) => {
-  res.writeHead(resp.status, strip(resp.headers))
+  res.writeHead(resp.status, strip(content_length(resp)))
   if (resp.body === undefined) {
     return res.end()
   }
