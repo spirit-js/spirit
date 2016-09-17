@@ -74,8 +74,7 @@ describe("http.response", () => {
       expect(r).toEqual(jasmine.objectContaining({
         status: 200,
         headers: {
-          "Content-Type": "text/html; charset=utf-8",
-          "Content-Length": 3
+          "Content-Type": "text/html; charset=utf-8"
         },
         body: "hey"
       }))
@@ -222,9 +221,7 @@ describe("http.response", () => {
     it("returns a response map with status 500", () => {
       expect(response.err_response("test 123")).toEqual(jasmine.objectContaining({
         status: 500,
-        headers: {
-          "Content-Length": 8
-        },
+        headers: {},
         body: "test 123"
       }))
     })
@@ -233,9 +230,7 @@ describe("http.response", () => {
       const resp = response.err_response()
       expect(resp).toEqual(jasmine.objectContaining({
         status: 500,
-        headers: {
-          "Content-Length": Buffer.byteLength(resp.body)
-        }
+        headers: {}
       }))
       expect(resp.body).toMatch(/no error message/)
     })

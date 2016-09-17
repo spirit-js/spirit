@@ -97,7 +97,7 @@ class Response {
 
   body_(body) {
     this.body = body
-    this.len(utils.size_of(body))
+    this.len(undefined) // clear any previous Content-Length
     return this
   }
 

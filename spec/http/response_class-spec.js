@@ -61,12 +61,12 @@ describe("response-class", () => {
         expect(r.headers["Content-Length"]).toBe(undefined)
 
         let result = r.body_("hello world")
-        expect(r.headers["Content-Length"]).toBe(11)
+        r.len(11)
         expect(r.body).toBe("hello world")
 
         const buf = new Buffer("hello")
         result = r.body_(buf)
-        expect(r.headers["Content-Length"]).toBe(5)
+        expect(r.headers["Content-Length"]).toBe(undefined)
         expect(r.body).toBe(buf)
 
         expect(result).toBe(r) // returns this
@@ -81,8 +81,9 @@ describe("response-class", () => {
         expect(r.headers["Content-Length"]).toBe(undefined)
 
         r.body_("hello")
-        expect(r.headers["Content-Length"]).toBe(5)
+        expect(r.headers["Content-Length"]).toBe(undefined)
 
+        r.len(100)
         r.body_({}) // pretend this object is stream
         expect(r.headers["Content-Length"]).toBe(undefined)
       })

@@ -1,5 +1,4 @@
 const {Response} = require("./response-class")
-const {size_of} = require("./utils")
 
 const fs = require("fs")
 const path = require("path")
@@ -46,7 +45,7 @@ const response = (body) => {
     rmap.status = body.status
     rmap.headers = body.headers
   } else {
-    rmap = new Response(body).len(size_of(body))
+    rmap = new Response(body)
     if (typeof body === "string" && body !== "") {
       rmap.type("html")
     }
@@ -169,7 +168,6 @@ const err_response = (err) => {
   }
   return new Response(body)
     .status_(500)
-    .len(size_of(body))
 }
 
 module.exports = {
