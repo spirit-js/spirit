@@ -66,7 +66,7 @@ describe("node adapter", () => {
       const app = adp(handler, [])
       const res = mock_response((result) => {
         expect(result.status).toBe(500)
-        expect(result.headers).toEqual({})
+        expect(result.headers).toEqual({ "Content-Length": 0 })
         expect(result.body).toBe(undefined)
         done()
       })
@@ -145,8 +145,33 @@ describe("node adapter", () => {
       })
     })
 
+    it("sets Content-Length header if prop exists but undefined", (done) => {
+      const res = mock_response((result) => {
+        expect(Object.keys(result.headers).length).toBe(1)
+        expect(result.headers["Content-Length"]).toBe(2)
+        done()
+      })
+      send(res, { status: 200, headers: { "Content-Length": undefined }, body: "ok" })
+    })
+
+    it("no Content-Length when body is equivalent to empty", (done) => {
+      const res = mock_response((result) => {
+        expect(Object.keys(result.headers).length).toBe(1)
+        expect(result.headers["Content-Length"]).toBe(0)
+
+        const res2 = mock_response((result) => {
+          expect(Object.keys(result.headers).length).toBe(1)
+          expect(result.headers["Content-Length"]).toBe(0)
+          done()
+        })
+        send(res2, { status: 200, headers: {}, body: undefined })
+      })
+      send(res, { status: 200, headers: {}, body: "" })
+    })
+
     it("does not set Content-Length header if already set", (done) => {
       const res = mock_response((result) => {
+        expect(Object.keys(result.headers).length).toBe(1)
         expect(result.headers["Content-lEnGth"]).toBe("abc")
         done()
       })
@@ -195,7 +220,8 @@ describe("node adapter", () => {
       const res = mock_response((result) => {
         expect(result.status).toBe(1)
         expect(result.headers).toEqual({
-          a: 1
+          a: 1,
+          "Content-Length": 0
         })
         expect(result.body).toBe(undefined)
         done()
@@ -209,7 +235,8 @@ describe("node adapter", () => {
     it("strips headers with undefined values before writing", (done) => {
       const res = mock_response((result) => {
         expect(result.headers).toEqual({
-          "Content-Length": 10
+          "Content-Length": 0,
+          "Blah": 10
         })
         done()
       })
@@ -217,7 +244,7 @@ describe("node adapter", () => {
       send(res, {
         status: 123,
         headers: {
-          "Content-Length": 10,
+          "Blah": 10,
           "Content-Type": undefined
         }
       })

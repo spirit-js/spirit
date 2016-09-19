@@ -18,9 +18,15 @@ In the previous chapter [Request](request.md), you saw how a request is abstract
 
 A response is a JSON-like object (or can be thought of as a hash, dict, map in other programming languages) representing the response intended to be sent back to a client (browser).
 
-A response is basically an object with 3 properties: status, headers, body.
+A response is basically an object literal with 3 properties: status, headers, body (optional).
 
 Just like a request can be passed around in spirit, so can a response. This is in contrast to other web libraries. You will see this more in later chapters dealing with middleware.
+
+`status` would be a number corresponding to the http status code of the response.
+
+`headers` is a object with key, value pairs for it's respective http response header.
+
+`body` is the response body to write back to the client, it is optional. If it exists, it __must__ be either string, buffer, stream, file stream, or undefined.
 
 ### Route as a gateway
 
@@ -32,7 +38,6 @@ The above `hello()` returns "Hello World!" which gets converted to a response:
 ```js
 { status: 200, 
   headers: {
-    Content-Length: 12,
     Content-Type: "text/html; charset=utf-8" },
   body: "Hello World!" }
 ```
@@ -44,7 +49,7 @@ const hello = () => {
 }
 
 const hello2 = () => {
-  return { status: 200, headers: { "Content-Length": 12, "Content-Type": "text/html; charset=utf-8" }, body: "Hello World!" }
+  return { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" }, body: "Hello World!" }
 }
 ```
 
@@ -56,6 +61,12 @@ Which is still easier than mocking a `res` object to pass in and extract informa
 
 Often times you will not need to write out a response map, but it's important to understanding how spirit works.
 
+### Content Length
+If you noticed our response map examples above are missing an important response header: "Content-Length". `spirit.node.adapter` will automatically fill this property for us when the response body is a string or buffer __and__ we did not specify our own "Content-Length". 
+
+So we can leave this out of our response when working with a response body that is a string or a buffer.
+
+A undefined body will result in "Content-Length" being 0.
 
 ### Custom Responses & Extending
 

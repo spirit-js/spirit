@@ -21,6 +21,10 @@ const size_of = require("./utils.js").size_of
  * @return {object} response headers
  */
 const content_length = (resp) => {
+  if (resp.body === undefined) {
+    resp.headers["Content-Length"] = 0
+    return resp.headers
+  }
   const h = Response.get(resp, "Content-Length")
   if (h === undefined) resp.headers["Content-Length"] = size_of(resp.body)
   return resp.headers

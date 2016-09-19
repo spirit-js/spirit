@@ -122,7 +122,7 @@ There is nothing magical that happens when spirit runs or sets up our middleware
 
 For example if we had 3 middlewares `a, b, c`:
 ```js
-const final = (request) => { status: 200, headers: { "Content-Length": 11 }, body: "Hello World" }
+const final = (request) => { status: 200, headers: {}, body: "Hello World" }
 
 // wrap the middlewares together with `final`
 const app = a(b(c(final)))

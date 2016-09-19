@@ -11,12 +11,11 @@ const app = route.define([
 // #=> GET /
 // { status: 200, 
 //  headers: {
-//    Content-Length: 12,
 //    Content-Type: "text/html; charset=utf-8" },
 //  body: "Hello World!" }
 ```
 
-"Hello World!" by itself doesn't make sense in terms of a http response, so spirit makes smart assumptions about what we probably meant. And it fills out our status and content length, and content type for us.
+"Hello World!" by itself doesn't make sense in terms of a http response, so spirit makes smart assumptions about what we probably meant. And it fills out our status and content type for us.
 
 ### Custom Response
 
@@ -38,8 +37,6 @@ const app = route.define([
 
 And spirit will see it's already a response and send this back to the client directly without trying to render it into a response.
 
-__However__ creating a response this way can be prone to error, for instance in our example we do not send back any headers, most importantly a "Content-Length" header.
-
 spirit has chainable helper function called `response()` for customizing a response that still try to fill in gaps for us to avoid errors:
 ```js
 const {response} = require("spirit").node
@@ -54,13 +51,12 @@ const app = route.define([
 // #=> GET /
 // { status: 123, 
 //  headers: {
-//    Content-Length: 16,
-//    Content-Type: "text/html; charset=utf-8" },
+//    Content-Type: "text/html; charset=utf-8" }
 //  },
 //  body: "Custom response!" }
 ```
 
-We get back the same response, but Content-Length and Content-Type are filled out for us.
+We get back the same response, but Content-Type are filled out for us.
 
 We can continue changing our response by using methods on it:
 ```js

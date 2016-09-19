@@ -1,3 +1,7 @@
+## v0.3.0
+#### Release Date: 09-19-2016
+- spirit.node.adapter now automatically sets Content-Length response header when none is set (for string / buffer bodies). It is recommended to let the adapter do this instead of setting the Content-Length manually.
+
 ## v0.2.2
 #### Release Date: 09-12-2016
 - `spirit.node.adapter` now also accepts a single function as it's middleware argument

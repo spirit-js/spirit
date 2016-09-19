@@ -85,7 +85,7 @@ route.define([
 ])
 // #=> GET /bob
 // { status: 200, 
-//   headers: { "Content-Length": 10, "Content-Type": "text/html; charset=utf-8" }, 
+//   headers: { "Content-Type": "text/html; charset=utf-8" }, 
 //   body: "Hello, bob" }
 ```
 
@@ -107,6 +107,6 @@ route.define([
 ])
 // #=> GET /test-test
 // { status: 200, 
-//   headers: { "Content-Length": 33, "Content-Type": "text/html; charset=utf-8" }, 
+//   headers: { "Content-Type": "text/html; charset=utf-8" }, 
 //   body: "You made a request to: /test-test" }
 ```
