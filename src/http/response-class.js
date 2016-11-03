@@ -105,6 +105,17 @@ class Response {
     let t = mime.lookup(content_type)
     if (!t) t = content_type
 
+    // auto convert body to JSON as a convienance
+    if (t === "application/json") {
+      const typ_body = utils.type_of(this.body)
+      if (typ_body !== "string"
+          && typ_body !== "stream"
+          && typ_body !== "buffer"
+          && typ_body !== "file-stream") {
+        this.body = JSON.stringify(this.body)
+      }
+    }
+
     let charset = ""
     if (mime.charsets.lookup(t)) charset = "; charset=utf-8"
 

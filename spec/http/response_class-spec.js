@@ -166,6 +166,38 @@ describe("response-class", () => {
         const r = new Response().type("text")
         expect(r.headers["Content-Type"]).toBe("text/plain; charset=utf-8")
       })
+
+      const stream = require("stream")
+      const fs = require("fs")
+
+      it("if type is set to 'json', the body will automatically be converted to JSON", () => {
+        const tester = (arr, expect_json) => {
+          arr.forEach((t) => {
+            const r = new Response(t).type("json")
+            expect(r.headers["Content-Type"]).toBe("application/json")
+            if (expect_json) {
+              expect(r.body).toBe(JSON.stringify(t))
+            } else {
+              expect(r.body).toBe(t)
+            }
+          })
+        }
+        // not ok -> string, buffer, stream, file-stream
+        // will not convert even if "json" set
+        tester([
+          "hi",
+          new Buffer([1, 2, 3]),
+          new stream.Readable(),
+          new fs.ReadStream("./package.json")
+        ], false)
+        // ok -> array, null, undefined, object (that doesn't
+        // match the above)
+        tester([[1,2,3], null, undefined, { a: 1, b: 2 }], true)
+
+        // doesn't trigger conversion
+        const r = new Response([1,2,3]).type("JS ON")
+        expect(r.body).toEqual([1,2,3])
+      })
     })
 
     describe("len", () => {

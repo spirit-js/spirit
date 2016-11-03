@@ -1,3 +1,10 @@
+## v0.4.0
+#### Release Date: 11-03-2016
+- Response#type will auto convert body to JSON when type is “json”
+- spirit-router -> v0.4.0
+- spirit-router not_found now goes through render() process
+- spirit-router not_found optionally takes a 'method' argument
+
 ## v0.3.0
 #### Release Date: 09-19-2016
 - spirit.node.adapter now automatically sets Content-Length response header when none is set (for string / buffer bodies). It is recommended to let the adapter do this instead of setting the Content-Length manually.
