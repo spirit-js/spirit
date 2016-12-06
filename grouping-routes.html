@@ -1,0 +1,455 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Grouping Routes · spirit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="return-from-routes.html" />
+    
+    
+    <link rel="prev" href="defining-routes.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Home
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="getting-started.html">
+            
+                <a href="getting-started.html">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="request.html">
+            
+                <a href="request.html">
+            
+                    
+                    Request
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="response.html">
+            
+                <a href="response.html">
+            
+                    
+                    Response
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="async.html">
+            
+                <a href="async.html">
+            
+                    
+                    Async Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="defining-routes.html">
+            
+                <a href="defining-routes.html">
+            
+                    
+                    Defining Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.6" data-path="grouping-routes.html">
+            
+                <a href="grouping-routes.html">
+            
+                    
+                    Grouping Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="return-from-routes.html">
+            
+                <a href="return-from-routes.html">
+            
+                    
+                    Return From Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="using-middleware.html">
+            
+                <a href="using-middleware.html">
+            
+                    
+                    Using Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="writing-middleware.html">
+            
+                <a href="writing-middleware.html">
+            
+                    
+                    Writing Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error Handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.11" data-path="rendering-routes.html">
+            
+                <a href="rendering-routes.html">
+            
+                    
+                    Rendering Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Grouping Routes</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>As shown previously every route must <strong>always</strong> be grouped with <code>define</code>:</p>
+<pre><code class="lang-js">route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, ...)
+])
+</code></pre>
+<p>Grouped routes can take a path too, which applies to every route inside:</p>
+<pre><code class="lang-js">route.define(<span class="hljs-string">&quot;/users&quot;</span>, [
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, ...),    <span class="hljs-comment">// will only match GET /users</span>
+  route.post(<span class="hljs-string">&quot;/&quot;</span>, ...)    <span class="hljs-comment">// will only match POST /users</span>
+])
+</code></pre>
+<h3 id="composing-groups">Composing groups</h3>
+<p>Groups can be composed and nested together to build out a structure:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> books = route.define(<span class="hljs-string">&quot;/books&quot;</span>, [
+  <span class="hljs-comment">// routes for querying a Book database</span>
+])
+
+<span class="hljs-keyword">const</span> users = route.define(<span class="hljs-string">&quot;/users&quot;</span>, [
+  <span class="hljs-comment">// routes for querying a User database</span>
+])
+
+<span class="hljs-keyword">const</span> api = route.define(<span class="hljs-string">&quot;/api&quot;</span>, [
+  books,   <span class="hljs-comment">// becomes /api/books</span>
+  users    <span class="hljs-comment">// becomes /api/users</span>
+])
+
+route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, homepage),
+  api
+])
+</code></pre>
+<p>Composing this way can help us logically separate functionality in our application.</p>
+<p>But it can also allow us to <strong>re-use</strong> these groups and keeping our application DRY.</p>
+<h3 id="re-using-groups">Re-using groups</h3>
+<p>We can already re-use functions in routes (as they are not tied to <code>req</code> or <code>res</code> and are normal javascript functions), but entire groups of routes can be re-used too.</p>
+<p>Remeber middleware in spirit don&apos;t just modify a request, but it can also perform operations on a response.</p>
+<p>So if we take the above example to <strong>also</strong> serve pages for our &quot;books&quot; and serve API we can do:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> books = route.define(<span class="hljs-string">&quot;/books&quot;</span>, [
+  <span class="hljs-comment">// routes for querying a Book database</span>
+])
+
+<span class="hljs-keyword">const</span> users = route.define(<span class="hljs-string">&quot;/users&quot;</span>, [
+  <span class="hljs-comment">// routes for querying a User database</span>
+])
+
+<span class="hljs-keyword">const</span> api = route.define(<span class="hljs-string">&quot;/api&quot;</span>, [
+  books,   <span class="hljs-comment">// becomes /api/books</span>
+  users    <span class="hljs-comment">// becomes /api/users</span>
+])
+
+route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, homepage),
+  api,
+  route.wrap(books, _middleware_that_renders_to_html_)
+])
+</code></pre>
+<p>In this way we can just re-use our &apos;books&apos; api to serve two purposes.</p>
+<p>When a user accesses &quot;/api/books&quot; they still get API data, and when a user access &quot;/books&quot; they get HTML pages displaying the data from our API.</p>
+<p>This allows us to reduce redundancy and not have to write separate routes that call our &apos;books&apos; api just to render HTML pages out of it. And can be all done in a single middleware.</p>
+<p>More on writing middleware in <a href="writing-middleware.html">Writing Middleware</a>.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="defining-routes.html" class="navigation navigation-prev " aria-label="Previous page: Defining Routes">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="return-from-routes.html" class="navigation navigation-next " aria-label="Next page: Return From Routes">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Grouping Routes","level":"2.6","depth":1,"next":{"title":"Return From Routes","level":"2.7","depth":1,"path":"return-from-routes.md","ref":"return-from-routes.md","articles":[]},"previous":{"title":"Defining Routes","level":"2.5","depth":1,"path":"defining-routes.md","ref":"defining-routes.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","ga","anchorjs"],"root":"docs/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/spirit-js"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"ga":{"configuration":"auto","token":"UA-83795647-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"_home.md","glossary":"GLOSSARY.md","summary":"README.md"},"variables":{},"title":"spirit","gitbook":"*","description":"javascript web library"},"file":{"path":"grouping-routes.md","mtime":"2016-10-13T18:46:58.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-06T00:22:50.427Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

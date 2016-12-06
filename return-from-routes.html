@@ -1,0 +1,513 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Return From Routes · spirit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="using-middleware.html" />
+    
+    
+    <link rel="prev" href="grouping-routes.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Home
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="getting-started.html">
+            
+                <a href="getting-started.html">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="request.html">
+            
+                <a href="request.html">
+            
+                    
+                    Request
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="response.html">
+            
+                <a href="response.html">
+            
+                    
+                    Response
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="async.html">
+            
+                <a href="async.html">
+            
+                    
+                    Async Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="defining-routes.html">
+            
+                <a href="defining-routes.html">
+            
+                    
+                    Defining Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="grouping-routes.html">
+            
+                <a href="grouping-routes.html">
+            
+                    
+                    Grouping Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.7" data-path="return-from-routes.html">
+            
+                <a href="return-from-routes.html">
+            
+                    
+                    Return From Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="using-middleware.html">
+            
+                <a href="using-middleware.html">
+            
+                    
+                    Using Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="writing-middleware.html">
+            
+                <a href="writing-middleware.html">
+            
+                    
+                    Writing Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error Handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.11" data-path="rendering-routes.html">
+            
+                <a href="rendering-routes.html">
+            
+                    
+                    Rendering Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Return From Routes</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>In chapter <a href="response.html">Response</a>, we discussed how return values from a route&apos;s function get converted to a response if it already isn&apos;t one.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> hello = () =&gt; {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Hello World!&quot;</span>
+}
+
+<span class="hljs-keyword">const</span> app = route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, [], hello)
+])
+<span class="hljs-comment">// #=&gt; GET /</span>
+<span class="hljs-comment">// { status: 200, </span>
+<span class="hljs-comment">//  headers: {</span>
+<span class="hljs-comment">//    Content-Type: &quot;text/html; charset=utf-8&quot; },</span>
+<span class="hljs-comment">//  body: &quot;Hello World!&quot; }</span>
+</code></pre>
+<p>&quot;Hello World!&quot; by itself doesn&apos;t make sense in terms of a http response, so spirit makes smart assumptions about what we probably meant. And it fills out our status and content type for us.</p>
+<h3 id="custom-response">Custom Response</h3>
+<p>Sometimes we may want to customize our response, and as mentioned in the Response chapter, you can return your own response directly:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> hello = () =&gt; {
+  <span class="hljs-keyword">return</span> { status: <span class="hljs-number">123</span>, headers: {}, body: <span class="hljs-string">&quot;Custom response!&quot;</span> }
+}
+
+<span class="hljs-keyword">const</span> app = route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, [], hello)
+])
+<span class="hljs-comment">// #=&gt; GET /</span>
+<span class="hljs-comment">// { status: 123, </span>
+<span class="hljs-comment">//  headers: {},</span>
+<span class="hljs-comment">//  body: &quot;Custom response!&quot; }</span>
+</code></pre>
+<p>And spirit will see it&apos;s already a response and send this back to the client directly without trying to render it into a response.</p>
+<p>spirit has chainable helper function called <code>response()</code> for customizing a response that still try to fill in gaps for us to avoid errors:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> {response} = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;spirit&quot;</span>).node
+
+<span class="hljs-keyword">const</span> hello = () =&gt; {
+  <span class="hljs-keyword">return</span> response(<span class="hljs-string">&quot;Custom response!&quot;</span>).status_(<span class="hljs-number">123</span>)
+}
+
+<span class="hljs-keyword">const</span> app = route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, [], hello)
+])
+<span class="hljs-comment">// #=&gt; GET /</span>
+<span class="hljs-comment">// { status: 123, </span>
+<span class="hljs-comment">//  headers: {</span>
+<span class="hljs-comment">//    Content-Type: &quot;text/html; charset=utf-8&quot; }</span>
+<span class="hljs-comment">//  },</span>
+<span class="hljs-comment">//  body: &quot;Custom response!&quot; }</span>
+</code></pre>
+<p>We get back the same response, but Content-Type are filled out for us.</p>
+<p>We can continue changing our response by using methods on it:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> resp = response(<span class="hljs-string">&quot;Custom response!&quot;</span>)
+  .status_(<span class="hljs-number">123</span>)
+  .type(<span class="hljs-string">&quot;text/plain&quot;</span>)
+  .set(<span class="hljs-string">&quot;Custom-Header&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>)
+  .len(<span class="hljs-number">5</span>)
+
+<span class="hljs-comment">// resp = { status: 123, </span>
+<span class="hljs-comment">//  headers: {</span>
+<span class="hljs-comment">//    Content-Length: 5,</span>
+<span class="hljs-comment">//    Content-Type: &quot;text/plain; charset=utf-8&quot; },</span>
+<span class="hljs-comment">//    Custom-Header: &quot;test&quot;</span>
+<span class="hljs-comment">//  },</span>
+<span class="hljs-comment">//  body: &quot;Custom response!&quot; }</span>
+
+<span class="hljs-comment">// we can still access properties of a response</span>
+resp.status <span class="hljs-comment">// 123</span>
+resp.body   <span class="hljs-comment">// &quot;Custom response!&quot;</span>
+</code></pre>
+<h3 id="file-response">File Response</h3>
+<p>Often you will want to read from a file and send it back.</p>
+<p>You can of course send the file data back directly:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;fs&quot;</span>)
+
+<span class="hljs-keyword">const</span> readfile = () =&gt; {
+  <span class="hljs-keyword">return</span> fs.createReadStream(<span class="hljs-string">&quot;my-file.txt&quot;</span>)
+}
+
+route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, [], readfile)
+])
+<span class="hljs-comment">// #=&gt; GET /</span>
+<span class="hljs-comment">// { status: 200,</span>
+<span class="hljs-comment">//   headers: {</span>
+<span class="hljs-comment">//     Content-Length: &lt;file&apos;s size&gt;,</span>
+<span class="hljs-comment">//     Content-Type: &lt;based on file&apos;s extension, .txt so text/plain&gt;,</span>
+<span class="hljs-comment">//     Last-Modified: &lt;modtime of file&gt;</span>
+<span class="hljs-comment">//   },</span>
+<span class="hljs-comment">//   body: &lt;file&apos;s content&gt;</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p>As you can see spirit will make smart assumptions for generating our response here too.</p>
+<p>We could&apos;ve also used <code>fs.readFile()</code> instead of creating a stream, but spirit understands a node.js stream and what we mean.</p>
+<p>You can also use <code>spirit.node.file_response</code>:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> {file_response} = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;spirit&quot;</span>).node
+
+<span class="hljs-keyword">const</span> readfile = () =&gt; {
+  <span class="hljs-keyword">return</span> file_response(<span class="hljs-string">&quot;my-file.txt&quot;</span>)
+}
+
+route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, [], readfile)
+])
+</code></pre>
+<p>And if we wanted to customize the response for the file:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> readfile = () =&gt; {
+  <span class="hljs-keyword">return</span> file_response(<span class="hljs-string">&quot;my-file.txt&quot;</span>).then((resp) =&gt; {
+    <span class="hljs-keyword">return</span> resp.status_(<span class="hljs-number">123</span>).type(<span class="hljs-string">&quot;html&quot;</span>).len(<span class="hljs-number">100</span>)
+  })
+}
+</code></pre>
+<p><strong>NOTE:</strong> <code>file_response()</code> returns a Promise of the response unlike <code>response()</code>, this is because <code>file_response()</code> is async when reading the file.</p>
+<h3 id="other-response-helpers">Other response helpers</h3>
+<p>There are other helper functions for creating a response, such as <code>redirect()</code>:</p>
+<pre><code class="lang-js">() =&gt; {
+  <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">&quot;http://google.com&quot;</span>)
+}
+</code></pre>
+<p>More can be found at <a href="https://github.com/spirit-js/spirit/tree/master/docs/api" target="_blank">spirit API</a> docs.</p>
+<p>For more info on the chainable methods see the <a href="https://github.com/spirit-js/spirit/blob/master/docs/api/Response.md" target="_blank">Response API</a> doc.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="grouping-routes.html" class="navigation navigation-prev " aria-label="Previous page: Grouping Routes">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="using-middleware.html" class="navigation navigation-next " aria-label="Next page: Using Middleware">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Return From Routes","level":"2.7","depth":1,"next":{"title":"Using Middleware","level":"2.8","depth":1,"path":"using-middleware.md","ref":"using-middleware.md","articles":[]},"previous":{"title":"Grouping Routes","level":"2.6","depth":1,"path":"grouping-routes.md","ref":"grouping-routes.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","ga","anchorjs"],"root":"docs/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/spirit-js"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"ga":{"configuration":"auto","token":"UA-83795647-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"_home.md","glossary":"GLOSSARY.md","summary":"README.md"},"variables":{},"title":"spirit","gitbook":"*","description":"javascript web library"},"file":{"path":"return-from-routes.md","mtime":"2016-10-13T18:46:58.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-06T00:22:50.427Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,432 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Rendering Routes · spirit</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="error-handling.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Home
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="getting-started.html">
+            
+                <a href="getting-started.html">
+            
+                    
+                    Getting Started
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="request.html">
+            
+                <a href="request.html">
+            
+                    
+                    Request
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="response.html">
+            
+                <a href="response.html">
+            
+                    
+                    Response
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="async.html">
+            
+                <a href="async.html">
+            
+                    
+                    Async Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="defining-routes.html">
+            
+                <a href="defining-routes.html">
+            
+                    
+                    Defining Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="grouping-routes.html">
+            
+                <a href="grouping-routes.html">
+            
+                    
+                    Grouping Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="return-from-routes.html">
+            
+                <a href="return-from-routes.html">
+            
+                    
+                    Return From Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="using-middleware.html">
+            
+                <a href="using-middleware.html">
+            
+                    
+                    Using Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.9" data-path="writing-middleware.html">
+            
+                <a href="writing-middleware.html">
+            
+                    
+                    Writing Middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="error-handling.html">
+            
+                <a href="error-handling.html">
+            
+                    
+                    Error Handling
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.11" data-path="rendering-routes.html">
+            
+                <a href="rendering-routes.html">
+            
+                    
+                    Rendering Routes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Rendering Routes</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p>As mentioned previously in chapter <a href="response.html">Response</a> whenever a route&apos;s function returns a non response map it will be converted into one in a process called <em>rendering</em>.</p>
+<p>We can extend or modify how values are rendered.</p>
+<p>For example, by default strings are rendered to a response with a 200 status code, and Content-Type set to &quot;text/html&quot;, as well as Content-Length set. Lets replace it:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> {response} = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;spirit&quot;</span>).node
+
+route.render.string = (request, body) =&gt; {
+  <span class="hljs-keyword">return</span> response(body).type(<span class="hljs-string">&quot;text&quot;</span>)
+}
+
+<span class="hljs-keyword">const</span> app = route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, <span class="hljs-string">&quot;Hello World!&quot;</span>)
+])
+</code></pre>
+<p>This would apply to <strong>every</strong> <em>string</em> value returned from a route&apos;s function to have a Content-Type of &quot;text/plain&quot;.</p>
+<p>NOTE: Rendering is applies to <strong>every</strong> route. If you wanted to transform a response, or do so conditionally based on certain routes, it&apos;s better to use a middleware and wrap that specific route or group of routes.</p>
+<p>In our example we use <code>spirit.node.response</code>, which is just a helper function that helps create a response with chainable helpers with Content-Length pre-filled for us, but we could have just returned a response manually.</p>
+<h3 id="renderable-types">Renderable Types</h3>
+<p><code>render</code> understands and can be extended with the following types: &quot;string&quot;, &quot;number&quot;, &quot;null&quot;, &quot;buffer&quot;, &quot;stream&quot;, &quot;file-stream&quot;, &quot;array&quot;, &quot;object&quot;.</p>
+<p>NOTE: If a value is already a response map, it will skip the rendering process. Because the sole purpose of rendering is to convert a value to a response map.</p>
+<h3 id="templates">Templates</h3>
+<p>In other web libraries there is a concept of &quot;template engine&quot;. This notion is not http related, template rendering be different things depending on the template used.</p>
+<p>Instead spirit provides tools for helping you do what you want, instead of pre-defining what you need to do.</p>
+<p>Following that idea, we can build our own rendering for whatever template we like through the rendering process.</p>
+<p>By default, &quot;objects&quot; are rendered as a JSON response. We can extend it to also understand a custom object type for rendering. </p>
+<p>Let&apos;s say our custom object looks like <code>{ file: &lt;filepath&gt;, local: &lt;optional variables for template&gt; }</code> and we are using <code>jade</code> templates:</p>
+<pre><code class="lang-js"><span class="hljs-keyword">const</span> cache = {}
+
+route.render.object = (request, body) =&gt; {
+  <span class="hljs-keyword">if</span> (body.file) {
+    <span class="hljs-keyword">const</span> f = __dirname + <span class="hljs-string">&quot;/&quot;</span> + body.file
+    <span class="hljs-keyword">const</span> temp = cache[f] = cache[f] || jade.compileFile(f)
+    <span class="hljs-keyword">return</span> response(temp(body.local))
+  }
+  <span class="hljs-comment">// otherwise render object type as json</span>
+  <span class="hljs-keyword">return</span> response(<span class="hljs-built_in">JSON</span>.stringify(body)).type(<span class="hljs-string">&quot;json&quot;</span>)
+}
+
+<span class="hljs-keyword">const</span> app = route.define([
+  route.get(<span class="hljs-string">&quot;/&quot;</span>, () =&gt; { file: <span class="hljs-string">&quot;index.jade&quot;</span> }),
+  route.get(<span class="hljs-string">&quot;/contact&quot;</span>, () =&gt; { file: <span class="hljs-string">&quot;contact.jade&quot;</span>, local: { email: <span class="hljs-string">&quot;blah@example.com&quot;</span> } }),
+  route.get(<span class="hljs-string">&quot;/home&quot;</span>, () =&gt; { file: <span class="hljs-string">&quot;home.jade&quot;</span> })
+])
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="error-handling.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Error Handling">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Rendering Routes","level":"2.11","depth":1,"previous":{"title":"Error Handling","level":"2.10","depth":1,"path":"error-handling.md","ref":"error-handling.md","articles":[]},"dir":"ltr"},"config":{"plugins":["github","ga","anchorjs"],"root":"docs/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"github":{"url":"https://github.com/spirit-js"},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"ga":{"configuration":"auto","token":"UA-83795647-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchorjs":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"_home.md","glossary":"GLOSSARY.md","summary":"README.md"},"variables":{},"title":"spirit","gitbook":"*","description":"javascript web library"},"file":{"path":"rendering-routes.md","mtime":"2016-10-13T18:46:58.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-06T00:22:50.427Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/3.1.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-anchorjs/anchor-style.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
