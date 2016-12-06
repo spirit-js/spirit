@@ -32,7 +32,7 @@ const hello = (url, method) => {
   return "Hello from " + method + " " + url
 }
 route.define([
-  route.get("/", ["method", "url"], hello)
+  route.get("/", ["url", "method"], hello)
 ])
 ```
 
