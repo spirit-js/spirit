@@ -43,7 +43,9 @@ Oh yea, most [Express middleware works in spirit](https://github.com/spirit-js/s
 - [spirit + spirit-router Guide](https://github.com/spirit-js/spirit-router/tree/master/docs/Guide.md)
 - [Introduction Video](https://www.youtube.com/watch?v=YvxLBd12ZX8&list=PLHw25bReXDKvHd-5mCjMxVkgDvWrx5IFY)
 
-## Notable Components
+## Components
+
+### Official
 
 - `spirit` is a small library for composing functions and creating abstractions. Abstractions are defined in a "spirit adapter". Currently it comes with 1 builtin, the node adapter (`spirit.node`) for use with node.js' http module. Eventually there will be another one written for spirit to run in the browser.
 
@@ -52,6 +54,8 @@ Oh yea, most [Express middleware works in spirit](https://github.com/spirit-js/s
 - [`spirit-common`](https://github.com/spirit-js/spirit-common) is a library that provides many common http related middleware. It's purpose is to make bootstrapping a multitude of middleware that everyone will need easier.
 
 - [`spirit-express`](https://github.com/spirit-js/spirit-express), is a library for converting most Express middleware to work in spirit.
+
+### Third Party
 
 - [`spirit-body`](https://github.com/dodekeract/spirit-body) is a simple body parser for spirit.
 
