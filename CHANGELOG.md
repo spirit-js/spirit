@@ -1,3 +1,8 @@
+## v0.5.0
+#### Release Date: 03-28-2017
+- http request map properly sets it's .url to _exclude_ the query string
+- request map .path added for the full url including query string
+
 ## v0.4.0
 #### Release Date: 11-03-2016
 - Response#type will auto convert body to JSON when type is “json”

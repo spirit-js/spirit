@@ -3,7 +3,7 @@ const url = require("url")
 const urlquery = (req, request) => {
   if (!req.url) return
   const result = url.parse(req.url, true)
-  request.url = req.url
+  request.url = result.pathname
   request.query = result.query
 }
 
@@ -39,18 +39,18 @@ const protocol = (req, request) => {
  * - host {string} either a hostname or ip of the server
  * - ip   {string} the requesting client's ip
  * - url  {string} the request URI (excluding query string)
+ * - path {string} the request URI (including query string)
  * - method   {string} the request method
- * - protocol {string} either "http" or "https"
- * - scheme   {string} the transport protocol ex: "HTTP/1.1"
+ * - protocol {string} transport protocol, either "http" or "https"
+ * - scheme   {string} the protocol version ex: "1.1"
  * - headers  {object} the request headers (as node delivers it)
+ * - query {object} query string of request URI parsed as object (defaults to {})
  *
  * - req {function} returns the node IncomingRequest object
  *
- *** TODO, add a body?
+ *** TODO, add a body if possible
  * - body  {Stream} raw unparsed request body, this is just `req`, as it is the easiest way to pass the 'raw' body, which would be a node stream
  * NOTE: this may change, treat it as a stream only
- *
- * - query {object} query string of request URI parsed as object (defaults to {})
  *
  * @param {http.Request} req - a node http IncomingRequest object
  * @return {request-map}
@@ -60,6 +60,7 @@ const create = (req) => {
     method: req.method,
     headers: req.headers,
     scheme: req.httpVersion,
+    path: req.url,
     //body: req
     req: function() {
       return req

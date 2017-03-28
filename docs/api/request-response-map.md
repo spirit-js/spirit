@@ -12,7 +12,8 @@ By default the node http adapter will populate the following properties:
 - port {number} the port the request was made on
 - host {string} either a hostname or ip of the server
 - ip   {string} the requesting client's ip
-- url  {string} the request URI (excluding query string)
+- url  {string} the request URI (_excluding_ query string)
+- path {string} the request URI (_including_ query string)
 - method   {string} the request method
 - protocol {string} either "http" or "https"
 - scheme   {string} the transport protocol ex: "HTTP/1.1"

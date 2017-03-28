@@ -52,7 +52,7 @@ describe("http request", () => {
       const rmap = {}
       mock_req.url = "/p/a/t/h?hi=test#hash"
       request.urlquery(mock_req, rmap)
-      expect(rmap.url).toBe("/p/a/t/h?hi=test#hash")
+      expect(rmap.url).toBe("/p/a/t/h")
       expect(rmap.query.hi).toBe("test")
     })
   })
@@ -88,7 +88,8 @@ describe("http request", () => {
       expect(result.port).toBe(3009)
       expect(result.host).toBe("localhost")
       expect(result.ip).toBe("74.125.127.100")
-      expect(result.url).toBe("/hello?a=1")
+      expect(result.url).toBe("/hello")
+      expect(result.path).toBe("/hello?a=1")
       expect(result.method).toBe("POST")
       expect(result.scheme).toBe("1.1")
       expect(result.protocol).toBe("http")
@@ -97,7 +98,7 @@ describe("http request", () => {
       expect(result.req()).toBe(mock_req)
       expect(result.query.a).toBe("1")
 
-      expect(Object.keys(result).length).toBe(10)
+      expect(Object.keys(result).length).toBe(11)
     })
 
     it("passes method, httpVersion, headers of req", () => {
