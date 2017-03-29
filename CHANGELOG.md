@@ -1,7 +1,11 @@
-## v0.5.0
-#### Release Date: 03-28-2017
+## v0.6.0
+#### Release Date: 03-29-2017
 - http request map properly sets it's .url to _exclude_ the query string
 - request map .path added for the full url including query string
+- Promise warnings regarding async error handling have been fixed. `resolve_response` has been removed. `callp_response` added, which are similar.
+##### spirit-router -> v0.5.0
+- spirit-router support for .url change, routes will __no__ longer support query string matches (this was unintentional). Please see [issue](https://github.com/spirit-js/spirit-router/issues/5)
+- spirit-router supports defining routes with regex `.get(/[a-z]{1,3}/, ...)`
 
 ## v0.4.0
 #### Release Date: 11-03-2016

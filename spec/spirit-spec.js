@@ -166,8 +166,8 @@ describe("spirit exported API", () => {
   it("node.utils", () => {
     const api = Object.keys(spirit.node.utils).sort()
     expect(api).toEqual([
+      "callp_response",
       "is_Response",
-      "resolve_response",
       "size_of",
       "type_of"
     ])

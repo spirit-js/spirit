@@ -4,22 +4,28 @@ const stream = require("stream")
 const fs = require("fs")
 const Promise = require("bluebird")
 
-describe("resolve_response", () => {
-  const resolve = utils.resolve_response
+describe("callp_response", () => {
+  const resolve = utils.callp_response
+
+  it("like callp, will return primitive values wrapped as a Promise", (done) => {
+    resolve(123).then((v) => {
+      expect(v).toBe(123)
+      done()
+    })
+  })
 
   it("returns the value when giving a response map with a promise as it's body", (done) => {
-    const p = new Promise((resolve, reject) => {
-      const bodyp = {
+    const f = () => {
+      return {
         status: 123,
         headers: {},
         body: new Promise((resolve, reject) => {
           resolve("hi!")
         })
       }
-      resolve(bodyp)
-    })
+    }
 
-    resolve(p).then((result) => {
+    resolve(f).then((result) => {
       expect(result).toEqual({
         status: 123,
         headers: {},
@@ -55,16 +61,34 @@ describe("resolve_response", () => {
   })
 
   it("if the response body is a rejected promise, it ignores the responses and returns the rejected promise", (done) => {
-    const p = Promise.reject("error")
-
-    const resp = {
-      status: 123,
-      headers: {a:1},
-      body: p
+    const f = () => {
+      const p = Promise.reject("error")
+      return {
+        status: 123,
+        headers: {a:1},
+        body: p
+      }
     }
 
-    resolve(Promise.resolve(resp)).catch((err) => {
+    resolve(f).catch((err) => {
       expect(err).toBe("error")
+      done()
+    })
+  })
+
+  it("response body is rejected async", (done) => {
+    const f = () => {
+      const p = new Promise((resolve, reject) => setTimeout(() => reject("async reject"), 10))
+
+      return {
+        status: 123,
+        headers: {a:1},
+        body: p
+      }
+    }
+
+    resolve(f).catch((err) => {
+      expect(err).toBe("async reject")
       done()
     })
   })

@@ -7,6 +7,7 @@ NOTE: Unlike the rest of the spirit API, there are no camelCase variants.
 - [is_Response](#is_Response)
 - [size_of](#size_of)
 - [type_of **](#type_of)
+- [callp_response](#callp_response)
 - [resolve_response](#resolve_response)
 
 
@@ -81,14 +82,37 @@ type_of(null) // "null"
 -------------------------------------------
 
 
+# callp_response
+##### (spirit.node.utils.callp_response)
+
+Works similarly to `spirit.callp`. Except it adds special handling when the function being called returns a response map _but with a response body that is a Promise_. 
+
+When this occurs, resolves the response's body first instead of passing along a Promise of a response map which has a Promise as it's body that may not be resolved yet.
+
+Additionally it surpresses Promise warnings regarding async error handling.
+
+This is mostly used internally.
+
+[Source: src/core/promise_utils.js (resolve_response)](../../src/core/promise_utils.js#L59)
+
+#### Arguments
+* p {Promise}
+
+#### Return
+{Promise}
+
+
+-------------------------------------------
+
+
 # resolve_response
 ##### (spirit.node.utils.resolve_response)
+
+__REMOVED IN v0.6.0__
 
 Resolves a response's body if it's a Promise.
 
 This is mostly used internally.
-
-[Source: src/core/promise_utils.js (resolve_response)](../../src/core/promise_utils.js#L42)
 
 #### Arguments
 * p {Promise}

@@ -25,4 +25,5 @@ The following are internal API that are exported and documented.
 - [is_Response](internal.md#is_Response)
 - [size_of](internal.md#size_of)
 - [type_of](internal.md#type_of)
-- [resolve_response](internal.md#resolve_response)]
+- [resolve_response](internal.md#resolve_response)] (Removed in v0.6.0)
+- [callp_response](internal.md#callp_response)

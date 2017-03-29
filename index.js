@@ -18,7 +18,7 @@ node.errResponse = node.err_response
 // no camelCase aliases!
 node.utils = require("./lib/http/utils")
 node.utils.is_Response = response_map.is_Response
-node.utils.resolve_response = p_utils.resolve_response
+node.utils.callp_response = p_utils.callp_response
 
 module.exports = {
   compose: core.compose,

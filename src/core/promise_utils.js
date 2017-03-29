@@ -40,43 +40,40 @@ const callp = (fn, args) => {
 
 const {is_response} = require("../http/response")
 /**
- * Resolve a Promise of a Promise (as it pertains to a response
- * map)
+ * Similar to `callp` with handling specific
+ * to spirit http response maps that have a Promise as a body
  *
- * For adding an extra step to resolve Promises that are
- * a response map, where the body itself is a promise
+ * Special handling needs to be done to resolve the body first
+ * and avoid passing along a Promise of a response map
+ * which holds a Promise as it's body
  *
- * This avoids the promise of a promise issue when dealing
- * with response maps
+ * Additionally a empty catch is added to surpress
+ * Promise warnings in node v7.x regarding async error handling
  *
- * @param {Promise} p - a promise
- * @return {Promise}
+ * @param {function} fn - function to call
+ * @param {*[]} args - array of arguments to `fn`
+ * @returns {Promise}
  */
-const resolve_response = (p) => {
-  return p.then((result) => {
-    // if it is a response map, resolve the body
-    if (is_response(result)
-        && is_promise(result.body)) {
-      return new Promise((resolve, reject) => {
-        result.body
-          .then((body) => {
-            result.body = body
-            resolve(result)
-          })
-          .catch((err) => {
-            // if the body is rejected Promise
-            // throw the error of the body instead of the resp
-            reject(err)
-          })
-      })
-    }
-    // otherwise just return
-    return result
-  })
+const callp_response = (fn, args) => {
+  if (typeof fn === "function") {
+    return new Promise((resolve, reject) => {
+      const v = fn.apply(undefined, args)
+      if (is_response(v)
+          && is_promise(v.body)) {
+        return v.body.then((bd) => {
+          v.body = bd
+          resolve(v)
+        }).catch((err) => reject(err))
+      }
+      resolve(v)
+    })
+  }
+
+  return Promise.resolve(fn)
 }
 
 module.exports = {
   callp,
   is_promise,
-  resolve_response
+  callp_response
 }
