@@ -11,6 +11,7 @@ Modern and functional approach to building web applications.
 ```js
 const {adapter} = require("spirit").node
 const route = require("spirit-router")
+const http = require('http')
 
 const hello = () => "Hello World!"
 
@@ -21,7 +22,7 @@ const app = route.define([
   route.get("/:name", ["name"], greet),
 ])
 
-http.createServer(adapter(app))
+http.createServer(adapter(app)).listen(3000)
 ```
 
 If we think about a web request in its simplest form, it's basically a function, it takes an input (request) and _returns_ an output (response). So why not write web applications this way?
