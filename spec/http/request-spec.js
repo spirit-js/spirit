@@ -30,7 +30,7 @@ describe("http request", () => {
       })
 
       mock_req.headers.host = "[2620:10d:c021:11::75]:8000"
-      const rmap2 = request.getHostAndPort(mock_req, rmap)
+      const rmap2 = request.getHostAndPort(mock_req)
       expect(rmap2).toEqual({
         host: "[2620:10d:c021:11::75]",
         port: 8000
