@@ -1,6 +1,6 @@
 const url = require("url")
 
-function parseUrl(req) {
+const urlquery = (req) => {
   if (!req.url) {
     return { query: {} }
   }
@@ -8,7 +8,7 @@ function parseUrl(req) {
   return url.parse(req.url, true)
 }
 
-function getHostAndPort(req) {
+const hostport = (req) => {
   if (!req.headers || !req.headers.host) return {};
 
   let host = req.headers.host
@@ -29,7 +29,7 @@ function getHostAndPort(req) {
   return { host, port };
 }
 
-function getProtocol(req) {
+const protocol = (req) => {
   if(req.connection && req.connection.encrypted) {
     return 'https';
   }
@@ -61,8 +61,8 @@ function getProtocol(req) {
  * @return {request-map}
  */
 const create = (req) => {
-  const parsedUrl = parseUrl(req);
-  const { host, port } = getHostAndPort(req)
+  const parsedurl = urlquery(req)
+  const { host, port } = hostport(req)
   const request = {
     method: typeof req.method === 'string' ? req.method.toUpperCase() : req.method,
     headers: req.headers,
@@ -74,19 +74,19 @@ const create = (req) => {
     },
     host,
     port,
-    url: parsedUrl.pathname,
-    pathname: parsedUrl.pathname,
-    query: parsedUrl.query,
-    protocol: getProtocol(req),
+    url: parsedurl.pathname,
+    pathname: parsedurl.pathname,
+    query: parsedurl.query,
+    protocol: protocol(req),
     ip: req.connection ? req.connection.remoteAddress : undefined
   }
 
-  return request;
+  return request
 }
 
 module.exports = {
-  getHostAndPort,
-  getProtocol,
-  parseUrl,
+  hostport,
+  protocol,
+  urlquery,
   create
 }

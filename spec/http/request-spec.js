@@ -14,7 +14,7 @@ describe("http request", () => {
 
   describe("host & port", () => {
     it("sets host (string) and port (number)", () => {
-      const rmap = request.getHostAndPort(mock_req);
+      const rmap = request.hostport(mock_req)
       expect(rmap).toEqual({
         host: "localhost",
         port: 3009
@@ -23,14 +23,14 @@ describe("http request", () => {
 
     it("supports ipv6 hosts and port", () => {
       mock_req.headers.host = "[2620:10d:c021:11::75]"
-      const rmap = request.getHostAndPort(mock_req)
+      const rmap = request.hostport(mock_req)
       expect(rmap).toEqual({
         host: "[2620:10d:c021:11::75]",
         port: undefined
       })
 
       mock_req.headers.host = "[2620:10d:c021:11::75]:8000"
-      const rmap2 = request.getHostAndPort(mock_req)
+      const rmap2 = request.hostport(mock_req)
       expect(rmap2).toEqual({
         host: "[2620:10d:c021:11::75]",
         port: 8000
@@ -40,7 +40,7 @@ describe("http request", () => {
 
   describe("urlquery", () => {
     it("sets the url and defaults query to {} when no query found", () => {
-      const rmap = request.parseUrl(mock_req)
+      const rmap = request.urlquery(mock_req)
       expect(rmap.pathname).toBe("/hello")
       expect(typeof rmap.query).toBe("object")
       expect(Object.keys(rmap.query).length).toBe(0)
@@ -48,7 +48,7 @@ describe("http request", () => {
 
     it("sets query as an object and keeps original url as url", () => {
       mock_req.url = "/p/a/t/h?hi=test#hash"
-      const rmap = request.parseUrl(mock_req)
+      const rmap = request.urlquery(mock_req)
       expect(rmap.pathname).toBe("/p/a/t/h")
       expect(rmap.query.hi).toBe("test")
     })
@@ -56,13 +56,13 @@ describe("http request", () => {
 
   describe("protocol", () => {
     it("defaults to http", () => {
-      const protocol = request.getProtocol(mock_req)
+      const protocol = request.protocol(mock_req)
       expect(protocol).toBe("http")
     })
 
     it("flags as https if req.connection.encrypted exists", () => {
       mock_req.connection.encrypted = true
-      const protocol = request.getProtocol(mock_req)
+      const protocol = request.protocol(mock_req)
       expect(protocol).toBe("https")
     })
   })
