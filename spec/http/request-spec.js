@@ -42,6 +42,7 @@ describe("http request", () => {
     it("sets the url and defaults query to {} when no query found", () => {
       const rmap = request.urlquery(mock_req)
       expect(rmap.pathname).toBe("/hello")
+      expect(rmap.url).toBe(rmap.pathname)
       expect(typeof rmap.query).toBe("object")
       expect(Object.keys(rmap.query).length).toBe(0)
     })
@@ -50,6 +51,7 @@ describe("http request", () => {
       mock_req.url = "/p/a/t/h?hi=test#hash"
       const rmap = request.urlquery(mock_req)
       expect(rmap.pathname).toBe("/p/a/t/h")
+      expect(rmap.url).toBe(rmap.pathname)
       expect(rmap.query.hi).toBe("test")
     })
   })
@@ -84,7 +86,7 @@ describe("http request", () => {
       expect(result.host).toBe("localhost")
       expect(result.ip).toBe("74.125.127.100")
       expect(result.url).toBe("/hello")
-      expect(result.pathname).toBe("/hello")
+      expect(result.pathname).toBe(result.url)
       expect(result.path).toBe("/hello?a=1")
       expect(result.method).toBe("POST")
       expect(result.scheme).toBe("1.1")
