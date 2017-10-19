@@ -115,7 +115,7 @@ describe("http.response", () => {
       expect(resp.status).toBe(200)
       // file is probably greater than 500 bytes
       expect(resp.headers["Content-Length"] > 500).toBe(true)
-      expect(resp.headers["Content-Type"]).toBe("application/json")
+      expect(resp.headers["Content-Type"]).toBe("application/json; charset=utf-8")
       expect(Object.keys(resp.headers).length).toBe(3)
       expect(typeof resp.body.pipe).toBe("function")
 

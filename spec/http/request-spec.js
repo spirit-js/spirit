@@ -14,8 +14,7 @@ describe("http request", () => {
 
   describe("host & port", () => {
     it("sets host (string) and port (number)", () => {
-      const rmap = {}
-      request.hostport(mock_req, rmap)
+      const rmap = request.hostport(mock_req)
       expect(rmap).toEqual({
         host: "localhost",
         port: 3009
@@ -23,16 +22,16 @@ describe("http request", () => {
     })
 
     it("supports ipv6 hosts and port", () => {
-      const rmap = {}
       mock_req.headers.host = "[2620:10d:c021:11::75]"
-      request.hostport(mock_req, rmap)
+      const rmap = request.hostport(mock_req)
       expect(rmap).toEqual({
-        host: "[2620:10d:c021:11::75]"
+        host: "[2620:10d:c021:11::75]",
+        port: undefined
       })
 
       mock_req.headers.host = "[2620:10d:c021:11::75]:8000"
-      request.hostport(mock_req, rmap)
-      expect(rmap).toEqual({
+      const rmap2 = request.hostport(mock_req)
+      expect(rmap2).toEqual({
         host: "[2620:10d:c021:11::75]",
         port: 8000
       })
@@ -41,34 +40,32 @@ describe("http request", () => {
 
   describe("urlquery", () => {
     it("sets the url and defaults query to {} when no query found", () => {
-      const rmap = {}
-      request.urlquery(mock_req, rmap)
-      expect(rmap.url).toBe("/hello")
+      const rmap = request.urlquery(mock_req)
+      expect(rmap.pathname).toBe("/hello")
+      expect(rmap.url).toBe(rmap.pathname)
       expect(typeof rmap.query).toBe("object")
       expect(Object.keys(rmap.query).length).toBe(0)
     })
 
     it("sets query as an object and keeps original url as url", () => {
-      const rmap = {}
       mock_req.url = "/p/a/t/h?hi=test#hash"
-      request.urlquery(mock_req, rmap)
-      expect(rmap.url).toBe("/p/a/t/h")
+      const rmap = request.urlquery(mock_req)
+      expect(rmap.pathname).toBe("/p/a/t/h")
+      expect(rmap.url).toBe(rmap.pathname)
       expect(rmap.query.hi).toBe("test")
     })
   })
 
   describe("protocol", () => {
     it("defaults to http", () => {
-      const rmap = {}
-      request.protocol(mock_req, rmap)
-      expect(rmap.protocol).toBe("http")
+      const protocol = request.protocol(mock_req)
+      expect(protocol).toBe("http")
     })
 
     it("flags as https if req.connection.encrypted exists", () => {
-      const rmap = {}
       mock_req.connection.encrypted = true
-      request.protocol(mock_req, rmap)
-      expect(rmap.protocol).toBe("https")
+      const protocol = request.protocol(mock_req)
+      expect(protocol).toBe("https")
     })
   })
 
@@ -89,6 +86,7 @@ describe("http request", () => {
       expect(result.host).toBe("localhost")
       expect(result.ip).toBe("74.125.127.100")
       expect(result.url).toBe("/hello")
+      expect(result.pathname).toBe(result.url)
       expect(result.path).toBe("/hello?a=1")
       expect(result.method).toBe("POST")
       expect(result.scheme).toBe("1.1")
@@ -98,7 +96,7 @@ describe("http request", () => {
       expect(result.req()).toBe(mock_req)
       expect(result.query.a).toBe("1")
 
-      expect(Object.keys(result).length).toBe(11)
+      expect(Object.keys(result).length).toBe(12)
     })
 
     it("passes method, httpVersion, headers of req", () => {
