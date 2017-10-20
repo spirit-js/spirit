@@ -4,6 +4,7 @@ const urlquery = (req, request) => {
   if (!req.url) return
   const result = url.parse(req.url, true)
   request.url = result.pathname
+  request.pathname = result.pathname // alias to url for those who are use to node.js url api
   request.query = result.query
 }
 

@@ -14,6 +14,7 @@ By default the node http adapter will populate the following properties:
 - ip   {string} the requesting client's ip
 - url  {string} the request URI (_excluding_ query string)
 - path {string} the request URI (_including_ query string)
+- pathname {string} alias to `url` for those who prefer this naming, as it follows node.js's url api
 - method   {string} the request method
 - protocol {string} either "http" or "https"
 - scheme   {string} the transport protocol ex: "HTTP/1.1"

@@ -153,7 +153,7 @@ describe("response-class", () => {
       it("sets the content type from known types and returns this", () => {
         const r = new Response()
         const result = r.type("json")
-        expect(r.headers["Content-Type"]).toBe("application/json")
+        expect(r.headers["Content-Type"]).toBe("application/json; charset=utf-8")
         expect(result).toBe(r)
       })
 
@@ -174,7 +174,7 @@ describe("response-class", () => {
         const tester = (arr, expect_json) => {
           arr.forEach((t) => {
             const r = new Response(t).type("json")
-            expect(r.headers["Content-Type"]).toBe("application/json")
+            expect(r.headers["Content-Type"]).toBe("application/json; charset=utf-8")
             if (expect_json) {
               expect(r.body).toBe(JSON.stringify(t))
             } else {

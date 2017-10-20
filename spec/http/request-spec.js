@@ -89,6 +89,7 @@ describe("http request", () => {
       expect(result.host).toBe("localhost")
       expect(result.ip).toBe("74.125.127.100")
       expect(result.url).toBe("/hello")
+      expect(result.pathname).toBe(result.url)
       expect(result.path).toBe("/hello?a=1")
       expect(result.method).toBe("POST")
       expect(result.scheme).toBe("1.1")
@@ -98,7 +99,7 @@ describe("http request", () => {
       expect(result.req()).toBe(mock_req)
       expect(result.query.a).toBe("1")
 
-      expect(Object.keys(result).length).toBe(11)
+      expect(Object.keys(result).length).toBe(12)
     })
 
     it("passes method, httpVersion, headers of req", () => {
