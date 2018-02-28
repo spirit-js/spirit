@@ -3,6 +3,6 @@ node_js:
   - "node"
   - "6"
   - "5"
-  - "4.4"
+  - "4.8"
 script: "make test-ci"
-after_script: "npm install coveralls@2.11.9 && cat ./coverage/lcov.info | coveralls"
+after_script: "npm install coveralls@3.0.0 && cat ./coverage/lcov.info | coveralls"
