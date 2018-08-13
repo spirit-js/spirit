@@ -55,6 +55,7 @@ Oh yea, most [Express middleware works in spirit](https://github.com/spirit-js/s
 
 ### Third Party Components
 - [`spirit-body`](https://github.com/dodekeract/spirit-body) is a simple body parser middleware for spirit. Alternative to using `spirit-common` which wraps the Express body-parser module.
+- [`spirit-guide`](https://github.com/fabiocbinbutter/spirit-guide) is an alternative router for spirit.
 
 ## Contributing
 
