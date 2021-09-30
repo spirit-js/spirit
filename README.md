@@ -58,7 +58,7 @@ Oh yea, most [Express middleware works in spirit](https://github.com/spirit-js/s
 
 ## Contributing
 
-All contributions are appreciated and welcomed.
+All open-source contributions are appreciated and welcomed.
 
 For backwards incompatible changes, or large changes, it would be best if you opened an issue before hand to outline your plans (to avoid conflict later on).
 
